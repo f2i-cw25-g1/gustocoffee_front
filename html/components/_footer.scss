@@ -1,0 +1,63 @@
+footer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  margin: 50px 0;
+  font-family: Cabin-Medium;
+  font-size: 16px;
+
+  a {
+    color: #000;
+    text-decoration: none;
+  }
+
+  input {
+    font-family: Cabin-Medium;
+    font-size: 18px;
+    border: 2px solid #986946;
+    padding: 5px 95px 5px 5px;
+    height: 40px;
+  }
+  button {
+    font-family: Cabin-Medium;
+    font-size: 18px;
+    background: #986946;
+    color: #fff;
+    border: none;
+    padding: 5px 10px;
+    height: 40px;
+    position: relative;
+    right: 92px;
+  }
+  button:hover {
+    cursor: pointer;
+  }
+}
+
+.copyright {
+  font-family: Cabin-Medium;
+  font-size: 18px;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+@media (max-width: 56.25em) {
+  footer {
+    margin: 0 30px;
+    input {
+      margin: 10px 0;
+    }
+  }
+}
+
+@media (max-width: 37.5em) {
+  footer {
+    input {
+      padding: 5px 15px 5px 5px;
+      width: 127px;
+    }
+    button {
+      right: 6px;
+    }
+  }
+}

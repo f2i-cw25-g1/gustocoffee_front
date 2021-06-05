@@ -1,0 +1,38 @@
+.landing {
+  background: url(../img/image.jpg) no-repeat center center fixed;
+  background-size: cover;
+  height: 90vh;
+}
+
+.catch_phrase {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(255, 255, 255, 0.8);
+  padding: 50px;
+}
+
+.title {
+  font-family: Melt-Script-Rough;
+  font-size: 70px;
+  text-transform: uppercase;
+}
+
+.subtitle {
+  font-family: Melt-Script-Rough;
+  font-size: 40px;
+}
+
+.main_button {
+  text-decoration: none;
+  background: #d3d36e;
+  color: #000;
+  font-size: 18px;
+  padding: 15px 45px;
+  font-family: Cabin-Medium;
+  position: absolute;
+  top: 80%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
