@@ -1,21 +1,3 @@
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  scroll-behavior: smooth;
-  scrollbar-color: #986946 #fafafa;
-}
-
-@font-face {
-  font-family: "Cabin-Medium";
-  src: url(../fonts/Cabin-Medium.ttf);
-}
-
-@font-face {
-  font-family: "Melt-Script-Rough";
-  src: url(../fonts/Melts-Script-Rough.otf);
-}
-
 main {
   margin: 30px 12%;
 }
@@ -39,24 +21,33 @@ main {
 }
 
 .bienvenue {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
+  -ms-flex-wrap: wrap;
   flex-wrap: wrap;
 }
 
 .bienvenue:hover > .bienvenue_image > .bienvenue_img {
+  -webkit-box-shadow: 20px 20px 0px #986946;
   box-shadow: 20px 20px 0px #986946;
 }
 
 .bienvenue:hover > .bienvenue_image > .bienvenue_img2 {
+  -webkit-box-shadow: -20px 20px 0px #986946;
   box-shadow: -20px 20px 0px #986946;
 }
 
 .bienvenue_text {
+  -webkit-box-flex: 50%;
+  -ms-flex: 50%;
   flex: 50%;
   padding: 20px 50px;
 }
 
 .bienvenue_image {
+  -webkit-box-flex: 50%;
+  -ms-flex: 50%;
   flex: 50%;
   padding: 20px 50px;
 }
@@ -74,18 +65,22 @@ main {
 }
 
 .bienvenue_image {
+  -webkit-box-align: end;
+  -ms-flex-align: end;
   align-items: flex-end;
 }
 
 .bienvenue_img {
   width: 100%;
   height: auto;
+  -webkit-transition: all 0.2s;
   transition: all 0.2s;
 }
 
 .bienvenue_img2 {
   width: 100%;
   height: auto;
+  -webkit-transition: all 0.2s;
   transition: all 0.2s;
 }
 
@@ -117,6 +112,7 @@ main {
   border: 2px solid #986946;
   color: #986946;
   padding: 5px 20px;
+  -webkit-transition: all 0.2s ease;
   transition: all 0.2s ease;
 }
 
@@ -126,37 +122,12 @@ main {
   padding: 5px 20px;
 }
 
-.items {
-  display: flex;
-  justify-content: space-between;
-  overflow-x: auto;
-  margin-bottom: 20px;
-}
-
-.item {
-  text-decoration: none;
-  min-width: 230px;
-  height: 350px;
-  margin: 0 0 20px 20px;
-  background: linear-gradient(to left top, #986946, #d8c6b8);
-
-  p {
-    text-align: center;
-    font-family: Cabin-Medium;
-    font-size: 18px;
-    color: #fff;
-    margin-top: 10px;
-    transform: rotate(0deg);
-    transition: all 0.3s ease;
-  }
-}
-
-.item:hover > p {
-  transform: rotate(-10deg);
-}
-
 .center {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
   justify-content: center;
 }
 
@@ -170,7 +141,10 @@ main {
   color: #fff;
   padding: 5px 20px;
   margin-bottom: 20px;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
   align-items: center;
+  -webkit-transition: all 0.2s ease;
   transition: all 0.2s ease;
 }
 
