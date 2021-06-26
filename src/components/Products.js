@@ -9,7 +9,7 @@ function Products() {
   const [products, setProducts] = useState([]);
 
   const getData = async () => {
-    const { data } = await axios.get(`http://localhost:8000/api/produits/`);
+    const { data } = await axios.get(`/api/produits/`);
     setProducts(data["hydra:member"]);
   };
 
