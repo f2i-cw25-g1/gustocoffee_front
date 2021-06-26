@@ -63,7 +63,7 @@ function Main() {
         </div>
       </section>
 
-      <p className="subsection_title">Notre Menu</p>
+      <p className="subsection_title">Nos Cafés</p>
 
       <Coffees />
 

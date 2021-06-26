@@ -26,7 +26,7 @@ function Products() {
           <Product
             key={product.id}
             nom={product.nom}
-            description={product.description}
+            image={product.image}
           />
         );
       })}
