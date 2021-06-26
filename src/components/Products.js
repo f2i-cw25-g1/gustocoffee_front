@@ -19,7 +19,6 @@ function Products() {
   }, []);
 
 
-
   return (
     <div className="items">
       {products.map((product) => {
@@ -30,7 +29,6 @@ function Products() {
             description={product.description}
           />
         );
-
       })}
     </div>
   );
