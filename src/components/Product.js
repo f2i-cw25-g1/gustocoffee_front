@@ -1,11 +1,12 @@
-import './Product.css';
-import product2 from '../img/product2.png';
+import "./Product.css";
+import product2 from "../img/product2.png";
 
-function Product() {
+function Product(props) {
   return (
     <a href="#" className="item">
       <img src={product2} alt=""></img>
-      <p>Café noire</p>
+      <p>{props.nom}</p>
+      <p>{props.description}</p>
     </a>
   );
 }
