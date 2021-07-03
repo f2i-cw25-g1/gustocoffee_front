@@ -12,6 +12,7 @@ import Reservation from './pages/Reservation';
 import Boutique from './pages/Boutique';
 import Contact from './pages/Contact';
 import Moncompte from './pages/Moncompte';
+import InscriptionConnexion from './pages/InscriptionConnexion';
 import Mentionslegales from './pages/Mentionslegales';
 import Error from './pages/Error';
 
@@ -25,6 +26,7 @@ function App() {
           <Route path="/boutique" component={Boutique}/>
           <Route path="/contact" component={Contact}/>
           <Route path="/moncompte" component={Moncompte}/>
+          <Route path="/inscriptionConnexion" component={InscriptionConnexion}/>
           <Route path="/mentionslegales" component={Mentionslegales}/>
           <Route component={Error} />
         </Switch>

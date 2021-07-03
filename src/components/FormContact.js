@@ -1,6 +1,6 @@
-import './Form.css';
+import './FormContact.css';
 
-function Form() {
+function FormContact() {
   return (
     <div>
         <form action="">
@@ -21,4 +21,4 @@ function Form() {
   );
 }
 
-export default Form;
+export default FormContact;
