@@ -5,7 +5,7 @@ function FormInscriptionConnexion(){
 
 
     return(
-    <div>
+    <div className="flexform">
         <FormInscription/>
         <FormConnexion/>
     </div>
