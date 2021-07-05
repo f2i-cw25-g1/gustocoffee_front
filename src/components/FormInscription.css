@@ -1,59 +1,67 @@
 .flexform {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-  }
-  
-  .flexform label {
-    font-family: Cabin-Medium;
-    font-size: 16px;
-  }
-  
-  .flexform form input {
-    display: block;
-    padding: 10px 10px;
-    background-color: #e2e2e2;
-    border: none;
-    border-radius: 3px;
-    width: 320px;
-  }
-  
-  .flexform form button {
-    font-family: Cabin-Medium;
-    font-size: 16px;
-    color: #fff;
-    background-color: #986946;
-    border: 2px solid #986946;
-    width: 100%;
-    padding: 5px 0px;
-    margin-top: 10px;
-    transition: all 0.2s ease;
-    }
-    
-    .flexform form button:hover {
-        color: #986946;
-        background-color: #fff;
-        cursor: pointer;
-    }
-  
-  @media (max-width: 56.25em) {
-    .flexform form input {
-      width: 240px;
-    }
-  }
-  
-  @media (max-width: 37.5em) {
-    .flexform {
-      justify-content: center;
-    }
-    .flexform form {
-      margin-bottom: 40px;
-    }
-    .flexform form input {
-      width: 260px;
-    }
-  }
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
 
-  .erreurInscription{
-      color:red;
+.flexform label {
+  font-family: Cabin-Medium;
+  font-size: 16px;
+}
+
+.flexform form input {
+  display: block;
+  padding: 10px 10px;
+  background-color: #e2e2e2;
+  border: none;
+  border-radius: 3px;
+  width: 320px;
+}
+
+.flexform form button {
+  font-family: Cabin-Medium;
+  font-size: 16px;
+  color: #fff;
+  background-color: #986946;
+  border: 2px solid #986946;
+  width: 100%;
+  padding: 5px 0px;
+  margin-top: 10px;
+  transition: all 0.2s ease;
+}
+
+.flexform form button:hover {
+  color: #986946;
+  background-color: #fff;
+  cursor: pointer;
+}
+
+.erreurInscription {
+  color: #ff6060;
+  max-width: 320px;
+  margin-bottom: 10px;
+}
+
+@media (max-width: 56.25em) {
+  .flexform form input {
+    width: 240px;
   }
+  .erreurInscription {
+    max-width: 240px;
+  }
+}
+
+@media (max-width: 37.5em) {
+  .flexform {
+    justify-content: center;
+  }
+  .flexform form {
+    margin-bottom: 40px;
+  }
+  .flexform form input {
+    width: 260px;
+  }
+  .erreurInscription {
+    max-width: 260px;
+  }
+}

@@ -13,7 +13,7 @@ function Nav() {
         <img src={logo} alt=""></img>
       </Link>
       <Link className="nav_bar_link hover_effect" to='/contact'>Contact</Link>
-      <Link className="nav_bar_link hover_effect" to='/inscriptionConnexion'>S'inscire/Se connecter</Link> 
+      <Link className="nav_bar_link hover_effect" to='/inscriptionConnexion'>S'inscrire/Se connecter</Link> 
       {/* 
       <Link className="nav_bar_link hover_effect" to='/moncompte'>Mon Compte</Link> 
       */}
