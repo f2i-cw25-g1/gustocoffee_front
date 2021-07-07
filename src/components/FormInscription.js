@@ -1,4 +1,4 @@
-import './FormInscription.css';
+import './css/FormInscription.css';
 import axios from "axios";
 /*import {useState} from "react";*/
 

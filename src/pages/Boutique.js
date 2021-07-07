@@ -1,12 +1,10 @@
-import Coffees from "../components/Coffees";
-import Products from "../components/Products";
+import AllProducts from "../components/AllProducts";
 
 function Boutique() {
   return (
     <main>
       <p className="subsection_title">Boutique</p>
-      <Coffees />
-      <Products />
+      <AllProducts/>
     </main>
   );
 }

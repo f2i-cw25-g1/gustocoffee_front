@@ -1,14 +1,35 @@
 import React, { useState, useEffect } from "react";
 
-import './Coffees.css';
+import './css/Carousel.css';
 import Coffee from './Coffee';
 import axios from "axios";
 
 function Coffees() {
   const [coffees, setProducts] = useState([]);
 
+
+/*
+  //test equivalent old get data que pour les cafés
   const getData = async () => {
-    const { data } = await axios.get(`/api/produits/`);
+    await axios.get(`/api/categories/1`)
+    .then((response) => {
+      console.log(response.data.produits);
+      let tableauCafes= [];
+      response.data.produits.forEach((item)=>{
+        axios.get(item).then((response) => {
+          tableauCafes.push(response.data);  
+        }, (error) => {});
+      });
+      console.log(tableauCafes);
+      setProducts(tableauCafes);
+    }, (error) => {});
+  };
+*/
+
+  
+  //old get data
+  const getData = async () => {
+    const { data } = await axios.get(`/api/produits?page=1&categorie=1`);
     setProducts(data["hydra:member"]);
   };
 

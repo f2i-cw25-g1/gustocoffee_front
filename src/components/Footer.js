@@ -1,4 +1,4 @@
-import './Footer.css';
+import './css/Footer.css';
 import logo from '../img/logo.svg';
 import instagram from '../img/instagram.svg';
 import linkedin from '../img/linkedin.svg';

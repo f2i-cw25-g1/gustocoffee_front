@@ -1,4 +1,4 @@
-import "./Main.css";
+import "./css/Main.css";
 import Coffees from "./Coffees";
 import Products from "./Products";
 import image1 from "../img/image1.jpg";
@@ -73,7 +73,7 @@ function Main() {
         </Link>
       </div>
 
-      <p className="subsection_title">Nos Produits</p>
+      <p className="subsection_title">Nos Produits dérivés</p>
 
       <Products />
 

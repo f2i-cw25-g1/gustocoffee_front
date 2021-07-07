@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 
-import "./Products.css";
+import "./css/Carousel.css";
 import Product from "./Product";
 import axios from "axios";
 
@@ -9,7 +9,8 @@ function Products() {
   const [products, setProducts] = useState([]);
 
   const getData = async () => {
-    const { data } = await axios.get(`/api/produits/`);
+    const { data } = await axios.get(`/api/produits?page=1&categorie=6`);
+    console.log(data["hydra:member"])
     setProducts(data["hydra:member"]);
   };
 
