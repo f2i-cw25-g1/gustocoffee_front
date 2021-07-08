@@ -57,6 +57,23 @@ footer button:hover {
 }
 
 @media (max-width: 37.5em) {
+  .footer_logo {
+    margin-bottom: 10px;
+  }
+  .footer_infos {
+    margin-bottom: 20px;
+  }
+  .footer_social {
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+  }
+  footer form {
+    margin-bottom: 10px;
+  }
+  .footer_form {
+    margin-bottom: 20px;
+  }
   footer input {
     padding: 5px 15px 5px 5px;
     width: 127px;

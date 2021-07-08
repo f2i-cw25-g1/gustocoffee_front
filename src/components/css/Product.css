@@ -24,3 +24,60 @@
   -webkit-transition: all 0.3s ease;
   transition: all 0.3s ease;
 }
+
+.flexproduit {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+}
+
+.produitimage {
+  flex: 50%;
+  margin-top: 30px;
+}
+
+.produitinfos {
+  flex: 50%;
+}
+
+.produittitle {
+  font-family: Cabin-Medium;
+  font-size: 32px;
+  z-index: 1;
+  margin-bottom: 20px;
+}
+
+.produittitle::before {
+  content: "";
+  display: block;
+  background: #d3d36e;
+  height: 20px;
+  width: 50px;
+  border-radius: 20px 0 20px 0;
+  position: relative;
+  left: -5%;
+  top: 40px;
+  z-index: -1;
+}
+
+.produitinfos h1 {
+  margin-bottom: 20px;
+}
+
+.produitinfos p {
+  margin-bottom: 20px;
+  max-width: 500px;
+}
+
+@media (max-width: 56.25em) {
+}
+
+@media (max-width: 37.5em) {
+  .produitimage {
+    display: flex;
+    justify-content: center;
+  }
+  .produitinfos {
+    margin: 0 50px;
+  }
+}

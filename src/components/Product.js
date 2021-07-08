@@ -1,11 +1,12 @@
 import "./css/Product.css";
+import {Link} from 'react-router-dom';
 
 function Product(props) {
   return (
-    <a href="#" className="item">
+    <Link to={`/produit/${props.id}`} className="item">
       <img src={props.image} alt=""></img>
       <p>{props.nom}</p>
-    </a>
+    </Link>
   );
 }
 

@@ -25,7 +25,7 @@ function Products() {
       {products.map((product) => {
         return (
           <Product
-            key={product.id}
+            id={product.id}
             nom={product.nom}
             image={product.image}
           />

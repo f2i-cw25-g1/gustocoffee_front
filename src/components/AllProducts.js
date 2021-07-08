@@ -74,7 +74,7 @@ function AllProducts() {
                         {categorie.produits.map((produit) =>{
                             return(
                                 <Product
-                                key={produit.id}
+                                id={produit.id}
                                 nom={produit.nom}
                                 image={produit.image}
                                 />
