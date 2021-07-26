@@ -1,5 +1,6 @@
 import axios from "axios";
 import React, { useState, useEffect } from 'react';
+import { ReactComponent as CarteSvg } from '../img/Carte_Gusto_Coffee.svg';
 
 
 function Reservation() {
@@ -16,6 +17,7 @@ function Reservation() {
     recupererPlaces();
     recupererSalons();
     recupererReservationsParDate();
+    miseAJourCarte();
   }, []);
 
   const recupererReservationsParDate = () => {
@@ -50,6 +52,26 @@ function Reservation() {
     setReservationsSalons(data["hydra:member"]);
   }
 
+  const miseAJourCarte=() => {
+    miseAJourCartePlaces();
+    miseAJourCarteSalons();
+  }
+
+  const miseAJourCartePlaces=() => {
+    console.log("miseAJourCartePlaces");
+    reservationsPlace.forEach(miseAJourCartePlace)
+  }
+
+  const miseAJourCartePlace=(item) => {
+    console.log("test")
+    let a = item.placeGrandeSalle.split('/api/place_grande_salles/')[1];
+    console.log(places.filter(obj=>{return obj.id === a}).nom);
+  }
+
+  const miseAJourCarteSalons=() => {
+    
+  }
+
   return (
     <main>
       <div id="formResearch">
@@ -69,6 +91,9 @@ function Reservation() {
                 <button type="submit">Rechercher</button>
             </form>
         </div>
+        
+        <CarteSvg/>
+
     </main>
   );
 }
