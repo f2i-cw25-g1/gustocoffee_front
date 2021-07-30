@@ -10,6 +10,8 @@ import Footer from './components/Footer';
 import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
 import Home from './pages/Home';
 import Reservation from './pages/Reservation';
+import Salons from './pages/Salons';
+import Salon from './pages/Salon';
 import Boutique from './pages/Boutique';
 import Produit from './pages/Produit';
 import Contact from './pages/Contact';
@@ -25,6 +27,8 @@ function App() {
         <Switch>
           <Route exact path="/" component={Home}/>
           <Route path="/reservation" component={Reservation}/>
+          <Route path="/salons" component={Salons}/>
+          <Route path="/salon/:id" component={Salon}/>
           <Route path="/boutique" component={Boutique}/>
           <Route path="/produit/:id" component={Produit}/>
           <Route path="/contact" component={Contact}/>

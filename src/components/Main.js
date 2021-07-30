@@ -12,12 +12,10 @@ function Main() {
       <section className="bienvenue">
         <div className="bienvenue_text">
           <h2 className="section_title">
-            Bienvenue au Gusto Coffe votre espace de coworking
+            Bienvenue au Gusto Coffee, votre espace de coworking
           </h2>
           <p className="section_text">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sit
-            suspendisse risus, volutpat, at orci et. Massa aliquam nec, sapien
-            sit sed facilisi pulvinar viverra tortor.
+            Gusto Coffee élargit son offre et vous propose désormais des espaces de travail. Vous êtes à la recherche d'un lieu convivial afin de travailler seul ou en équipe ? Découvrez notre grande salle ainsi que nos salons.
           </p>
         </div>
         <div className="bienvenue_image">
@@ -57,8 +55,8 @@ function Main() {
             consectetur mauris mattis habitant ullamcorper nullam. Sed id sed eu
             viverra pellentesque massa fringilla donec.
           </p>
-          <Link className="sub_button" to="/reservation">
-            Réserver un salon
+          <Link className="sub_button" to="/salons">
+            Découvrez nos salons
           </Link>
         </div>
       </section>

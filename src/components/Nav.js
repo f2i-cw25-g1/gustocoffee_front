@@ -1,6 +1,7 @@
 import './css/Nav.css';
 import logo from '../img/logo.svg';
 import menu from '../img/menu.svg';
+import profil from "../img/profil.svg";
 import {Link} from 'react-router-dom';
 
 function Nav() {
@@ -13,7 +14,9 @@ function Nav() {
         <img src={logo} alt=""></img>
       </Link>
       <Link className="nav_bar_link hover_effect" to='/contact'>Contact</Link>
-      <Link className="nav_bar_link hover_effect" to='/inscriptionConnexion'>S'inscrire/Se connecter</Link> 
+      <Link className="nav_bar_link hover_effect" to='/inscriptionConnexion'>
+        <img src={profil} alt=""></img>
+      </Link>
       {/* 
       <Link className="nav_bar_link hover_effect" to='/moncompte'>Mon Compte</Link> 
       */}
@@ -41,7 +44,9 @@ function Nav() {
             <Link className="nav_bar_mobile_link" to='/contact'>Contact</Link>
           </li>
           <li className="nav_bar_mobile_item">
-            <Link className="nav_bar_mobile_link" to='/moncompte'>Mon Compte</Link>
+          <Link className="nav_bar_mobile_link" to='/inscriptionConnexion'>
+            <img src={profil} alt=""></img>
+          </Link>
           </li>
         </ul>
       </nav>

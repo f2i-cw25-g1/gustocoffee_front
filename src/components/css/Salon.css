@@ -1,0 +1,32 @@
+.salon {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  margin-bottom: 40px;
+}
+
+.salon:hover > img {
+  -webkit-box-shadow: -20px 20px 0px #d3d36e;
+  box-shadow: -20px 20px 0px #d3d36e;
+}
+
+.salon img {
+  max-width: 60%;
+  max-height: 60%;
+  -webkit-transition: all 0.2s;
+  transition: all 0.2s;
+}
+
+.salon p {
+  text-decoration: none;
+  font-family: Cabin-Medium;
+  font-size: 18px;
+  color: #000;
+}
+
+@media (max-width: 37.5em) {
+  .salon img {
+    max-width: 100%;
+    max-height: 100%;
+  }
+}
