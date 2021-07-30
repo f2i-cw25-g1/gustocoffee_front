@@ -44,6 +44,7 @@ function Coffees() {
       {coffees.map((product) => {
         return (
           <Coffee
+            key={product.id}
             id={product.id}
             nom={product.nom}
             image={product.image}

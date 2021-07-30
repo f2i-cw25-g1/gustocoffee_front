@@ -1,99 +1,187 @@
 import axios from "axios";
 import React, { useState, useEffect } from 'react';
 import { ReactComponent as CarteSvg } from '../img/Carte_Gusto_Coffee.svg';
-
+import '../App.css';
 
 function Reservation() {
+  const date = new Date();
   const today = new Date().toISOString().slice(0, 10);
-  let dateUtilisee = today;
-  //données à la date : 2021-07-06
+  let dateUtilisee = '2021-07-06';//today;
+  let heureDebutUtilisee =date.getHours()+':00';
+  let heureFinUtilisee=(date.getHours()+1)+':00';
+
+  const couleurPlaceDisponible = "#D3D36E";
+  const couleurPlaceSelectionnee = "#94D36E";
+  const couleurPlaceReservee = "#FF6060";
 
   const [places, setPlaces] = useState([]);
   const [salons, setSalons] = useState([]);
   const [reservationsPlace, setReservationsPlaces] = useState([]);
   const [reservationsSalons, setReservationsSalons] = useState([]);
+  const [selectedPlaces, setSelectedPlaces] = useState([]);
+
+  let responsePlaces;
+  let responseSalons;
+  let responseReservationsPlace;
+  let responseReservationsSalons;
+  let jsSelectedPlaces = [];
 
   useEffect(() => {//au chargement de la page
+    document.getElementById('rechercheHeureDebut').value = heureDebutUtilisee;
+    document.getElementById('rechercheHeureFin').value = heureFinUtilisee;
+    document.getElementById('rechercheDate').value = dateUtilisee;
+
+    document.getElementById("submitDateButton").addEventListener("click", function(event){
+      event.preventDefault()
+      heureDebutUtilisee = document.getElementById('rechercheHeureDebut').value;
+      heureFinUtilisee = document.getElementById('rechercheHeureFin').value;
+      if(document.getElementById("rechercheDate").value != dateUtilisee){
+        let touteLesPlaces = document.getElementsByClassName("place")
+          for (var i = 0; i < touteLesPlaces.length; i++) {
+            touteLesPlaces[i].setAttribute("fill",couleurPlaceDisponible);
+        }
+        dateUtilisee = document.getElementById("rechercheDate").value;
+        recupererReservationsParDate();
+      }
+    });
     recupererPlaces();
-    recupererSalons();
-    recupererReservationsParDate();
-    miseAJourCarte();
+    recupererSalons();//.then((response) => {console.log('loaded')}, (error) => {});
+    recupererReservationsParDate();    
+    let placesInSvg = document.getElementsByClassName("place");
+    for (let i = 0; i < placesInSvg.length; i++) {
+      placesInSvg[i].addEventListener('click', event => {
+        addPlaceInSelectedPlaces(event.target)
+      })
+    }
   }, []);
 
-  const recupererReservationsParDate = () => {
-    dateUtilisee = document.getElementById("rechercheDate").value;
-    console.log('recuperation donnees');
-    console.log(dateUtilisee);// vide, à voir pourquoi
-    recupererReservationsPlacesParDate('2021-07-06');
-    recupererReservationsSalonsParDate('2021-07-06');
+  useEffect(() => {
+    console.log('test')
+  },[selectedPlaces]);
+
+  const addPlaceInSelectedPlaces = (target) => {
+    if(target.getAttribute('fill') == couleurPlaceReservee){
+      console.log('place déja réservée')
+    }else{
+      let test = jsSelectedPlaces.filter(function (currentElement) {
+        return currentElement.id == target.id && currentElement.date==dateUtilisee && currentElement.heureDebutUtilisee == currentElement.heureDebutUtilisee && currentElement.heureFinUtilisee == heureFinUtilisee
+      });
+      if(test.length){
+        console.log('place deja selectionee')
+        let index = jsSelectedPlaces.indexOf(test[0]);
+        if (index !== -1) {
+          jsSelectedPlaces.splice(index, 1);
+        }
+        document.getElementById(target.id).setAttribute('fill', couleurPlaceDisponible);
+      }else{
+        console.log('place ajoutee')
+        let placeAjouteeASelection = {
+          id:target.id,
+          key:target.id+" "+dateUtilisee+" "+heureDebutUtilisee+" "+heureFinUtilisee,
+          nom:target.id.split("Place")[1],
+          date:dateUtilisee,
+          heureDebutUtilisee : heureDebutUtilisee,
+          heureFinUtilisee : heureFinUtilisee
+        };
+        document.getElementById(target.id).setAttribute('fill', couleurPlaceSelectionnee);
+        jsSelectedPlaces.push(placeAjouteeASelection);
+        setSelectedPlaces(jsSelectedPlaces);
+      }
+      console.log(jsSelectedPlaces);
+    }
+  }
+
+  const recupererReservationsParDate = async (event) => {
+    jsSelectedPlaces.forEach(miseAJourCartePlaceSelectionnee);
+    recupererReservationsPlacesParDate(dateUtilisee).then((response) => {
+      miseAJourCartePlacesReservees()
+      miseAJourCarteSalonsReserves()
+    }, (error) => {});;
+    recupererReservationsSalonsParDate(dateUtilisee);
   }
 
   const recupererPlaces = async (event)=>{
     const { data } = await axios.get(`/api/place_grande_salles`);
-    console.log(data["hydra:member"]);
     setPlaces(data["hydra:member"]);
+    responsePlaces = data["hydra:member"];
   }
 
   const recupererSalons = async (event)=>{
     const { data } = await axios.get(`/api/salons`);
-    console.log(data["hydra:member"]);
     setSalons(data["hydra:member"]);
+    responseSalons = data["hydra:member"];
   }
 
   const recupererReservationsPlacesParDate = async (date, event)=>{
     const { data } = await axios.get(`/api/reservation_places?date_reservation=`+date);
-    console.log(data["hydra:member"]);
     setReservationsPlaces(data["hydra:member"]);
+    responseReservationsPlace = data["hydra:member"];
   }
 
   const recupererReservationsSalonsParDate = async (date, event)=>{
     const { data } = await axios.get(`/api/reservation_salons?date_reservation=`+date);
-    console.log(data["hydra:member"]);
     setReservationsSalons(data["hydra:member"]);
+    responseReservationsSalons = data["hydra:member"];
   }
 
-  const miseAJourCarte=() => {
-    miseAJourCartePlaces();
-    miseAJourCarteSalons();
+  const miseAJourCartePlacesReservees = () => {
+    if(!responsePlaces){
+      recupererReservationsParDate();
+    }
+    else{
+      responseReservationsPlace.forEach(miseAJourCartePlaceReservee);
+    }
   }
 
-  const miseAJourCartePlaces=() => {
-    console.log("miseAJourCartePlaces");
-    reservationsPlace.forEach(miseAJourCartePlace)
+  const miseAJourCartePlaceReservee = (placeReservee) => {
+      placeReservee.nom = responsePlaces.find(element => element.id == placeReservee.placeGrandeSalle.split("/api/place_grande_salles/")[1]).nom
+      if(document.getElementById("Place"+placeReservee.nom)){
+        document.getElementById("Place"+placeReservee.nom).setAttribute("fill",couleurPlaceReservee)
+      }
   }
 
-  const miseAJourCartePlace=(item) => {
-    console.log("test")
-    let a = item.placeGrandeSalle.split('/api/place_grande_salles/')[1];
-    console.log(places.filter(obj=>{return obj.id === a}).nom);
+  const miseAJourCartePlaceSelectionnee = (placeSelectionnee) =>{
+    if(placeSelectionnee.date == dateUtilisee){
+      document.getElementById(placeSelectionnee.id).setAttribute("fill",couleurPlaceSelectionnee);
+    }
   }
 
-  const miseAJourCarteSalons=() => {
+  const miseAJourCarteSalonsReserves=() => {
     
   }
 
   return (
     <main>
       <div id="formResearch">
-            <form onSubmit={recupererReservationsParDate}>
-                <div id="containerDate">
-                    <label htmlFor="rechercheDate">Date</label>
-                    <input type="date" id="rechercheDate" name="rechercheDate" />
-                </div>    
-                <div id="heureDebut">
-                    <label htmlFor="rechercheHeureDebut">Heure de début</label>
-                    <input type="time" id="rechercheHeureDebut" name="rechercheHeureDebut" />
-                </div>
-                <div id="heureFin">
-                    <label htmlFor="rechercheHeureFin">Heure de fin</label>
-                    <input type="time" id="rechercheHeureFin" name="rechercheHeureFin" />
-                </div>
-                <button type="submit">Rechercher</button>
-            </form>
-        </div>
+        <div className="load" style={{display:"none"}}></div>
+        <form onSubmit={recupererReservationsParDate}>
+            <div id="containerDate">
+                <label htmlFor="rechercheDate">Date</label>
+                <input type="date" id="rechercheDate" name="rechercheDate" />
+            </div>    
+            <div id="heureDebut">
+                <label htmlFor="rechercheHeureDebut">Heure de début</label>
+                <input type="time" id="rechercheHeureDebut" name="rechercheHeureDebut" />
+            </div>
+            <div id="heureFin">
+                <label htmlFor="rechercheHeureFin">Heure de fin</label>
+                <input type="time" id="rechercheHeureFin" name="rechercheHeureFin" />
+            </div>
+            <button id="submitDateButton" type="submit">Rechercher</button>
+        </form>
+      </div>
         
         <CarteSvg/>
 
+        {/* <p>{JSON.stringify(selectedPlaces)}</p> */}
+        {selectedPlaces.map((a) =>{
+            return(
+              <div key={a.key}>
+                {a.nom}
+              </div>
+            );
+        })}
+            
     </main>
   );
 }

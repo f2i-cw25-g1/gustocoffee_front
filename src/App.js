@@ -4,7 +4,7 @@ import './App.css';
 // Composants
 import Nav from './components/Nav';
 import Footer from './components/Footer';
-import SingleProduit from './components/SingleProduit';
+//import SingleProduit from './components/SingleProduit';
 
 // Pages
 import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';

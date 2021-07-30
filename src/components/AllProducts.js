@@ -66,7 +66,7 @@ function AllProducts() {
         <div>
             {categories.map((categorie) =>{
                 return(
-                    <div className="categorie">
+                    <div className="categorie" key={categorie.nom}>
                         <div className="subsection_title">
                         {categorie.nom}
                         </div>
@@ -74,6 +74,7 @@ function AllProducts() {
                         {categorie.produits.map((produit) =>{
                             return(
                                 <Product
+                                key={produit.id}
                                 id={produit.id}
                                 nom={produit.nom}
                                 image={produit.image}
@@ -84,8 +85,6 @@ function AllProducts() {
                     </div>
                 );
             })}
-
-            {console.log("categories",categories)}
         </div>
     );
 }

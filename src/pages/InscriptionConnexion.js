@@ -3,7 +3,7 @@ import FormInscriptionConnexion from "../components/FormInscriptionConnexion";
 function InscriptionConnexion() {
     return (
       <main>
-        <p className="subsection_title">Connexion - inscription</p>
+        <p className="subsection_title">Bienvenue</p>
         <FormInscriptionConnexion />
       </main>
     );
