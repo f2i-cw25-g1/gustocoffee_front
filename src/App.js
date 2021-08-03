@@ -18,6 +18,8 @@ import Contact from './pages/Contact';
 import Moncompte from './pages/Moncompte';
 import InscriptionConnexion from './pages/InscriptionConnexion';
 import Mentionslegales from './pages/Mentionslegales';
+import CGU from './pages/CGU';
+import CGV from './pages/CGV';
 import Error from './pages/Error';
 
 function App() {
@@ -35,6 +37,8 @@ function App() {
           <Route path="/moncompte" component={Moncompte}/>
           <Route path="/inscriptionConnexion" component={InscriptionConnexion}/>
           <Route path="/mentionslegales" component={Mentionslegales}/>
+          <Route path="/cgu" component={CGU}/>
+          <Route path="/cgv" component={CGV}/>
           <Route component={Error} />
         </Switch>
       <Footer />
