@@ -26,10 +26,12 @@ function AllSalons() {
             {salons.map((salon) =>{
                 return(
                     <Salon
-                    key={salon.id}
-                    id={salon.id}
-                    nom={salon.nom}
-                    image={salon.image}
+                        key={salon.id}
+                        id={salon.id}
+                        image={salon.image}
+                        nom={salon.nom}
+                        description={salon.description}
+                        capacite={salon.nombrePlace}
                     />
                 );
             })}

@@ -4,11 +4,15 @@ import { Link } from "react-router-dom";
 function SingleProduit(props) {
     return (
         <div>
-            <img src={props.image} alt=""></img>
-            <p>{props.nom}</p>
-            <p>{props.description}</p>
-            <p>{props.capacite} personnes</p>
-            <Link className="sub_button" to='/reservation'>Réserver</Link>
+        <p className="subsection_title">{props.nom}</p>
+            <div className="saloncontainer">
+                <img src={props.image} alt=""></img>
+                <p>Description : {props.description}</p>
+                <p>Capacité : {props.capacite} personnes</p>
+                <div className="center">
+                    <Link className="buttonreserver" to='/reservation'>Réserver</Link>
+                </div>
+            </div>
         </div>
       );
  
