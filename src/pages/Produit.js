@@ -14,33 +14,48 @@ function Produit() {
   }, []);
 
   const getProduct = async () => {
-    let { data } = await axios.get(`/api/produits/${id}`);
-    setProduct(data);
+    await axios.get(`/api/produits/${id}`)
+    .then((response) => {
+      let { data } = response;
+      setProduct(data);
+      document.getElementById("loadProduit").style.display = "none";
+    });
   };
 
-  if (product != null) {
-    console.log(product);
-    return (
-      <main>
-      <SingleProduit
-        image={product.image}
-        nom={product.nom}
-        description={product.description}
-        prix={product.prix}
-      />
-      <p className="subsection_title">D'autres ont aussi consulté</p>
-      <Products
-        categorie = {product.categorie}
-      />
-    </main>
-      );
-  } else {
-      return (
-          <div>
 
-          </div>
-      )
-  }
+ return(
+   <main>
+    <div className="load" id ="loadProduit"></div>
+    {(() => {
+      if (product != null) {
+        console.log(product);
+        return (
+          <div>
+          <SingleProduit
+            image={product.image}
+            nom={product.nom}
+            description={product.description}
+            prix={product.prix}
+          />
+          <p className="subsection_title">D'autres ont aussi consulté</p>
+          <Products
+            categorie = {product.categorie}
+            idProduitActuel = {id}
+          />
+        </div>
+          );
+      } else {
+          return (
+              <div>
+              </div>
+          );
+      }
+    })()}
+  </main>
+ );
+
+
+
 }
 
 

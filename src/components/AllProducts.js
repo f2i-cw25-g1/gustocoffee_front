@@ -47,6 +47,7 @@ function AllProducts() {
         const { data } = await axios.get(`/api/categories`);
         responseCategories = data["hydra:member"];
         console.log(data["hydra:member"]);
+        document.getElementById("loadAllProducts").style.display = "none";
        
         responseCategories.forEach((categorie)=>{
             categorie.produits.forEach((produit, index)=>{//pour chaque produit de chaque catégorie, on remplace l'id du produit stocké dans le tableau catégories par l'objet produit lié à cet id
@@ -64,6 +65,7 @@ function AllProducts() {
 
     return (
         <div>
+            <div className="load" id="loadAllProducts"></div>
             {categories.map((categorie) =>{
                 return(
                     <div className="categorie" key={categorie.nom}>

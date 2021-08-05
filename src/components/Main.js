@@ -1,5 +1,4 @@
 import "./css/Main.css";
-import Coffees from "./Coffees";
 import Products from "./Products";
 import image1 from "../img/image1.jpg";
 import image2 from "../img/image2.jpg";
@@ -63,7 +62,9 @@ function Main() {
 
       <p className="subsection_title">Nos Cafés</p>
 
-      <Coffees />
+      <Products
+        categorie = "/api/categories/1"
+      />
 
       <div className="center">
         <Link className="sub_button2" to="/boutique">
@@ -73,7 +74,9 @@ function Main() {
 
       <p className="subsection_title">Nos Produits dérivés</p>
 
-      <Products />
+      <Products
+        categorie = "/api/categories/6"
+      />
 
       <div className="center">
         <Link className="sub_button2" to="/boutique">
