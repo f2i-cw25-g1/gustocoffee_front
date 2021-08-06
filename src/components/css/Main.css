@@ -160,6 +160,11 @@ main {
   color: #986946;
 }
 
+.tellink {
+  text-decoration: none;
+  color: #000;
+}
+
 @media (max-width: 56.25em) {
   .subsection_title::before {
     left: 35%;

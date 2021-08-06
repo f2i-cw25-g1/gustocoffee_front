@@ -31,9 +31,7 @@ function Main() {
         <div className="bienvenue_text">
           <h2 className="section_title">Découvrez notre salon de 120 places</h2>
           <p className="section_text">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Iaculis
-            fringilla massa eu risus mauris dignissim. Consectetur est viverra
-            eget eu.
+            Vous êtes travailleur indépendant et souhaitez dissocier lieu de travail et domicile ? Venez essayer notre salon designé pour la réflexion mais aussi la rencontre.
           </p>
           <Link className="sub_button" to="/reservation">
             Réserver une place
@@ -50,9 +48,7 @@ function Main() {
             Découvrez nos salons de 4 à 6 places
           </h2>
           <p className="section_text">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Potenti
-            consectetur mauris mattis habitant ullamcorper nullam. Sed id sed eu
-            viverra pellentesque massa fringilla donec.
+            Véritable havre de paix à quelques pas de la gare du Nord, Gusto Coffee dispose d'espaces conçus pour répondre à vos besoins : coworking, révisions, réunions... Tout est à votre disposition.
           </p>
           <Link className="sub_button" to="/salons">
             Découvrez nos salons
