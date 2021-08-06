@@ -18,7 +18,7 @@ function Main() {
           </p>
         </div>
         <div className="bienvenue_image">
-          <img className="bienvenue_img" src={image1} alt=""></img>
+          <img className="bienvenue_img" src={image1} alt="Présentation de l'espace Gusto Coffee"></img>
         </div>
       </section>
 
@@ -26,7 +26,7 @@ function Main() {
 
       <section className="bienvenue">
         <div className="bienvenue_image">
-          <img className="bienvenue_img2" src={image2} alt=""></img>
+          <img className="bienvenue_img2" src={image2} alt="Présentation du grand salon Gusto Coffee"></img>
         </div>
         <div className="bienvenue_text">
           <h2 className="section_title">Découvrez notre salon de 120 places</h2>
@@ -41,7 +41,7 @@ function Main() {
 
       <section className="bienvenue">
         <div className="bienvenue_image">
-          <img className="bienvenue_img2" src={image3} alt=""></img>
+          <img className="bienvenue_img2" src={image3} alt="Présentation des salons Gusto Coffee"></img>
         </div>
         <div className="bienvenue_text">
           <h2 className="section_title">

@@ -19,8 +19,8 @@ function Footer() {
           <a href="mailto:gustocoffee75@gmail.com" target="_blank"><p>gustocoffee75@gmail.com</p></a>
         </div>
         <div className="footer_social">
-          <a href="https://www.instagram.com/gustocoffee75" target="_blank"><img src={instagram} alt=""></img></a>
-          <a href="https://www.linkedin.com/in/gusto-coffee-5684a6208/" target="_blank"><img src={linkedin} alt=""></img></a>
+          <a href="https://www.instagram.com/gustocoffee75" target="_blank"><img src={instagram} alt="Instagram"></img></a>
+          <a href="https://www.linkedin.com/in/gusto-coffee-5684a6208/" target="_blank"><img src={linkedin} alt="LinkedIn"></img></a>
         </div>
         <div className="footer_form">
           <form action="">

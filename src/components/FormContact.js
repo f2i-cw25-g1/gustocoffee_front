@@ -20,7 +20,6 @@ useEffect(() => {//au chargement de la page
       let mailBody = document.getElementById('mailMessage').value;
       window.open('mailto:'+mailto+'?subject='+mailSubject+'&body='+mailBody);
     }
-    // window.open('mailto:'+mailto+'?subject='+mailSubject+'&body='+mailBody);
   });
 }, []);
 
@@ -32,9 +31,6 @@ useEffect(() => {//au chargement de la page
 
             <label htmlFor="mailPrenom">Prénom</label>
             <input type="text" id="mailPrenom" name="mailPrenom" required/>
-
-            {/* <label htmlFor="mail">Adresse Mail</label>
-            <input type="mail" id="mail" name="mail" /> */}
 
             <label htmlFor="mailMessage">Message</label>
             <textarea type="text" id="mailMessage" name="mailMessage" required/>
