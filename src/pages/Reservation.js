@@ -118,6 +118,7 @@ const Reservation = () => {
   };
 
   //recuperation des reservation pour une date donnée
+  //mise a jour de la carte
   const recupererReservationsPlacesParDate = async (date) => {
     const { data } = await axios.get(
       `/api/reservation_places?date_reservation=` + date
@@ -126,6 +127,9 @@ const Reservation = () => {
     miseAJourCartePlaceReservee(reservationsRef.current);
   };
 
+  //récupération des places reservée
+  //récupération du nom de la place ( ex: A1)
+  //coloration du svg
   const miseAJourCartePlaceReservee = async (placeReservee) => {
     for (const place of placeReservee) {
       let placeNom = placesRef.current.find((e) => e.id === place.id);
