@@ -22,41 +22,33 @@ const Reservation = () => {
   const [places, setPlaces] = useState([]);
   const [reservationsPlaces, setReservationsPlaces] = useState([]);
 
+  const [placeSvg, setplaceSvg] = useState();
+
+  const [selectDate, setSelectDate] = useState();
+  const [selectHeureDebut, setSelectHeureDebut] = useState();
+  const [selectHeureFin, setSelectHeureFin] = useState();
+
   let j = [];
   const [js, setJs] = useState([]);
 
+  const initialFormData = {
+    date: '2021-07-06',
+    heureDebut: '',
+    heureFin: '',
+  };
+
+  const [formData, updateFormData] = useState(initialFormData);
+
+  //////////USEFFECT//////////
+
+  // pas claire ............
   useEffect(() => {
-    //récupération de date en "dur"
-    document.getElementById('rechercheHeureDebut').value = FakeHeureDebut;
-    document.getElementById('rechercheHeureFin').value = FakeHeureFin;
-    document.getElementById('rechercheDate').value = FakeDate;
+    setFakeData(initialFormData);
 
-    //quand je veux selectionner une nouvelle date
-    document
-      .getElementById('submitDateButton')
-      .addEventListener('click', (event) => {
-        event.preventDefault();
-
-        FakeHeureDebut = document.getElementById('rechercheHeureDebut').value;
-        FakeHeureFin = document.getElementById('rechercheHeureFin').value;
-
-        //récupération de la journée entiere
-        //si la valeur du jour est différente on fait quelque chose sinon on ne fait rien
-        if (document.getElementById('rechercheDate').value !== FakeDate) {
-          //on récupère toute les places
-          //on remet toute les places en vert
-          //réinitialisation des couleurs des places
-
-          let touteLesPlaces = document.getElementsByClassName('place');
-          for (var i = 0; i < touteLesPlaces.length; i++) {
-            touteLesPlaces[i].setAttribute('fill', couleurPlaceDisponible);
-          }
-          FakeDate = document.getElementById('rechercheDate').value;
-
-          //requette qui récupère les reservations de la date selectioné
-          // recupererReservationsParDate();
-        }
-      });
+    let touteLesPlaces = document.getElementsByClassName('place');
+    for (var i = 0; i < touteLesPlaces.length; i++) {
+      touteLesPlaces[i].setAttribute('fill', couleurPlaceDisponible);
+    }
   }, []);
 
   //récupération de toute les places dans le svg, et on y ajoute un event listener dessus
@@ -77,6 +69,30 @@ const Reservation = () => {
     };
     recuperation();
   }, []);
+
+  const setFakeData = (e) => {
+    updateFormData({
+      ...formData,
+      [e.name]: e.value,
+    });
+  };
+
+  //////////FORM//////////
+
+  const handleChange = (e) => {
+    updateFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log(formData);
+  };
+  // ... submit to API or something
+
+  //////////FONCTIONS PRINCIPALES//////////
 
   //ajout d'une place
   const addPlace = async (target) => {
@@ -138,14 +154,21 @@ const Reservation = () => {
     }
   };
 
+  //////////RETURN//////////
+
   return (
     <main>
       <div id="formResearch">
         <div className="load" style={{ display: 'none' }}></div>
-        <form onSubmit={recupererReservationsParDate}>
+        <form onSubmit={handleSubmit}>
           <div id="containerDate">
             <label htmlFor="rechercheDate">Date</label>
-            <input type="date" id="rechercheDate" name="rechercheDate" />
+            <input
+              type="date"
+              id="rechercheDate"
+              name="rechercheDate"
+              onChange={handleChange}
+            />
           </div>
           <div id="heureDebut">
             <label htmlFor="rechercheHeureDebut">Heure de début</label>
@@ -153,6 +176,7 @@ const Reservation = () => {
               type="time"
               id="rechercheHeureDebut"
               name="rechercheHeureDebut"
+              onChange={handleChange}
             />
           </div>
           <div id="heureFin">
@@ -161,6 +185,7 @@ const Reservation = () => {
               type="time"
               id="rechercheHeureFin"
               name="rechercheHeureFin"
+              onChange={handleChange}
             />
           </div>
           <button id="submitDateButton" type="submit">
