@@ -4,6 +4,7 @@ import { ReactComponent as CarteSvg } from '../img/Carte_Gusto_Coffee.svg';
 import '../App.css';
 
 const Reservation = () => {
+  const dummmyDate = '2021-07-06';
   const date = new Date();
   const today = new Date().toISOString().slice(0, 10);
 
@@ -25,23 +26,23 @@ const Reservation = () => {
 
   const [js, setJs] = useState([]);
 
-  let initialFormData = {
-    date: '2012-05-05',
-    heureDebut: '',
-    heureFin: '',
-  };
+  // let initialFormData = {
+  //   date: '2021-07-06',
+  //   heureDebut: '',
+  //   heureFin: '',
+  // };
 
-  const [formData, updateFormData] = useState(initialFormData);
+  const [formData, updateFormData] = useState();
 
   //////////USEFFECT//////////
 
-  // pas claire ............
+  //remet les places en vert
   useEffect(() => {
     let touteLesPlaces = carteRef.current.getElementsByClassName('place');
     for (var i = 0; i < touteLesPlaces.length; i++) {
       touteLesPlaces[i].setAttribute('fill', couleurPlaceDisponible);
     }
-  }, [formData.date]);
+  }, []);
 
   //récupération de toute les places dans le svg, et on y ajoute un event listener dessus
   useEffect(() => {
@@ -55,7 +56,7 @@ const Reservation = () => {
     //execution des requêtes de récupération des données du serveurs
     const recuperation = async () => {
       await recupererPlaces();
-      await recupererReservationsPlacesParDate(formData.date);
+      await recupererReservationsPlacesParDate(dummmyDate);
     };
     recuperation();
   }, []);
@@ -69,7 +70,7 @@ const Reservation = () => {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleRerchercherDate = (e) => {
     e.preventDefault();
     console.log(formData);
   };
@@ -153,16 +154,10 @@ const Reservation = () => {
     <main>
       <div id="formResearch">
         <div className="load" style={{ display: 'none' }}></div>
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleRerchercherDate}>
           <div id="containerDate">
             <label htmlFor="rechercheDate">Date</label>
-            <input
-              type="date"
-              id="rechercheDate"
-              name="rechercheDate"
-              onChange={handleChange}
-              value={formData.date}
-            />
+            <input type="date" id="rechercheDate" name="rechercheDate" />
           </div>
           <div id="heureDebut">
             <label htmlFor="rechercheHeureDebut">Heure de début</label>
@@ -170,8 +165,6 @@ const Reservation = () => {
               type="time"
               id="rechercheHeureDebut"
               name="rechercheHeureDebut"
-              onChange={handleChange}
-              value={formData.heureDebut}
             />
           </div>
           <div id="heureFin">
@@ -180,8 +173,6 @@ const Reservation = () => {
               type="time"
               id="rechercheHeureFin"
               name="rechercheHeureFin"
-              onChange={handleChange}
-              value={formData.heureFin}
             />
           </div>
           <button id="submitDateButton" type="submit">
