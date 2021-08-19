@@ -58,6 +58,12 @@ main {
   margin-bottom: 20px;
 }
 
+.section_title2 {
+  font-family: Cabin-Medium;
+  font-size: 32px;
+  margin-top: 20px;
+}
+
 .section_text {
   font-family: Cabin-Medium;
   font-size: 16px;
@@ -154,6 +160,11 @@ main {
   color: #986946;
 }
 
+.tellink {
+  text-decoration: none;
+  color: #000;
+}
+
 @media (max-width: 56.25em) {
   .subsection_title::before {
     left: 35%;
@@ -163,5 +174,8 @@ main {
 @media (max-width: 37.5em) {
   .subsection_title::before {
     left: 24%;
+  }
+  .container {
+    padding: 0 20px;
   }
 }
