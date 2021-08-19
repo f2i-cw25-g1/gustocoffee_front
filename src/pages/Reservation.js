@@ -5,6 +5,7 @@ import '../App.css';
 
 const Reservation = () => {
   const dummmyDate = '2021-07-06';
+
   const date = new Date();
   const today = new Date().toISOString().slice(0, 10);
 
