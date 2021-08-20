@@ -3,8 +3,20 @@ import logo from '../img/logo.svg';
 import menu from '../img/menu.svg';
 import profil from "../img/profil.svg";
 import {Link} from 'react-router-dom';
+import React, { useEffect } from 'react';
 
 function Nav() {
+  useEffect(() => {//au chargement de la page
+    let elementsNavMobile = document.getElementsByClassName("nav_bar_mobile_item");
+    for (var i = 0; i < elementsNavMobile.length; i++) {
+      elementsNavMobile[i].addEventListener('click', function(){
+        if(document.getElementById("navi-toggle").checked){
+          document.getElementById("navi-toggle").checked = false;
+        }
+      }, false);
+    }
+  }, []);
+
   return (
     <div>
     <nav className="nav_bar">
