@@ -10,9 +10,7 @@ function Nav() {
     let elementsNavMobile = document.getElementsByClassName("nav_bar_mobile_item");
     for (var i = 0; i < elementsNavMobile.length; i++) {
       elementsNavMobile[i].addEventListener('click', function(){
-        if(document.getElementById("navi-toggle").checked){
           document.getElementById("navi-toggle").checked = false;
-        }
       }, false);
     }
   }, []);
