@@ -78,6 +78,8 @@ const Reservation = () => {
   //j'éxecute ma fonction et je lui passe la date mito dont nous avons besoin , celle ou ya les deux résa
   // et ENFIN le 'return' de mon useEffect en gros il va faire un truc quand je 'démonte' mon componsant , si je change de page par exemple
   // et le truc c'est quoi ? dans le 1000 émile je stop ma requete ^^
+  // ps; TOUJOUR un try catch 
+  // ps; le Promise.ALL c'est par ceque j'ai plusieurs requet, sinon un axios.get ça suffit genre let coco = await axios.get....(endpoint) 
   useEffect(() => {
     const ourRequest = axios.CancelToken.source()
 
