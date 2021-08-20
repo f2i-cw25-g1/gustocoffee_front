@@ -1,10 +1,10 @@
 import axios from 'axios';
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useLayoutEffect } from 'react';
 import { ReactComponent as CarteSvg } from '../img/Carte_Gusto_Coffee.svg';
 import '../App.css';
 
 const Reservation = () => {
-  const dummmyDate = '2021-07-06';
+  const dummyDate = '2021-07-06';
 
   const date = new Date();
   const today = new Date().toISOString().slice(0, 10);
@@ -27,17 +27,31 @@ const Reservation = () => {
 
   const [js, setJs] = useState([]);
 
-  // let initialFormData = {
-  //   date: '2021-07-06',
-  //   heureDebut: '',
-  //   heureFin: '',
-  // };
+  let initialFormData = {
+    date: '2021-07-06',
+    heureDebut: '',
+    heureFin: '',
+  };
 
-  const [formData, updateFormData] = useState();
+  const [formData, updateFormData] = useState(initialFormData);
+  const firstUpdate = useRef(true);
 
-  //////////USEFFECT//////////
+  ///chaque fois que je récupère quelque chose dans mon tableau 'reservationsPLaces' donc que son état "change" , je mets a jours mes places
+  /// pour ne pas executer la fonction dès le début ( car je n'ai pas de reservation ) je créer avec useRef
+  /// une valeur modifiable qui existe pour la durée de vie de l'instance de composant.
+  /// IMPORTANT A COMPRENDRE , sinon : https://blog.logrocket.com/usestate-vs-useref/
+  useEffect(() => {
+    if (firstUpdate.current) {
+      firstUpdate.current = false;
+      return;
+    }
+    miseAJourCartePlaceReservee(reservationsPlaces);
+  }, [reservationsPlaces]);
+
+
 
   //remet les places en vert
+  //pourra etre utilise si je change la date par exemple, pour l'instant ne sert pas
   useEffect(() => {
     let touteLesPlaces = carteRef.current.getElementsByClassName('place');
     for (var i = 0; i < touteLesPlaces.length; i++) {
@@ -53,16 +67,50 @@ const Reservation = () => {
     }
   }, []);
 
-  useEffect(() => {
-    //execution des requêtes de récupération des données du serveurs
-    const recuperation = async () => {
-      await recupererPlaces();
-      await recupererReservationsPlacesParDate(dummmyDate);
-    };
-    recuperation();
-  }, []);
 
-  //////////FORM//////////
+
+
+
+  //ici on fait nos requetes ! ( qui sont des promises )
+  //je dois créer un token pour 'cancel' ma requete, je vais passer mon token en 2 eme parametre dans mes deux GET qui s'enchainent
+  //au lieu de faire des then si then sa je fais let a = await request1 ( en gros j'ai la 'reponse' direct quand ma promise est ok :) 
+  //je set les places ( je veux conserveur leur état donc un petit useState .. un useRef aurait peut etre aussi été good vu que je recharge pas toute la page)
+  //j'éxecute ma fonction et je lui passe la date mito dont nous avons besoin , celle ou ya les deux résa
+  // et ENFIN le 'return' de mon useEffect en gros il va faire un truc quand je 'démonte' mon componsant , si je change de page par exemple
+  // et le truc c'est quoi ? dans le 1000 émile je stop ma requete ^^
+  useEffect(() => {
+    const ourRequest = axios.CancelToken.source()
+
+    const fetchReservation = async (date) => {
+      try {
+        const [request1, request2] = await Promise.all([
+          axios.get(`/api/place_grande_salles`, { cancelToken: ourRequest.token }),
+          axios.get(`/api/reservation_places?date_reservation=${date}`, { cancelToken: ourRequest.token })
+        ]);
+        let a = await request1;
+        let b = await request2;
+
+        console.log(a.data['hydra:member'])
+        console.log(b.data['hydra:member']);
+
+        await setPlaces(a.data['hydra:member']);
+        await setReservationsPlaces(b.data['hydra:member']);
+
+      } catch (error) {
+        console.log('Il ya eu un problème, ou la requete a été interompue')
+      }
+    }
+
+    fetchReservation(dummyDate);
+
+    return () => {
+      console.log('composant démonté')
+      ourRequest.cancel('component demonté')
+    }
+  }, [])
+
+
+  //////////FORM ( en cours ) //////////
 
   const handleChange = (e) => {
     updateFormData({
@@ -77,7 +125,7 @@ const Reservation = () => {
   };
   // ... submit to API or something
 
-  //////////FONCTIONS PRINCIPALES//////////
+
 
   //ajout d'une place
   const addPlace = async (target) => {
@@ -115,41 +163,19 @@ const Reservation = () => {
     }
   };
 
-  //récupération des places
-  const recupererPlaces = async () => {
-    const { data } = await axios.get(`/api/place_grande_salles`);
-    let placesApi = data['hydra:member'];
-    placesRef.current = placesApi;
-    setPlaces((prev) => {
-      const places = [...placesApi];
-      return places;
-    });
-  };
-
-  //recuperation des reservation pour une date donnée
-  //mise a jour de la carte
-  const recupererReservationsPlacesParDate = async (date) => {
-    const { data } = await axios.get(
-      `/api/reservation_places?date_reservation=` + date
-    );
-    reservationsRef.current = data['hydra:member'];
-    miseAJourCartePlaceReservee(reservationsRef.current);
-  };
 
   //récupération des places reservée
   //récupération du nom de la place ( ex: A1)
   //coloration du svg
-  const miseAJourCartePlaceReservee = async (placeReservee) => {
+  const miseAJourCartePlaceReservee = (placeReservee) => {
     for (const place of placeReservee) {
-      let placeNom = placesRef.current.find((e) => e.id === place.id);
+      let placeNom = places.find((e) => e.id === place.id);
       let placeAmodifier = carteRef.current.getElementById(
         'Place' + placeNom.nom
       );
       placeAmodifier.setAttribute('fill', couleurPlaceReservee);
     }
   };
-
-  //////////RETURN//////////
 
   return (
     <main>
