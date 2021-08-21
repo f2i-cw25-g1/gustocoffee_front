@@ -50,6 +50,8 @@ const Reservation = () => {
 
 
 
+
+
   //remet les places en vert
   //pourra etre utilise si je change la date par exemple, pour l'instant ne sert pas
   useEffect(() => {
@@ -89,6 +91,7 @@ const Reservation = () => {
           axios.get(`/api/place_grande_salles`, { cancelToken: ourRequest.token }),
           axios.get(`/api/reservation_places?date_reservation=${date}`, { cancelToken: ourRequest.token })
         ]);
+
         let a = await request1;
         let b = await request2;
 
@@ -99,7 +102,7 @@ const Reservation = () => {
         await setReservationsPlaces(b.data['hydra:member']);
 
       } catch (error) {
-        console.log('Il ya eu un problème, ou la requete a été interompue')
+        console.log('Il ya eu un problème, ou la requete a été interrompue')
       }
     }
 
