@@ -10,6 +10,7 @@ import Footer from './components/Footer';
 import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
 import Home from './pages/Home';
 import Reservation from './pages/Reservation';
+import ReservationResumeSelection from './pages/ReservationResumeSelection';
 import Salons from './pages/Salons';
 import Salon from './pages/Salon';
 import Boutique from './pages/Boutique';
@@ -29,6 +30,7 @@ function App() {
         <Switch>
           <Route exact path="/" component={Home}/>
           <Route path="/reservation" component={Reservation}/>
+          <Route path="/resume-reservation" component={ReservationResumeSelection}/>
           <Route path="/salons" component={Salons}/>
           <Route path="/salon/:id" component={Salon}/>
           <Route path="/boutique" component={Boutique}/>
