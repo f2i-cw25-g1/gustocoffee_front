@@ -1,88 +1,78 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 import "./css/Carousel.css";
 import axios from "axios";
-import ReactDOM from 'react-dom';
+import Product from "./../components/Product";
 
-import Product from "./Product";
 
-function AllProducts() {
-/*
-    const [products, setProducts] = useState([]);//products = résultat du axios get, set products peut être modifié, ne change rien, usestate appelle use effect
 
-    let allProducts = [];
-    let categories = [];
-
-    const getData = async () => {
-        await axios.get(`/api/produits`)//récupération des produits
-        .then((response) => {
-            allProducts = response.data["hydra:member"];
-            axios.get(`/api/categories`)//récupération des catégories après la récupération des produits
-            .then((response) => {
-                categories = response.data["hydra:member"] ;
-                categories.forEach((categorie)=>{
-                    categorie.produits.forEach((produit, index)=>{//pour chaque produit de chaque catégorie, on remplace l'id du produit stocké dans le tableau catégories par l'objet produit lié à cet id
-                        categorie.produits[index] = allProducts.find(element => element.id == produit.split("/api/produits/")[1]);
-                    });
-                });
-                console.log(categories);
-            }, (error) => {});
-        }, (error) => {});
-    };
-*/
-
-    const [products, setProducts] = useState([]);
+const AllProducts = () => {
+    const productsRef = useRef([]);
     const [categories, setCategories] = useState([]);
-    let responseProducts=[];
-    let responseCategories=[];
+    const documentRef = useRef(null);
 
-    const getProducts = async () => {
-        const { data } = await axios.get(`/api/produits`);
-        responseProducts = data["hydra:member"];
-        setProducts(data["hydra:member"]);
-        getCategories(responseProducts);
-    };
+    documentRef.current = document.getElementById("loadAllProducts");
 
-    const getCategories = async (responseProducts) => {
-        const { data } = await axios.get(`/api/categories`);
-        responseCategories = data["hydra:member"];
-        console.log(data["hydra:member"]);
-        document.getElementById("loadAllProducts").style.display = "none";
-       
-        responseCategories.forEach((categorie)=>{
-            categorie.produits.forEach((produit, index)=>{//pour chaque produit de chaque catégorie, on remplace l'id du produit stocké dans le tableau catégories par l'objet produit lié à cet id
-                categorie.produits[index] = responseProducts.find(element => element.id == produit.split("/api/produits/")[1]);
-            });
-        });
-        
-        setCategories(responseCategories);
-    };
 
     useEffect(() => {
-    getProducts();
-    }, []);
+        const ourRequest = axios.CancelToken.source();
 
+        let doc = document.getElementById("loadAllProducts");
+
+        const getAllProducts = async () => {
+            try {
+                const [requestProducts, requestCategory] = await Promise.all([
+                    axios.get(`/api/produits`, { cancelToken: ourRequest.token }),
+                    axios.get(`/api/categories`, { cancelToken: ourRequest.token })
+                ]);
+
+                productsRef.current = await requestProducts.data["hydra:member"];
+                let responseCategories = await requestCategory.data["hydra:member"];
+                responseCategories.forEach((categorie) => {
+                    categorie.produits.forEach((produit, index) => {
+                        categorie.produits[index] = productsRef.current.find(element => element['@id'] === produit)
+                    });
+                });
+                setCategories(responseCategories);
+
+                // console.log('CATEGORIE REF 1', categoriesRef.current);
+
+                doc.style.display = "none";
+            } catch (error) {
+                console.log('Il ya eu un problème, ou la requete a été interrompue')
+            }
+        }
+
+        getAllProducts();
+
+
+
+        return () => {
+            console.log('composant démonté')
+            ourRequest.cancel('component demonté')
+        }
+    }, [])
 
     return (
         <div>
             <div className="load" id="loadAllProducts"></div>
-            {categories.map((categorie) =>{
-                return(
+            {categories.map((categorie) => {
+                return (
                     <div className="categorie" key={categorie.nom}>
                         <div className="subsection_title">
-                        {categorie.nom}
+                            {categorie.nom}
                         </div>
                         <div className="items">
-                        {categorie.produits.map((produit) =>{
-                            return(
-                                <Product
-                                key={produit.id}
-                                id={produit.id}
-                                nom={produit.nom}
-                                image={produit.image}
-                                />
-                            );
-                        })}
+                            {categorie.produits.map((produit) => {
+                                return (
+                                    <Product
+                                        key={produit.id}
+                                        id={produit.id}
+                                        nom={produit.nom}
+                                        image={produit.image}
+                                    />
+                                );
+                            })}
                         </div>
                     </div>
                 );
