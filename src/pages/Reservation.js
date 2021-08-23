@@ -22,20 +22,20 @@ const Reservation = () => {
   let HeureUtilisee = date.getHours();
   let MinuteUtilisee = date.getMinutes();
 
-  if(date.getHours() >= 21){
-    dateUtilisee.setDate(date.getDate()+1).toISOString().slice(0, 10);
+  if (date.getHours() >= 21) {
+    dateUtilisee.setDate(date.getDate() + 1).toISOString().slice(0, 10);
     HeureUtilisee = "07";
     MinuteUtilisee = "00";
-  }else{
+  } else {
     dateUtilisee = today;
-    if(date.getMinutes()<10){
-      MinuteUtilisee = "0"+date.getMinutes();
+    if (date.getMinutes() < 10) {
+      MinuteUtilisee = "0" + date.getMinutes();
     }
   }
   let initialFormData = {
     date: dateUtilisee,
-    heureDebut: HeureUtilisee+":"+MinuteUtilisee,
-    heureFin: (HeureUtilisee+1)+":"+MinuteUtilisee
+    heureDebut: HeureUtilisee + ":" + MinuteUtilisee,
+    heureFin: (HeureUtilisee + 1) + ":" + MinuteUtilisee
   };
 
   const [formData, updateFormData] = useState(initialFormData);
@@ -123,11 +123,11 @@ const Reservation = () => {
     e.preventDefault();
 
     //if(document.getElementById('rechercheDate').value != formData.date){//on récupère de nouvelles réservations seulement si la date est différente
-      updateFormData({
-        date :       document.getElementById('rechercheDate').value,
-        heureDebut : document.getElementById('rechercheHeureDebut').value,
-        heureFin :   document.getElementById('rechercheHeureFin').value
-      });
+    updateFormData({
+      date: document.getElementById('rechercheDate').value,
+      heureDebut: document.getElementById('rechercheHeureDebut').value,
+      heureFin: document.getElementById('rechercheHeureFin').value
+    });
     //}
   };
 
@@ -179,11 +179,11 @@ const Reservation = () => {
       console.log("heure fin " + heureFinPlaceReservee);
       console.log("formData heureFin " + formData.heureFin);
 
-      if( //si on est dans l'un des cas suivants, la reservation actuelle est bien occupee sur la plage horaire selectionnee, donc colorier
-          (heureDebutPlaceReservee <= formData.heureDebut && heureFinPlaceReservee >= formData.heureDebut) ||
-          (heureDebutPlaceReservee <= formData.heureFin   && heureFinPlaceReservee >= formData.heureFin) ||
-          (heureDebutPlaceReservee >= formData.heureDebut && heureFinPlaceReservee <= formData.heureFin)
-        ){
+      if ( //si on est dans l'un des cas suivants, la reservation actuelle est bien occupee sur la plage horaire selectionnee, donc colorier
+        (heureDebutPlaceReservee <= formData.heureDebut && heureFinPlaceReservee >= formData.heureDebut) ||
+        (heureDebutPlaceReservee <= formData.heureFin && heureFinPlaceReservee >= formData.heureFin) ||
+        (heureDebutPlaceReservee >= formData.heureDebut && heureFinPlaceReservee <= formData.heureFin)
+      ) {
         let placeNom = places.find((e) => e.id === placeReservee.id);
         let placeAmodifier = carteRef.current.getElementById(
           'Place' + placeNom.nom
@@ -196,43 +196,61 @@ const Reservation = () => {
 
   return (
     <main>
-      <div id="formResearch">
-        <div className="load" style={{ display: 'none' }}></div>
-        <form onSubmit={handleRerchercherDate}>
-          <div id="containerDate">
-            <label htmlFor="rechercheDate">Date</label>
-            <input type="date" id="rechercheDate" name="rechercheDate" />
+      <p className="subsection_title">Réservation</p>
+
+      <div className="flexform">
+        <div id="formResearch">
+          <div className="load" style={{ display: 'none' }}></div>
+          <form onSubmit={handleRerchercherDate}>
+            <div id="containerDate">
+              <label htmlFor="rechercheDate">Date</label>
+              <input type="date"
+                id="rechercheDate"
+                name="rechercheDate"
+              // onChange={inputsHandler}
+              />
+
+            </div>
+            <div id="heureDebut">
+              <label htmlFor="rechercheHeureDebut">Heure de début</label>
+              <input
+                type="time"
+                id="rechercheHeureDebut"
+                name="rechercheHeureDebut"
+              // onChange={inputsHandler}
+              />
+            </div>
+            <div id="heureFin">
+              <label htmlFor="rechercheHeureFin">Heure de fin</label>
+              <input
+                type="time"
+                id="rechercheHeureFin"
+                name="rechercheHeureFin"
+              // onChange={inputsHandler}
+              />
+            </div>
+            <button id="submitDateButton" type="submit">
+              Rechercher
+            </button>
+          </form>
+
+          <p className="resume_places_selectionnees">Résumé places selectionnées :</p>
+          <div className="places_selectionnees">
+            {placesSelectionnees &&
+              placesSelectionnees.map((a) => {
+                return <ul key={a.key}>{a.nom}</ul>;
+              })}
           </div>
-          <div id="heureDebut">
-            <label htmlFor="rechercheHeureDebut">Heure de début</label>
-            <input
-              type="time"
-              id="rechercheHeureDebut"
-              name="rechercheHeureDebut"
-            />
-          </div>
-          <div id="heureFin">
-            <label htmlFor="rechercheHeureFin">Heure de fin</label>
-            <input
-              type="time"
-              id="rechercheHeureFin"
-              name="rechercheHeureFin"
-            />
-          </div>
-          <button id="submitDateButton" type="submit">
-            Rechercher
-          </button>
-        </form>
+        </div>
+        <CarteSvg className="carte_svg" ref={carteRef} />
       </div>
-
-      <CarteSvg ref={carteRef} />
-
-      <p>Places selectionnées:</p>
-      {placesSelectionnees &&
-        placesSelectionnees.map((a) => {
-          return <ul key={a.key}>{a.nom}</ul>;
-        })}
+      <div className="legende_couleur_place">
+        <p className="couleur_places_disponibles">place(s) disponible(s)</p>
+        <p className="couleur_places_selectionnees">place(s) selectionnée(s)</p>
+        <p className="couleur_places_occupees">place(s) occupée(s)</p>
+      </div>
     </main>
+
   );
 };
 
