@@ -77,11 +77,10 @@ const Reservation = () => {
   //j'éxecute ma fonction et je lui passe la date mito dont nous avons besoin , celle ou ya les deux résa
   // et ENFIN le 'return' de mon useEffect en gros il va faire un truc quand je 'démonte' mon componsant , si je change de page par exemple
   // et le truc c'est quoi ? dans le 1000 émile je stop ma requete ^^
-  // ps; TOUJOUR un try catch 
-  // ps; le Promise.ALL c'est par ceque j'ai plusieurs requet, sinon un axios.get ça suffit genre let coco = await axios.get....(endpoint) 
+  // ps; TOUJOURS un try catch 
+  // ps; le Promise.ALL c'est par ce que j'ai plusieurs requet, sinon un axios.get ça suffit genre let coco = await axios.get....(endpoint) 
   useEffect(() => {
     const ourRequest = axios.CancelToken.source()
-
     const fetchReservation = async (date) => {
       try {
         const [request1, request2] = await Promise.all([
@@ -96,16 +95,13 @@ const Reservation = () => {
         console.log('Il ya eu un problème, ou la requete a été interrompue')
       }
     }
-
     fetchReservation(formData.date);
-
     return () => {
       console.log('requête terminée')
       ourRequest.cancel('component demonté')
     }
   }, [formData])
 
-  //////////FORM ( en cours ) //////////
   /*
   //inutilisé, but : quand on change la date : se met à jour sans utiliser de bouton recherche
   const handleChange = (e) => {
@@ -126,13 +122,13 @@ const Reservation = () => {
   const handleRerchercherDate = (e) => {
     e.preventDefault();
 
-    if(document.getElementById('rechercheDate').value != formData.date){//on récupère de nouvelles réservations seulement si la date est différente
+    //if(document.getElementById('rechercheDate').value != formData.date){//on récupère de nouvelles réservations seulement si la date est différente
       updateFormData({
         date :       document.getElementById('rechercheDate').value,
         heureDebut : document.getElementById('rechercheHeureDebut').value,
         heureFin :   document.getElementById('rechercheHeureFin').value
       });
-    }
+    //}
   };
 
   //ajout d'une place
@@ -142,8 +138,8 @@ const Reservation = () => {
       key: `${target.id} ${formData.date} ${formData.heureDebut} ${formData.heureFin}`,
       nom: target.id.split('Place')[1],
       date: formData.date,
-      FakeHeureDebut: formData.heureDebut,
-      FakeHeureFin: formData.heureFin,
+      heureDebut: formData.heureDebut,
+      heureFin: formData.heureFin,
     };
 
     if (target.getAttribute('fill') === couleurPlaceReservee) {
@@ -176,12 +172,25 @@ const Reservation = () => {
   //coloration du svg
   const miseAJourCartePlacesReservees = (placesReservees) => {
     for (const placeReservee of placesReservees) {
-      let placeNom = places.find((e) => e.id === placeReservee.id);
-      let placeAmodifier = carteRef.current.getElementById(
-        'Place' + placeNom.nom
-      );
-      console.log(formData.date)
-      placeAmodifier.setAttribute('fill', couleurPlaceReservee);
+      let heureDebutPlaceReservee = placeReservee.heureDebut.substr(11, 5);
+      let heureFinPlaceReservee = placeReservee.heureFin.substr(11, 5);
+      console.log("heure debut " + heureDebutPlaceReservee);
+      console.log("formData heureDebut " + formData.heureDebut);
+      console.log("heure fin " + heureFinPlaceReservee);
+      console.log("formData heureFin " + formData.heureFin);
+
+      if( //si on est dans l'un des cas suivants, la reservation actuelle est bien occupee sur la plage horaire selectionnee, donc colorier
+          (heureDebutPlaceReservee <= formData.heureDebut && heureFinPlaceReservee >= formData.heureDebut) ||
+          (heureDebutPlaceReservee <= formData.heureFin   && heureFinPlaceReservee >= formData.heureFin) ||
+          (heureDebutPlaceReservee >= formData.heureDebut && heureFinPlaceReservee <= formData.heureFin)
+        ){
+        let placeNom = places.find((e) => e.id === placeReservee.id);
+        let placeAmodifier = carteRef.current.getElementById(
+          'Place' + placeNom.nom
+        );
+        console.log(formData.date)
+        placeAmodifier.setAttribute('fill', couleurPlaceReservee);
+      }
     }
   };
 
