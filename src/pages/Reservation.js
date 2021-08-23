@@ -2,6 +2,7 @@ import axios from 'axios';
 import React, { useState, useEffect, useRef, useLayoutEffect } from 'react';
 import { ReactComponent as CarteSvg } from '../img/Carte_Gusto_Coffee.svg';
 import '../App.css';
+import '../components/css/Reservation.css'
 
 const Reservation = () => {
   const dummyDate = '2021-07-06';
@@ -15,22 +16,15 @@ const Reservation = () => {
 
   const carteRef = useRef(null);
 
-  const placesRef = useRef([]);
-  const reservationsRef = useRef([]);
-
   const [places, setPlaces] = useState([]);
   const [reservationsPlaces, setReservationsPlaces] = useState([]);
 
-  const [selectDate, setSelectDate] = useState();
-  const [selectHeureDebut, setSelectHeureDebut] = useState();
-  const [selectHeureFin, setSelectHeureFin] = useState();
-
-  const [js, setJs] = useState([]);
+  const [placesSelectionnees, setPlacesSelectionnees] = useState([]);
 
   let initialFormData = {
     date: '2021-07-06',
     heureDebut: '',
-    heureFin: '',
+    heureFin: ''
   };
 
   const [formData, updateFormData] = useState(initialFormData);
@@ -48,10 +42,6 @@ const Reservation = () => {
     miseAJourCartePlaceReservee(reservationsPlaces);
   }, [reservationsPlaces]);
 
-
-
-
-
   //remet les places en vert
   //pourra etre utilise si je change la date par exemple, pour l'instant ne sert pas
   useEffect(() => {
@@ -59,7 +49,7 @@ const Reservation = () => {
     for (var i = 0; i < touteLesPlaces.length; i++) {
       touteLesPlaces[i].setAttribute('fill', couleurPlaceDisponible);
     }
-  }, []);
+  }, [formData]);
 
   //récupération de toute les places dans le svg, et on y ajoute un event listener dessus
   useEffect(() => {
@@ -68,10 +58,6 @@ const Reservation = () => {
       placesInSvg[i].addEventListener('click', (e) => addPlace(e.target));
     }
   }, []);
-
-
-
-
 
   //ici on fait nos requetes ! ( qui sont des promises )
   //je dois créer un token pour 'cancel' ma requete, je vais passer mon token en 2 eme parametre dans mes deux GET qui s'enchainent
@@ -92,45 +78,46 @@ const Reservation = () => {
           axios.get(`/api/reservation_places?date_reservation=${date}`, { cancelToken: ourRequest.token })
         ]);
 
-        let a = await request1;
-        let b = await request2;
-
-        console.log(a.data['hydra:member'])
-        console.log(b.data['hydra:member']);
-
-        await setPlaces(a.data['hydra:member']);
-        await setReservationsPlaces(b.data['hydra:member']);
+        await setPlaces(await request1.data['hydra:member']);
+        await setReservationsPlaces(await request2.data['hydra:member']);
 
       } catch (error) {
         console.log('Il ya eu un problème, ou la requete a été interrompue')
       }
     }
 
-    fetchReservation(dummyDate);
+    fetchReservation(formData.date);
 
     return () => {
-      console.log('composant démonté')
+      console.log('requête terminée')
       ourRequest.cancel('component demonté')
     }
-  }, [])
+  }, [formData])
+
 
 
   //////////FORM ( en cours ) //////////
-
+  /*
+  //inutilisé, but : quand on change la date : se met à jour sans utiliser de bouton recherche
   const handleChange = (e) => {
     updateFormData({
       ...formData,
       [e.target.name]: e.target.value,
     });
   };
+  */
 
   const handleRerchercherDate = (e) => {
     e.preventDefault();
-    console.log(formData);
+
+    if(document.getElementById('rechercheDate').value != formData.date){//on récupère de nouvelles réservations seulement si la date est différente
+      updateFormData({
+        date :       document.getElementById('rechercheDate').value,
+        heureDebut : document.getElementById('rechercheHeureDebut').value,
+        heureFin :   document.getElementById('rechercheHeureFin').value
+      });
+    }
   };
-  // ... submit to API or something
-
-
 
   //ajout d'une place
   const addPlace = async (target) => {
@@ -150,7 +137,7 @@ const Reservation = () => {
 
     if (target.getAttribute('fill') === couleurPlaceDisponible) {
       target.setAttribute('fill', couleurPlaceSelectionnee);
-      setJs((prev) => {
+      setPlacesSelectionnees((prev) => {
         const update = [...prev];
         update.push(placeAjouteeASelection);
         return update;
@@ -160,14 +147,13 @@ const Reservation = () => {
 
     if (target.getAttribute('fill') === couleurPlaceSelectionnee) {
       target.setAttribute('fill', couleurPlaceDisponible);
-      setJs((prev) => {
+      setPlacesSelectionnees((prev) => {
         const update = prev.filter((el) => el.id !== target.id);
         return update;
       });
       return;
     }
   };
-
 
   //récupération des places reservée
   //récupération du nom de la place ( ex: A1)
@@ -216,8 +202,8 @@ const Reservation = () => {
       <CarteSvg ref={carteRef} />
 
       <p>Places selectionnées:</p>
-      {js &&
-        js.map((a) => {
+      {placesSelectionnees &&
+        placesSelectionnees.map((a) => {
           return <ul key={a.key}>{a.nom}</ul>;
         })}
     </main>
