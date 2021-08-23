@@ -5,11 +5,6 @@ import '../App.css';
 import '../components/css/Reservation.css'
 
 const Reservation = () => {
-  const dummyDate = '2021-07-06';
-
-  const date = new Date();
-  const today = new Date().toISOString().slice(0, 10);
-
   const couleurPlaceDisponible = '#D3D36E';
   const couleurPlaceSelectionnee = '#94D36E';
   const couleurPlaceReservee = '#FF6060';
@@ -21,10 +16,26 @@ const Reservation = () => {
 
   const [placesSelectionnees, setPlacesSelectionnees] = useState([]);
 
+  const date = new Date();
+  const today = new Date().toISOString().slice(0, 10);
+  let dateUtilisee;
+  let HeureUtilisee = date.getHours();
+  let MinuteUtilisee = date.getMinutes();
+
+  if(date.getHours() >= 21){
+    dateUtilisee.setDate(date.getDate()+1).toISOString().slice(0, 10);
+    HeureUtilisee = "07";
+    MinuteUtilisee = "00";
+  }else{
+    dateUtilisee = today;
+    if(date.getMinutes()<10){
+      MinuteUtilisee = "0"+date.getMinutes();
+    }
+  }
   let initialFormData = {
-    date: '2021-07-06',
-    heureDebut: '',
-    heureFin: ''
+    date: dateUtilisee,
+    heureDebut: HeureUtilisee+":"+MinuteUtilisee,
+    heureFin: (HeureUtilisee+1)+":"+MinuteUtilisee
   };
 
   const [formData, updateFormData] = useState(initialFormData);
@@ -39,7 +50,7 @@ const Reservation = () => {
       firstUpdate.current = false;
       return;
     }
-    miseAJourCartePlaceReservee(reservationsPlaces);
+    miseAJourCartePlacesReservees(reservationsPlaces);
   }, [reservationsPlaces]);
 
   //remet les places en vert
@@ -94,8 +105,6 @@ const Reservation = () => {
     }
   }, [formData])
 
-
-
   //////////FORM ( en cours ) //////////
   /*
   //inutilisé, but : quand on change la date : se met à jour sans utiliser de bouton recherche
@@ -106,6 +115,13 @@ const Reservation = () => {
     });
   };
   */
+
+  //au chargement, remplit des données dans le formulaire
+  useEffect(() => {
+    document.getElementById('rechercheDate').value = formData.date;
+    document.getElementById('rechercheHeureDebut').value = formData.heureDebut;
+    document.getElementById('rechercheHeureFin').value = formData.heureFin;
+  }, [])
 
   const handleRerchercherDate = (e) => {
     e.preventDefault();
@@ -158,12 +174,13 @@ const Reservation = () => {
   //récupération des places reservée
   //récupération du nom de la place ( ex: A1)
   //coloration du svg
-  const miseAJourCartePlaceReservee = (placeReservee) => {
-    for (const place of placeReservee) {
-      let placeNom = places.find((e) => e.id === place.id);
+  const miseAJourCartePlacesReservees = (placesReservees) => {
+    for (const placeReservee of placesReservees) {
+      let placeNom = places.find((e) => e.id === placeReservee.id);
       let placeAmodifier = carteRef.current.getElementById(
         'Place' + placeNom.nom
       );
+      console.log(formData.date)
       placeAmodifier.setAttribute('fill', couleurPlaceReservee);
     }
   };
