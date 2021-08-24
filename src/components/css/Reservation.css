@@ -14,11 +14,11 @@ td {
 }
 
 th:not(th:first-child) {
-  background-color: #e5e5e5;
+  background-color: #e2e2e2;
 }
 
 td:nth-child(1) {
-  background-color: #e5e5e5;
+  background-color: #e2e2e2;
 }
 
 @media (max-width: 56.25em) {
