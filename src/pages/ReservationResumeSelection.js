@@ -1,4 +1,5 @@
 import '../components/css/Reservation.css'
+import React, { useEffect, useRef } from 'react';
 
 function ReservationResumeSelection() {
     let tableauPlacesSelectionnees = 
@@ -63,6 +64,19 @@ function ReservationResumeSelection() {
         }
     ];
 
+    const optionBureautique = useRef(null);
+    const checkboxOptionBureautique = useRef(null);
+    const optionRestauration = useRef(null);
+    const checkboxOptionRestauration = useRef(null);
+    useEffect(() => {
+        optionBureautique.current.onclick = function() {
+            checkboxOptionBureautique.current.checked ^= 1;
+        };
+        optionRestauration.current.onclick = function() {
+            checkboxOptionRestauration.current.checked ^= 1;
+        };
+    }, [])
+
     return (
       <main>
         <div className="container">
@@ -73,18 +87,18 @@ function ReservationResumeSelection() {
                     Profitez d'une réduction de 10% sur les options en les sélectionnant lors de la réservation !
                 </p>
                 <div className="flex_checkbox">
-                    <div className="click_checkbox">
-                        <input type="checkbox" id="optionBureautique" name="optionBureautique" />
+                    <div ref={optionBureautique}>
+                        <input type="checkbox" id="checkboxOptionBureautique" name="checkboxOptionBureautique" ref={checkboxOptionBureautique} />
                         <div className="custom_checkbox"></div>
-                        <label for="optionBureautique">Option bureautique
+                        <label for="checkboxOptionBureautique">Option bureautique
                         <br></br><br/>
                             <div>Accédez à notre espace bureautique comprenant des scanner à disposition, des imprimantes (jusqu'à 100 impressions). De plus, l'option bureautique vous permet d'accéder à une réduction sur l'achat de produits "bureautique" tel que les clés usb, souris, casques audio, etc.</div>
                         </label>
                     </div>
-                    <div>
-                        <input type="checkbox" id="optionRestauration" name="optionRestauration" />
+                    <div ref={optionRestauration}>
+                        <input type="checkbox" id="checkboxOptionRestauration" name="checkboxOptionRestauration" ref={checkboxOptionRestauration}/>
                         <div className="custom_checkbox"></div>
-                        <label for="optionRestauration">Option restauration
+                        <label for="checkboxOptionRestauration">Option restauration
                         <br></br><br/>
                             <div>L'option restauration vous permet d'accéder à l'espace "Restauration" avec les privilèges suivants : cafés, thés et diverses boissons fraiches mais aussi croissants, pains au chocolat et pains au raison à volonté. L'option restauration vous permet également d'avoir des réductions sur les autres produits de notre gamme "Restauration"  </div>
                         </label>

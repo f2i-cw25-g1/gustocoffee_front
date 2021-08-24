@@ -32,8 +32,8 @@ path {
   transition: all 0.2s;
 }
 
-#optionBureautique:checked ~ .custom_checkbox::after,
-#optionRestauration:checked ~ .custom_checkbox::after {
+#checkboxOptionBureautique:checked ~ .custom_checkbox::after,
+#checkboxOptionRestauration:checked ~ .custom_checkbox::after {
   content: "\2713";
   text-align: center;
   background-color: #986946;
