@@ -82,7 +82,7 @@ function ReservationResumeSelection() {
       <main>
         <div>
             <p className="subsection_title">Résumé de votre sélection</p>
-            <p className="section_title2">Vos places / salons sélectionnées</p>
+            <p className="section_title2">Vos places et salons sélectionnés</p>
             <div className="table_overflow">
                 <table>
                     <thead>
@@ -142,7 +142,7 @@ function ReservationResumeSelection() {
                             <th></th>
                             <th>prix unitaire HT</th>
                             <th>Nombre de réservations</th>
-                            <th>Total HT</th>
+                            <th>prix HT</th>
                             <th>TVA 20%</th>
                             <th>prix TTC</th>
                         </tr>
