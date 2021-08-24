@@ -2,6 +2,43 @@ path {
   pointer-events: none;
 }
 
+.options_text {
+  margin: 10px 0;
+}
+
+.flex_checkbox {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.flex_checkbox div {
+  flex: 50%;
+}
+
+.flex_checkbox input[type="checkbox"] {
+  visibility: hidden;
+}
+
+.custom_checkbox::after {
+  content: "";
+  display: block;
+  float: left;
+  width: 18px;
+  height: 18px;
+  margin: 0 5px 0 0;
+  color: #fff;
+  border: solid 2px #986946;
+  transition: all 0.2s;
+}
+
+#optionBureautique:checked ~ .custom_checkbox::after,
+#optionRestauration:checked ~ .custom_checkbox::after {
+  content: "\2713";
+  text-align: center;
+  background-color: #986946;
+}
+
 table {
   width: 100%;
 }
@@ -22,6 +59,9 @@ td:nth-child(1) {
 }
 
 @media (max-width: 56.25em) {
+  .flex_checkbox div {
+    flex: 100%;
+  }
 }
 
 @media (max-width: 37.5em) {

@@ -65,24 +65,30 @@ function ReservationResumeSelection() {
 
     return (
       <main>
-        <div>
+        <div className="container">
             <p className="subsection_title">Résumé de votre sélection</p>
             <div>
                 <p className="section_title2">Options</p>
-                <p>
+                <p className="options_text">
                     Profitez d'une réduction de 10% sur les options en les sélectionnant lors de la réservation !
                 </p>
-                <div>
-                    <input type="checkbox" id="optionBureautique" name="optionBureautique" />
-                    <label for="optionBureautique">Option bureautique
-                        <div>Accédez à notre espace bureautique comprenant des scanner à disposition, des imprimantes (jusqu'à 100 impressions). De plus, l'option bureautique vous permet d'accéder à une réduction sur l'achat de produits "bureautique" tel que les clés usb, souris, casques audio, etc.</div>
-                    </label>
-                </div>
-                <div>
-                    <input type="checkbox" id="optionRestauration" name="optionRestauration" />
-                    <label for="optionRestauration">Option restauration
-                        <div>L'option restauration vous permet d'accéder à l'espace "Restauration" avec les privilèges suivants : cafés, thés et diverses boissons fraiches mais aussi croissants, pains au chocolat et pains au raison à volonté. L'option restauration vous permet également d'avoir des réductions sur les autres produits de notre gamme "Restauration"  </div>
-                    </label>
+                <div className="flex_checkbox">
+                    <div className="click_checkbox">
+                        <input type="checkbox" id="optionBureautique" name="optionBureautique" />
+                        <div className="custom_checkbox"></div>
+                        <label for="optionBureautique">Option bureautique
+                        <br></br><br/>
+                            <div>Accédez à notre espace bureautique comprenant des scanner à disposition, des imprimantes (jusqu'à 100 impressions). De plus, l'option bureautique vous permet d'accéder à une réduction sur l'achat de produits "bureautique" tel que les clés usb, souris, casques audio, etc.</div>
+                        </label>
+                    </div>
+                    <div>
+                        <input type="checkbox" id="optionRestauration" name="optionRestauration" />
+                        <div className="custom_checkbox"></div>
+                        <label for="optionRestauration">Option restauration
+                        <br></br><br/>
+                            <div>L'option restauration vous permet d'accéder à l'espace "Restauration" avec les privilèges suivants : cafés, thés et diverses boissons fraiches mais aussi croissants, pains au chocolat et pains au raison à volonté. L'option restauration vous permet également d'avoir des réductions sur les autres produits de notre gamme "Restauration"  </div>
+                        </label>
+                    </div>
                 </div>
             </div>
 
