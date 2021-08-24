@@ -1,3 +1,5 @@
+import '../components/css/Reservation.css'
+
 function ReservationResumeSelection() {
     let tableauPlacesSelectionnees = 
     [
@@ -79,102 +81,112 @@ function ReservationResumeSelection() {
     return (
       <main>
         <div>
-            Résumé de votre sélection
-            <table>
-                <tr>
-                    <td></td>
-                    <th>le</th>
-                    <th>de</th>
-                    <th>à</th>
-                    <th>prix HT</th>
-                    <th>TVA 20%</th>
-                    <th>prix TTC</th>
-                </tr>
-                {tableauPlacesSelectionnees.map((a) => {
-                return  <tr key={a.key}>
-                            <td>Place {a.nom}</td>
-                            <td>{a.date}</td>
-                            <td>{a.heureDebut}</td>
-                            <td>{a.heureFin}</td>
-                            <td>x €</td>
-                            <td>(calcul tva)</td>
-                            <td>500€</td>
-                        </tr>;
-                })}
-                {tableauSalonsSelectionnes.map((a) => {
-                return  <tr key={a.key}>
-                            <td>{a.nom}</td>
-                            <td>{a.date}</td>
-                            <td>{a.heureDebut}</td>
-                            <td>{a.heureFin}</td>
-                            <td>x €</td>
-                            <td>(calcul tva)</td>
-                            <td>500€</td>
-                        </tr>;
-                })}
-                <tr>
-                    <td colspan="4">Total</td>
-                    <td id="totalPlacesSalonsHT">500 €</td>
-                    <td>(calcul tva)</td>
-                    <td>5000€</td>
-                </tr>
-            </table>
-
-
-            <table>
-                <tr>
-                    <td></td>
-                    <th>prix unitaire HT</th>
-                    <th>Nombre de réservations concernées</th>
-                    <th>Total HT</th>
-                    <th>TVA 20%</th>
-                    <th>prix TTC</th>
-                </tr>
-                    {tableauOptions.map((a) => {
+            <p className="subsection_title">Résumé de votre sélection</p>
+            <p className="section_title2">Vos places / salons sélectionnées</p>
+            <div className="table_overflow">
+                <table>
+                    <tr>
+                        <th></th>
+                        <th>le</th>
+                        <th>de</th>
+                        <th>à</th>
+                        <th>prix HT</th>
+                        <th>TVA 20%</th>
+                        <th>prix TTC</th>
+                    </tr>
+                    {tableauPlacesSelectionnees.map((a) => {
                     return  <tr key={a.key}>
-                                <td>{a.nom}</td>
-                                <td>{a.prixUnitaireHT}</td>
-                                <td>{a.nombreReservations}</td>
-                                <td>{a.totalHT} €</td>
+                                <td>Place {a.nom}</td>
+                                <td>{a.date}</td>
+                                <td>{a.heureDebut}</td>
+                                <td>{a.heureFin}</td>
+                                <td>x €</td>
+                                <td>(calcul tva)</td>
+                                <td>500€</td>
                             </tr>;
                     })}
-                <tr>
-                    <td colspan="3">Total</td>
-                    <td id="totalOptionsHT">500 €</td>
-                    <td>(calcul tva)</td>
-                    <td>5000€</td>
-                </tr>
-            </table>
+                    {tableauSalonsSelectionnes.map((a) => {
+                    return  <tr key={a.key}>
+                                <td>{a.nom}</td>
+                                <td>{a.date}</td>
+                                <td>{a.heureDebut}</td>
+                                <td>{a.heureFin}</td>
+                                <td>x €</td>
+                                <td>(calcul tva)</td>
+                                <td>500€</td>
+                            </tr>;
+                    })}
+                    <tr>
+                        <td>Total</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td id="totalPlacesSalonsHT">500 €</td>
+                        <td>(calcul tva)</td>
+                        <td>5000€</td>
+                    </tr>
+                </table>
+            </div>
+            
+            <p className="section_title2">Vos options</p>
+            <div className="table_overflow">
+                <table>
+                    <tr>
+                        <th></th>
+                        <th>prix unitaire HT</th>
+                        <th>Nombre de réservations</th>
+                        <th>Total HT</th>
+                        <th>TVA 20%</th>
+                        <th>prix TTC</th>
+                    </tr>
+                        {tableauOptions.map((a) => {
+                        return  <tr key={a.key}>
+                                    <td>{a.nom}</td>
+                                    <td>{a.prixUnitaireHT}</td>
+                                    <td>{a.nombreReservations}</td>
+                                    <td>{a.totalHT} €</td>
+                                </tr>;
+                        })}
+                    <tr>
+                        <td>Total</td>
+                        <td></td>
+                        <td></td>
+                        <td id="totalOptionsHT">500 €</td>
+                        <td>(calcul tva)</td>
+                        <td>5000€</td>
+                    </tr>
+                </table>
+            </div>
 
-<br></br>
-            Résumé prix
-            <table>
-                <tr>
-                    <td></td>   
-                    <th>Total HT</th>
-                    <th>Total TTC</th>
-                </tr>
-                <tr>
-                    <td>Total places et salons</td>
-                    <td>x €</td>
-                    <td>x €</td>
-                </tr>
-                <tr>
-                    <td>Total options</td>
-                    <td>x €</td>
-                    <td>x €</td>
-                </tr>
-                
-                <tr>
-                    <td>Total à payer</td>
-                    <td>x €</td>
-                    <td>x €</td>
-                </tr>
-            </table>
+            <p className="section_title2">Résumé prix</p>
+            <div className="table_overflow">
+                <table>
+                    <tr>
+                        <th></th>   
+                        <th>Total HT</th>
+                        <th>Total TTC</th>
+                    </tr>
+                    <tr>
+                        <td>Total places et salons</td>
+                        <td>x €</td>
+                        <td>x €</td>
+                    </tr>
+                    <tr>
+                        <td>Total options</td>
+                        <td>x €</td>
+                        <td>x €</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>Total à payer</td>
+                        <td>x €</td>
+                        <td>x €</td>
+                    </tr>
+                </table>
+            </div>
 
-<br></br><br></br>  
             <div>
-                Options
+                <p className="section_title2">Options</p>
                 <button>Option A</button>
                 <button>Option B</button>
             </div>
