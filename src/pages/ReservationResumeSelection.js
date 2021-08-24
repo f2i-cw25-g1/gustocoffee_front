@@ -2,74 +2,59 @@ import '../components/css/Reservation.css'
 
 function ReservationResumeSelection() {
     let tableauPlacesSelectionnees = 
-    [
-        {
-            id: "1",
+    [   {   id: "1",
             key: "1 2021-08-15 15:30 17:30",
             nom: "D1",
             date: "2021-08-15",
             heureDebut: "15:30",
             heureFin: "17:30",
-          },
-          {
-            id: "2",
+        },{ id: "2",
             key: "1 2021-08-15 16:00 18:00",
             nom: "D3",
             date: "2021-08-15",
             heureDebut: "16:00",
             heureFin: "18:00",
-          },
-          {
-            id: "3",
+        },{ id: "3",
             key: "1 2021-08-15 19:00 21:00",
             nom: "D4",
             date: "2021-08-15",
             heureDebut: "19:00",
             heureFin: "21:00",
-          }
+        }
     ];
 
-    let tableauSalonsSelectionnes = [
-        {
-            id: "1",
+    let tableauSalonsSelectionnes = 
+    [   {   id: "1",
             key: "1 2021-08-15 15:30 17:30",
             nom: "Salon Expresso",
             date: "2021-08-15",
             heureDebut: "15:30",
             heureFin: "17:30",
-          },
-          {
-            id: "2",
+        },{ id: "2",
             key: "1 2021-08-15 16:00 18:00",
             nom: "Salon Dulcetto",
             date: "2021-08-15",
             heureDebut: "16:00",
             heureFin: "18:00",
-          },
-          {
-            id: "3",
+        },{ id: "3",
             key: "1 2021-08-15 19:00 21:00",
             nom: "Salon Ambello",
             date: "2021-08-15",
             heureDebut: "19:00",
             heureFin: "21:00",
-          }
+        }
     ];
 
     let prixOption1 = 10;
     let prixOption2 = 15;
-
-    let tableauOptions = [
-        {
-        id: "1",
-        key: "1 Option1",
-        nom: "Option 1",
-        prixUnitaireHT: prixOption1,
-        nombreReservations : 6,
-        totalHT : prixOption1 * 6
-        },
-        {
-            id: "2",
+    let tableauOptions = 
+    [   {   id: "1",
+            key: "1 Option1",
+            nom: "Option 1",
+            prixUnitaireHT: prixOption1,
+            nombreReservations : 6,
+            totalHT : prixOption1 * 6
+        },{ id: "2",
             key: "2 Option2",
             nom: "Option 2",
             prixUnitaireHT: prixOption2,
@@ -82,6 +67,25 @@ function ReservationResumeSelection() {
       <main>
         <div>
             <p className="subsection_title">Résumé de votre sélection</p>
+            <div>
+                <p className="section_title2">Options</p>
+                <p>
+                    Profitez d'une réduction de 10% sur les options en les sélectionnant lors de la réservation !
+                </p>
+                <div>
+                    <input type="checkbox" id="optionBureautique" name="optionBureautique" />
+                    <label for="optionBureautique">Option bureautique
+                        <div>Accédez à notre espace bureautique comprenant des scanner à disposition, des imprimantes (jusqu'à 100 impressions). De plus, l'option bureautique vous permet d'accéder à une réduction sur l'achat de produits "bureautique" tel que les clés usb, souris, casques audio, etc.</div>
+                    </label>
+                </div>
+                <div>
+                    <input type="checkbox" id="optionRestauration" name="optionRestauration" />
+                    <label for="optionRestauration">Option restauration
+                        <div>L'option restauration vous permet d'accéder à l'espace "Restauration" avec les privilèges suivants : cafés, thés et diverses boissons fraiches mais aussi croissants, pains au chocolat et pains au raison à volonté. L'option restauration vous permet également d'avoir des réductions sur les autres produits de notre gamme "Restauration"  </div>
+                    </label>
+                </div>
+            </div>
+
             <p className="section_title2">Vos places et salons sélectionnés</p>
             <div className="table_overflow">
                 <table>
@@ -202,12 +206,6 @@ function ReservationResumeSelection() {
                         </tr>
                     </tfoot>
                 </table>
-            </div>
-
-            <div>
-                <p className="section_title2">Options</p>
-                <button>Option A</button>
-                <button>Option B</button>
             </div>
 
             <br></br>
