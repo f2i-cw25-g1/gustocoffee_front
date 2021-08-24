@@ -4,6 +4,11 @@ import { ReactComponent as CarteSvg } from '../img/Carte_Gusto_Coffee.svg';
 import '../App.css';
 import '../components/css/Reservation.css'
 
+import moment from 'moment';
+import DatePicker from 'react-datepicker';
+import fr from 'date-fns/locale/fr';
+
+
 const Reservation = () => {
   const couleurPlaceDisponible = '#D3D36E';
   const couleurPlaceSelectionnee = '#94D36E';
@@ -16,30 +21,38 @@ const Reservation = () => {
 
   const [placesSelectionnees, setPlacesSelectionnees] = useState([]);
 
-  const date = new Date();
-  const today = new Date().toISOString().slice(0, 10);
-  let dateUtilisee;
-  let HeureUtilisee = date.getHours();
-  let MinuteUtilisee = date.getMinutes();
 
-  if (date.getHours() >= 21) {
-    dateUtilisee.setDate(date.getDate() + 1).toISOString().slice(0, 10);
-    HeureUtilisee = "07";
-    MinuteUtilisee = "00";
-  } else {
-    dateUtilisee = today;
-    if (date.getMinutes() < 10) {
-      MinuteUtilisee = "0" + date.getMinutes();
-    }
-  }
-  let initialFormData = {
-    date: dateUtilisee,
-    heureDebut: HeureUtilisee + ":" + MinuteUtilisee,
-    heureFin: (HeureUtilisee + 1) + ":" + MinuteUtilisee
-  };
-
-  const [formData, updateFormData] = useState(initialFormData);
+  const [formData, updateFormData] = useState({});
   const firstUpdate = useRef(true);
+
+  //remplissage du automatique du formulaire
+  useLayoutEffect(() => {
+    let date = moment().local('fr').format('DD/MM/YYYY');
+    let heureDebut = moment().local('fr').format('HH:mm');
+    let heureFin = moment().local('fr').add(1, 'hour').format('HH:mm');
+
+    if (heureDebut >= '21:00') {
+      date = moment().add(1, 'days').format('DD/MM/YYYY');
+      heureDebut = moment({ hour: 7, minute: 0 }).local('fr').format('HH:mm');
+      heureFin = moment({ hour: 8, minute: 0 }).local('fr').format('HH:mm');
+    }
+
+    let initialState = {
+      date: date,
+      heureDebut: heureDebut,
+      heureFin: heureFin
+    }
+
+    let formatedDate = moment(initialState.date, 'DD/MM/YYYY').format('YYYY-MM-DD');
+
+    updateFormData(initialState);
+
+    document.getElementById('rechercheDate').defaultValue = formatedDate;
+    document.getElementById('rechercheHeureDebut').value = initialState.heureDebut;
+    document.getElementById('rechercheHeureFin').value = initialState.heureFin;
+  }, [])
+
+
 
   ///chaque fois que je récupère quelque chose dans mon tableau 'reservationsPLaces' donc que son état "change" , je mets a jours mes places
   /// pour ne pas executer la fonction dès le début ( car je n'ai pas de reservation ) je créer avec useRef
@@ -112,12 +125,7 @@ const Reservation = () => {
   };
   */
 
-  //au chargement, remplit des données dans le formulaire
-  useEffect(() => {
-    document.getElementById('rechercheDate').value = formData.date;
-    document.getElementById('rechercheHeureDebut').value = formData.heureDebut;
-    document.getElementById('rechercheHeureFin').value = formData.heureFin;
-  }, [])
+
 
   const handleRerchercherDate = (e) => {
     e.preventDefault();
@@ -203,12 +211,16 @@ const Reservation = () => {
           <div className="load" style={{ display: 'none' }}></div>
           <form onSubmit={handleRerchercherDate}>
             <div id="containerDate">
+
               <label htmlFor="rechercheDate">Date</label>
               <input type="date"
                 id="rechercheDate"
                 name="rechercheDate"
-              // onChange={inputsHandler}
+
+
               />
+
+
 
             </div>
             <div id="heureDebut">
