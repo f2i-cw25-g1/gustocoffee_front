@@ -218,7 +218,7 @@ const Reservation = () => {
           <div className="places_selectionnees">
             {placesSelectionnees &&
               placesSelectionnees.map((a) => {
-                return <ul key={a.key}>{a.nom}</ul>;
+                return <ul key={a.key}>{a.nom}, date = {moment(a.date, 'YYYY-MM-DD').format('DD/MM/YYYY')}</ul>;
               })}
           </div>
         </div>
@@ -239,7 +239,8 @@ const Reservation = () => {
           placesSelectionnees: {placesSelectionnees} // your data array of objects
         }}
       >
-        <div className="sub_button2">Passer la commande</div></Link>
+        <div className="sub_button2">Passer la commande</div>
+      </Link>
     </main>
   );
 };
