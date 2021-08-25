@@ -2,7 +2,8 @@ import axios from 'axios';
 import React, { useState, useEffect, useRef, useLayoutEffect } from 'react';
 import { ReactComponent as CarteSvg } from '../img/Carte_Gusto_Coffee.svg';
 import '../App.css';
-import '../components/css/Reservation.css'
+import '../components/css/Reservation.css';
+import {Link} from 'react-router-dom';
 
 // 06 07 2021 08:00 18:00
 // 15 08 2021 10:00 12:30
@@ -24,6 +25,7 @@ const Reservation = () => {
   const [reservationsPlaces, setReservationsPlaces] = useState([]);
   const [placesSelectionnees, setPlacesSelectionnees] = useState([]);
 
+  //executer du code synchrone, il va attendre qu'on ai récupéré les données
   useLayoutEffect(() => {
     let date = moment().local('fr').format('DD/MM/YYYY');
     let heureDebut = moment().local('fr').format('HH:mm');
@@ -52,9 +54,9 @@ const Reservation = () => {
   }, [])
 
   useEffect(() => {
-    let touteLesPlaces = carteRef.current.getElementsByClassName('place');
-    for (var i = 0; i < touteLesPlaces.length; i++) {
-      touteLesPlaces[i].setAttribute('fill', couleurPlaceDisponible);
+    let toutesLesPlaces = carteRef.current.getElementsByClassName('place');
+    for (var i = 0; i < toutesLesPlaces.length; i++) {
+      toutesLesPlaces[i].setAttribute('fill', couleurPlaceDisponible);
     }
   }, [formData]);
 
@@ -110,19 +112,20 @@ const Reservation = () => {
       firstUpdate.current = false;
       return;
     }
-    console.log('PLACE RESERVER:', reservationsPlaces)
+    console.log('PLACE RESERVEES:', reservationsPlaces)
     miseAJourCartePlacesReservees(reservationsPlaces);
   }, [reservationsPlaces]);
 
   //ajout d'une place
   const addPlace = async (target) => {
+    console.log(formDataRef.current['rechercheDate'].value)
     let placeAjouteeASelection = {
       id: target.id,
-      key: `${target.id} ${formDataRef.current['rechercheDate']} ${formData['heureDebut']} ${formDataRef.current['rechercheHeureFin']}`,
+      key: `${target.id} ${formDataRef.current['rechercheDate'].value} ${formDataRef.current['rechercheHeureDebut'].value} ${formDataRef.current['rechercheHeureFin'].value}`,
       nom: target.id.split('Place')[1],
-      date: formDataRef.current['rechercheDate'],
-      heureDebut: formData['heureDebut'],
-      heureFin: formDataRef.current['rechercheHeureFin'],
+      date: formDataRef.current['rechercheDate'].value,
+      heureDebut: formDataRef.current['rechercheHeureDebut'].value,
+      heureFin: formDataRef.current['rechercheHeureFin'].value,
     };
 
     if (target.getAttribute('fill') === couleurPlaceReservee) {
@@ -171,6 +174,10 @@ const Reservation = () => {
       }
     }
   };
+
+  useEffect(() => {
+    console.log(placesSelectionnees)
+  }, [placesSelectionnees])
 
   return (
     <main>
@@ -224,6 +231,15 @@ const Reservation = () => {
         <p className="couleur_places_selectionnees">place(s) selectionnée(s)</p>
         <p className="couleur_places_occupees">place(s) occupée(s)</p>
       </div>
+
+      
+      <Link
+        to={{
+          pathname: "/resume-reservation",
+          placesSelectionnees: {placesSelectionnees} // your data array of objects
+        }}
+      >
+        <div className="sub_button2">Passer la commande</div></Link>
     </main>
   );
 };

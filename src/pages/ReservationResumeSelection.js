@@ -1,7 +1,8 @@
 import '../components/css/Reservation.css'
 import React, { useEffect, useRef } from 'react';
 
-function ReservationResumeSelection() {
+function ReservationResumeSelection(props) {
+    console.log(props.location.placesSelectionnees)
     let tableauPlacesSelectionnees = 
     [   {   id: "1",
             key: "1 2021-08-15 15:30 17:30",
@@ -90,7 +91,7 @@ function ReservationResumeSelection() {
                     <div ref={optionBureautique}>
                         <input type="checkbox" id="checkboxOptionBureautique" name="checkboxOptionBureautique" ref={checkboxOptionBureautique} />
                         <div className="custom_checkbox"></div>
-                        <label for="checkboxOptionBureautique">Option bureautique
+                        <label htmlFor="checkboxOptionBureautique">Option bureautique
                         <br></br><br/>
                             <div>Accédez à notre espace bureautique comprenant des scanner à disposition, des imprimantes (jusqu'à 100 impressions). De plus, l'option bureautique vous permet d'accéder à une réduction sur l'achat de produits "bureautique" tel que les clés usb, souris, casques audio, etc.</div>
                         </label>
@@ -98,7 +99,7 @@ function ReservationResumeSelection() {
                     <div ref={optionRestauration}>
                         <input type="checkbox" id="checkboxOptionRestauration" name="checkboxOptionRestauration" ref={checkboxOptionRestauration}/>
                         <div className="custom_checkbox"></div>
-                        <label for="checkboxOptionRestauration">Option restauration
+                        <label htmlFor="checkboxOptionRestauration">Option restauration
                         <br></br><br/>
                             <div>L'option restauration vous permet d'accéder à l'espace "Restauration" avec les privilèges suivants : cafés, thés et diverses boissons fraiches mais aussi croissants, pains au chocolat et pains au raison à volonté. L'option restauration vous permet également d'avoir des réductions sur les autres produits de notre gamme "Restauration"  </div>
                         </label>
@@ -229,7 +230,7 @@ function ReservationResumeSelection() {
             </div>
 
             <br></br>
-            <a className="sub_button2">Passer la commande</a>
+            <a className="sub_button2">Payer</a>
         </div>
       </main>
     );
