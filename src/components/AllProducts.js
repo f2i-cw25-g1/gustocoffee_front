@@ -1,22 +1,17 @@
 import React, { useEffect, useRef, useState } from "react";
-
 import "./css/Carousel.css";
 import axios from "axios";
 import Product from "./../components/Product";
 
-
-
 const AllProducts = () => {
-    const productsRef = useRef([]);
     const [categories, setCategories] = useState([]);
     const documentRef = useRef(null);
+    const productsRef = useRef([]);
 
     documentRef.current = document.getElementById("loadAllProducts");
 
-
     useEffect(() => {
         const ourRequest = axios.CancelToken.source();
-
         let doc = document.getElementById("loadAllProducts");
 
         const getAllProducts = async () => {
@@ -25,7 +20,6 @@ const AllProducts = () => {
                     axios.get(`/api/produits`, { cancelToken: ourRequest.token }),
                     axios.get(`/api/categories`, { cancelToken: ourRequest.token })
                 ]);
-
                 productsRef.current = await requestProducts.data["hydra:member"];
                 let responseCategories = await requestCategory.data["hydra:member"];
                 responseCategories.forEach((categorie) => {
@@ -33,20 +27,14 @@ const AllProducts = () => {
                         categorie.produits[index] = productsRef.current.find(element => element['@id'] === produit)
                     });
                 });
+
                 setCategories(responseCategories);
-
-                // console.log('CATEGORIE REF 1', categoriesRef.current);
-
                 doc.style.display = "none";
             } catch (error) {
                 console.log('Il ya eu un problème, ou la requete a été interrompue')
             }
         }
-
         getAllProducts();
-
-
-
         return () => {
             console.log('composant démonté')
             ourRequest.cancel('component demonté')
