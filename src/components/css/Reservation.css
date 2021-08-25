@@ -1,83 +1,70 @@
 path {
-    pointer-events: none;
+  pointer-events: none;
+}
+
+.places_selectionnees {
+  height: 100px;
+  overflow-y: scroll;
+  border: solid 1px #000;
+}
+
+.resume_places_selectionnees {
+  margin-top: 20px;
+}
+
+.couleur_places_disponibles {
+  margin: 5px 0;
+}
+.couleur_places_selectionnees {
+  margin: 5px 0;
+}
+.couleur_places_occupees {
+  margin: 5px 0;
+}
+
+.couleur_places_disponibles::before {
+  content: "";
+  display: block;
+  float: left;
+  width: 15px;
+  height: 15px;
+  margin: 5px 5px 0 0;
+  background-color: #d3d36e;
+}
+.couleur_places_selectionnees::before {
+  content: "";
+  display: block;
+  float: left;
+  width: 15px;
+  height: 15px;
+  margin: 5px 5px 0 0;
+  background-color: #94d36e;
+}
+.couleur_places_occupees::before {
+  content: "";
+  display: block;
+  float: left;
+  width: 15px;
+  height: 15px;
+  margin: 5px 5px 0 0;
+  background-color: #ff6060;
+}
+
+@media (max-width: 56.25em) {
+  .carte_svg {
+    width: 380px;
   }
-  
-  .places_selectionnees {
-    height: 100px;
-    overflow-y: scroll;
-    border: solid 1px #000;
+}
+
+@media (max-width: 37.5em) {
+  .carte_svg {
+    width: 150%;
+    margin: 20px 30px 0px 30px;
   }
-  
-  .resume_places_selectionnees {
-    margin-top: 20px;
+  .table_overflow {
+    overflow-x: scroll;
   }
-  
-  .couleur_places_disponibles {
-    margin: 5px 0;
+  .legende_couleur_place {
+    margin: 20px 30px;
   }
-  .couleur_places_selectionnees {
-    margin: 5px 0;
-  }
-  .couleur_places_occupees {
-    margin: 5px 0;
-  }
-  
-  .couleur_places_disponibles::before {
-    content: "";
-    display: block;
-    float: left;
-    width: 15px;
-    height: 15px;
-    margin: 5px 5px 0 0;
-    background-color: #d3d36e;
-    white-space: normal;
-  }
-  .couleur_places_selectionnees::before {
-    content: "";
-    display: block;
-    float: left;
-    width: 15px;
-    height: 15px;
-    margin: 5px 5px 0 0;
-    background-color: #94d36e;
-    white-space: normal;
-  }
-  .couleur_places_occupees::before {
-    content: "";
-    display: block;
-    float: left;
-    width: 15px;
-    height: 15px;
-    margin: 5px 5px 0 0;
-    background-color: #ff6060;
-    white-space: normal;
-  }
-  
-  .flexform2 {
-    display: flex;
-    flex-wrap: nowrap;
-    justify-content: space-between;
-  }
-  
-  @media (max-width: 56.25em) {
-    .flexform2 {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: space-between;
-    }
-  
-    .carte_svg {
-      width: 350px;
-    }
-  
-    .legende_couleur_place {
-      margin: 0 30px;
-    }
-  }
-  
-  @media (max-width: 37.5em) {
-    .carte_svg {
-      width: 100%;
-    }
-  }
-  
+}

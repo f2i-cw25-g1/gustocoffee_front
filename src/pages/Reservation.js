@@ -215,7 +215,9 @@ const Reservation = () => {
               })}
           </div>
         </div>
-        <CarteSvg className="carte_svg" ref={carteRef} />
+        <div className="table_overflow">
+          <CarteSvg className="carte_svg" ref={carteRef} />
+        </div>
       </div>
       <div className="legende_couleur_place">
         <p className="couleur_places_disponibles">place(s) disponible(s)</p>
