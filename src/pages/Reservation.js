@@ -4,9 +4,10 @@ import { ReactComponent as CarteSvg } from '../img/Carte_Gusto_Coffee.svg';
 import '../App.css';
 import '../components/css/Reservation.css'
 
+// 06 07 2021 08:00 18:00
+// 15 08 2021 10:00 12:30
+
 import moment from 'moment';
-import DatePicker from 'react-datepicker';
-import fr from 'date-fns/locale/fr';
 
 
 const Reservation = () => {
@@ -15,17 +16,14 @@ const Reservation = () => {
   const couleurPlaceReservee = '#FF6060';
 
   const carteRef = useRef(null);
+  const firstUpdate = useRef(true);
+  const formDataRef = useRef({});
 
+  const [formData, setFormData] = useState({})
   const [places, setPlaces] = useState([]);
   const [reservationsPlaces, setReservationsPlaces] = useState([]);
-
   const [placesSelectionnees, setPlacesSelectionnees] = useState([]);
 
-
-  const [formData, updateFormData] = useState({});
-  const firstUpdate = useRef(true);
-
-  //remplissage du automatique du formulaire
   useLayoutEffect(() => {
     let date = moment().local('fr').format('DD/MM/YYYY');
     let heureDebut = moment().local('fr').format('HH:mm');
@@ -36,38 +34,23 @@ const Reservation = () => {
       heureDebut = moment({ hour: 7, minute: 0 }).local('fr').format('HH:mm');
       heureFin = moment({ hour: 8, minute: 0 }).local('fr').format('HH:mm');
     }
-
     let initialState = {
       date: date,
       heureDebut: heureDebut,
       heureFin: heureFin
     }
-
+    setFormData({
+      date: initialState.date,
+      heureDebut: initialState.heureDebut,
+      heureFin: initialState.heureFin
+    })
     let formatedDate = moment(initialState.date, 'DD/MM/YYYY').format('YYYY-MM-DD');
 
-    updateFormData(initialState);
-
-    document.getElementById('rechercheDate').defaultValue = formatedDate;
-    document.getElementById('rechercheHeureDebut').value = initialState.heureDebut;
-    document.getElementById('rechercheHeureFin').value = initialState.heureFin;
+    formDataRef.current['rechercheDate'].value = formatedDate;
+    formDataRef.current['rechercheHeureDebut'].value = initialState['heureDebut'];
+    formDataRef.current['rechercheHeureFin'].value = initialState['heureFin'];
   }, [])
 
-
-
-  ///chaque fois que je récupère quelque chose dans mon tableau 'reservationsPLaces' donc que son état "change" , je mets a jours mes places
-  /// pour ne pas executer la fonction dès le début ( car je n'ai pas de reservation ) je créer avec useRef
-  /// une valeur modifiable qui existe pour la durée de vie de l'instance de composant.
-  /// IMPORTANT A COMPRENDRE , sinon : https://blog.logrocket.com/usestate-vs-useref/
-  useEffect(() => {
-    if (firstUpdate.current) {
-      firstUpdate.current = false;
-      return;
-    }
-    miseAJourCartePlacesReservees(reservationsPlaces);
-  }, [reservationsPlaces]);
-
-  //remet les places en vert
-  //pourra etre utilise si je change la date par exemple, pour l'instant ne sert pas
   useEffect(() => {
     let touteLesPlaces = carteRef.current.getElementsByClassName('place');
     for (var i = 0; i < touteLesPlaces.length; i++) {
@@ -75,7 +58,7 @@ const Reservation = () => {
     }
   }, [formData]);
 
-  //récupération de toute les places dans le svg, et on y ajoute un event listener dessus
+
   useEffect(() => {
     const placesInSvg = carteRef.current.getElementsByClassName('place');
     for (let i = 0; i < placesInSvg.length; i++) {
@@ -83,17 +66,10 @@ const Reservation = () => {
     }
   }, []);
 
-  //ici on fait nos requetes ! ( qui sont des promises )
-  //je dois créer un token pour 'cancel' ma requete, je vais passer mon token en 2 eme parametre dans mes deux GET qui s'enchainent
-  //au lieu de faire des then si then sa je fais let a = await request1 ( en gros j'ai la 'reponse' direct quand ma promise est ok :) 
-  //je set les places ( je veux conserveur leur état donc un petit useState .. un useRef aurait peut etre aussi été good vu que je recharge pas toute la page)
-  //j'éxecute ma fonction et je lui passe la date mito dont nous avons besoin , celle ou ya les deux résa
-  // et ENFIN le 'return' de mon useEffect en gros il va faire un truc quand je 'démonte' mon componsant , si je change de page par exemple
-  // et le truc c'est quoi ? dans le 1000 émile je stop ma requete ^^
-  // ps; TOUJOURS un try catch 
-  // ps; le Promise.ALL c'est par ce que j'ai plusieurs requet, sinon un axios.get ça suffit genre let coco = await axios.get....(endpoint) 
+
   useEffect(() => {
     const ourRequest = axios.CancelToken.source()
+
     const fetchReservation = async (date) => {
       try {
         const [request1, request2] = await Promise.all([
@@ -115,39 +91,38 @@ const Reservation = () => {
     }
   }, [formData])
 
-  /*
-  //inutilisé, but : quand on change la date : se met à jour sans utiliser de bouton recherche
-  const handleChange = (e) => {
-    updateFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
-  };
-  */
-
-
 
   const handleRerchercherDate = (e) => {
     e.preventDefault();
-
-    //if(document.getElementById('rechercheDate').value != formData.date){//on récupère de nouvelles réservations seulement si la date est différente
-    updateFormData({
-      date: document.getElementById('rechercheDate').value,
-      heureDebut: document.getElementById('rechercheHeureDebut').value,
-      heureFin: document.getElementById('rechercheHeureFin').value
-    });
-    //}
+    setFormData(prev => {
+      const setArray = {
+        date: e.target['rechercheDate'].value,
+        heureDebut: e.target['rechercheHeureDebut'].value,
+        heureFin: e.target['rechercheHeureFin'].value
+      }
+      console.log(('arraySet', setArray));
+      return setArray;
+    })
   };
+
+  useEffect(() => {
+    if (firstUpdate.current) {
+      firstUpdate.current = false;
+      return;
+    }
+    console.log('PLACE RESERVER:', reservationsPlaces)
+    miseAJourCartePlacesReservees(reservationsPlaces);
+  }, [reservationsPlaces]);
 
   //ajout d'une place
   const addPlace = async (target) => {
     let placeAjouteeASelection = {
       id: target.id,
-      key: `${target.id} ${formData.date} ${formData.heureDebut} ${formData.heureFin}`,
+      key: `${target.id} ${formDataRef.current['rechercheDate']} ${formData['heureDebut']} ${formDataRef.current['rechercheHeureFin']}`,
       nom: target.id.split('Place')[1],
-      date: formData.date,
-      heureDebut: formData.heureDebut,
-      heureFin: formData.heureFin,
+      date: formDataRef.current['rechercheDate'],
+      heureDebut: formData['heureDebut'],
+      heureFin: formDataRef.current['rechercheHeureFin'],
     };
 
     if (target.getAttribute('fill') === couleurPlaceReservee) {
@@ -176,27 +151,22 @@ const Reservation = () => {
   };
 
   //récupération des places reservée
-  //récupération du nom de la place ( ex: A1)
   //coloration du svg
   const miseAJourCartePlacesReservees = (placesReservees) => {
     for (const placeReservee of placesReservees) {
       let heureDebutPlaceReservee = placeReservee.heureDebut.substr(11, 5);
       let heureFinPlaceReservee = placeReservee.heureFin.substr(11, 5);
-      console.log("heure debut " + heureDebutPlaceReservee);
-      console.log("formData heureDebut " + formData.heureDebut);
-      console.log("heure fin " + heureFinPlaceReservee);
-      console.log("formData heureFin " + formData.heureFin);
+
 
       if ( //si on est dans l'un des cas suivants, la reservation actuelle est bien occupee sur la plage horaire selectionnee, donc colorier
-        (heureDebutPlaceReservee <= formData.heureDebut && heureFinPlaceReservee >= formData.heureDebut) ||
-        (heureDebutPlaceReservee <= formData.heureFin && heureFinPlaceReservee >= formData.heureFin) ||
-        (heureDebutPlaceReservee >= formData.heureDebut && heureFinPlaceReservee <= formData.heureFin)
+        (heureDebutPlaceReservee <= formData['heureDebut'] && heureFinPlaceReservee >= formData['heureDebut']) ||
+        (heureDebutPlaceReservee <= formData['heureFin'] && heureFinPlaceReservee >= formData['heureFin']) ||
+        (heureDebutPlaceReservee >= formData['heureDebut'] && heureFinPlaceReservee <= formData['heureFin'])
       ) {
         let placeNom = places.find((e) => e.id === placeReservee.id);
         let placeAmodifier = carteRef.current.getElementById(
           'Place' + placeNom.nom
         );
-        console.log(formData.date)
         placeAmodifier.setAttribute('fill', couleurPlaceReservee);
       }
     }
@@ -209,19 +179,13 @@ const Reservation = () => {
       <div className="flexform">
         <div id="formResearch">
           <div className="load" style={{ display: 'none' }}></div>
-          <form onSubmit={handleRerchercherDate}>
+          <form onSubmit={handleRerchercherDate} ref={formDataRef}>
             <div id="containerDate">
-
               <label htmlFor="rechercheDate">Date</label>
               <input type="date"
                 id="rechercheDate"
                 name="rechercheDate"
-
-
               />
-
-
-
             </div>
             <div id="heureDebut">
               <label htmlFor="rechercheHeureDebut">Heure de début</label>
@@ -229,7 +193,6 @@ const Reservation = () => {
                 type="time"
                 id="rechercheHeureDebut"
                 name="rechercheHeureDebut"
-              // onChange={inputsHandler}
               />
             </div>
             <div id="heureFin">
@@ -238,14 +201,12 @@ const Reservation = () => {
                 type="time"
                 id="rechercheHeureFin"
                 name="rechercheHeureFin"
-              // onChange={inputsHandler}
               />
             </div>
             <button id="submitDateButton" type="submit">
               Rechercher
             </button>
           </form>
-
           <p className="resume_places_selectionnees">Résumé places selectionnées :</p>
           <div className="places_selectionnees">
             {placesSelectionnees &&
@@ -262,7 +223,6 @@ const Reservation = () => {
         <p className="couleur_places_occupees">place(s) occupée(s)</p>
       </div>
     </main>
-
   );
 };
 
