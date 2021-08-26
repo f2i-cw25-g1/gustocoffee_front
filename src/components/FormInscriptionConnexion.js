@@ -3,28 +3,19 @@ import FormConnexion from "./FormConnexion";
 import { useState } from 'react';
 
 function FormInscriptionConnexion() {
-
     const [isLogin, setIsLogin] = useState(true);
-
     const loginUser = (e) => {
         console.log(e);
     }
-
     const registerUser = (e) => {
         console.log(e)
     }
-
     const switchAuthModeHandler = () => {
         setIsLogin((prevState) => !prevState);
     };
 
-
-
-
-
     return (
         <div className="flexform">
-
             {isLogin &&
                 <div>
                     <p className="subsection_title">Connexion</p>
@@ -71,17 +62,17 @@ function FormInscriptionConnexion() {
                             </div>
                             <button type="submit">S'inscrire</button>
                         </form>
-
                     </div>
                 </div>
             }
 
-            <input
+            <button
+                className="button_inscription_connexion"
                 type='button'
                 onClick={switchAuthModeHandler}
             >
-                {isLogin ? 'Créer un compte' : 'Connectez-vous avec un compte existant'}
-            </input>
+                {isLogin ? 'Créer un compte' : "J'ai déjà un compte"}
+            </button>
         </div>
     );
 }
