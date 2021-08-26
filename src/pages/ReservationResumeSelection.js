@@ -109,7 +109,6 @@ function ReservationResumeSelection(props) {
         console.log(optionBureautique.prixUnitaireHT)
         console.log(placesSelectionnees);
         console.log(optionRestauration)
-
     }, [])
 
     return (
@@ -141,8 +140,6 @@ function ReservationResumeSelection(props) {
                 </div>
             </div>
 
-            
-
             <p className="section_title2">Vos places et salons sélectionnés</p>
             <div className="table_overflow">
                 <table>
@@ -153,7 +150,7 @@ function ReservationResumeSelection(props) {
                             <th>de</th>
                             <th>à</th>
                             <th>prix HT</th>
-                            <th>TVA {tvaReservation.prix *100} %</th>
+                            <th>TVA {tvaReservation.montant *100} %</th>
                             <th>prix TTC</th>
                         </tr>
                     </thead>
@@ -164,8 +161,8 @@ function ReservationResumeSelection(props) {
                                     <td>{moment(a.date, 'YYYY-MM-DD').format('DD/MM/YYYY')}</td>
                                     <td>{a.heureDebut}</td>
                                     <td>{a.heureFin}</td>
-                                    <td>x €</td>
-                                    <td>(calcul tva)</td>
+                                    <td>{parseFloat('30').toFixed(2)} €</td>
+                                    <td>{parseFloat('0').toFixed(2)}(calcul tva)</td>
                                     <td>500€</td>
                                 </tr>;
                         })}
@@ -175,9 +172,9 @@ function ReservationResumeSelection(props) {
                                     <td>{moment(a.date, 'YYYY-MM-DD').format('DD/MM/YYYY')}</td>
                                     <td>{a.heureDebut}</td>
                                     <td>{a.heureFin}</td>
-                                    <td>x €</td>
-                                    <td>(calcul tva)</td>
-                                    <td>500€</td>
+                                    <td>{parseFloat('50').toFixed(2)}</td>
+                                    <td>{parseFloat('0').toFixed(2)} (calcul tva)</td>
+                                    <td>{parseFloat('500').toFixed(2)} €</td>
                                 </tr>;
                         })}
                     </tbody>
@@ -187,15 +184,14 @@ function ReservationResumeSelection(props) {
                             <td></td>
                             <td></td>
                             <td></td>
-                            <td id="totalPlacesSalonsHT">500 €</td>
-                            <td>(calcul tva)</td>
-                            <td>5000€</td>
+                            <td id="totalPlacesSalonsHT">{parseFloat('500').toFixed(2)}</td>
+                            <td>{parseFloat('0').toFixed(2)}(calcul tva)</td>
+                            <td>{parseFloat('5000').toFixed(2)} €</td>
                         </tr>
                     </tfoot>
                 </table>
             </div>
             
-
             {(optionBureautique.checked || optionRestauration.checked) && 
             <>
             <p className="section_title2">Vos options</p>
@@ -215,21 +211,21 @@ function ReservationResumeSelection(props) {
                         {optionBureautique.checked && 
                         <tr>
                             <td>{optionBureautique.nom}</td>
-                            <td>{optionBureautique.prixUnitaireHT}</td>
+                            <td>{parseFloat(optionBureautique.prixUnitaireHT).toFixed(2)}</td>
                             <td>{optionBureautique.nombreReservations}</td>
-                            <td>{(optionBureautique.prixUnitaireHT*optionBureautique.nombreReservations)}</td>
-                            <td>{(optionBureautique.prixUnitaireHT*optionBureautique.nombreReservations)*tvaOption.montant}</td>
-                            <td>{(optionBureautique.prixUnitaireHT*optionBureautique.nombreReservations)*(1+tvaOption.montant)}</td>
+                            <td>{parseFloat((optionBureautique.prixUnitaireHT*optionBureautique.nombreReservations)).toFixed(2)}</td>
+                            <td>{parseFloat((optionBureautique.prixUnitaireHT*optionBureautique.nombreReservations)*tvaOption.montant).toFixed(2)}</td>
+                            <td>{parseFloat((optionBureautique.prixUnitaireHT*optionBureautique.nombreReservations)*(1+tvaOption.montant)).toFixed(2)} €</td>
                         </tr>
                         }
                         {optionRestauration.checked && 
                         <tr>
                             <td>{optionRestauration.nom}</td>
-                            <td>{optionRestauration.prixUnitaireHT}</td>
+                            <td>{parseFloat(optionRestauration.prixUnitaireHT).toFixed(2)}</td>
                             <td>{optionRestauration.nombreReservations}</td>
-                            <td>{(optionRestauration.prixUnitaireHT*optionRestauration.nombreReservations)}</td>
-                            <td>{(optionRestauration.prixUnitaireHT*optionRestauration.nombreReservations)*tvaOption.montant}</td>
-                            <td>{(optionRestauration.prixUnitaireHT*optionRestauration.nombreReservations)*(1+tvaOption.montant)}</td>
+                            <td>{parseFloat((optionRestauration.prixUnitaireHT*optionRestauration.nombreReservations)).toFixed(2)}</td>
+                            <td>{parseFloat((optionRestauration.prixUnitaireHT*optionRestauration.nombreReservations)*tvaOption.montant).toFixed(2)}</td>
+                            <td>{parseFloat((optionRestauration.prixUnitaireHT*optionRestauration.nombreReservations)*(1+tvaOption.montant)).toFixed(2)} €</td>
                         </tr>
                         }
                     </tbody>
@@ -238,9 +234,9 @@ function ReservationResumeSelection(props) {
                             <td>Total</td>
                             <td></td>
                             <td></td>
-                            <td id="totalOptionsHT"></td>
-                            <td></td>
-                            <td></td>
+                            <td>{parseFloat('0').toFixed(2)}</td>
+                            <td>{parseFloat('0').toFixed(2)}</td>
+                            <td>{parseFloat('0').toFixed(2)} €</td>
                         </tr>
                     </tfoot>
                 </table>
@@ -254,21 +250,24 @@ function ReservationResumeSelection(props) {
                         <tr>
                             <th></th>   
                             <th>Total HT</th>
+                            <th>Total TVA</th>
                             <th>Total TTC</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
                             <td>Total places et salons</td>
-                            <td>x €</td>
-                            <td>x €</td>
+                            <td>{parseFloat('0').toFixed(2)} €</td>
+                            <td>{parseFloat('0').toFixed(2)} €</td>
+                            <td>{parseFloat('0').toFixed(2)} €</td>
                         </tr>
                         {(optionBureautique.checked || optionRestauration.checked) && 
                         <>
                         <tr>
                             <td>Total options</td>
-                            <td>x €</td>
-                            <td>x €</td>
+                            <td>{parseFloat('0').toFixed(2)} €</td>
+                            <td>{parseFloat('0').toFixed(2)} €</td>
+                            <td>{parseFloat('0').toFixed(2)} €</td>
                         </tr>
                         </>
                         }
@@ -276,8 +275,9 @@ function ReservationResumeSelection(props) {
                     <tfoot>
                         <tr>
                             <td>Total à payer</td>
-                            <td>x €</td>
-                            <td>x €</td>
+                            <td>{parseFloat('0').toFixed(2)} €</td>
+                            <td>{parseFloat('0').toFixed(2)} €</td>
+                            <td>{parseFloat('0').toFixed(2)} €</td>
                         </tr>
                     </tfoot>
                 </table>
