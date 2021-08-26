@@ -1,12 +1,12 @@
 {
-  "name": "React Gusto Coffee",
+  "name": "Gusto Coffee - Café Coworking Gare du Nord",
   "short_name": "Gusto Coffee",
   "theme_color": "#000000",
   "background_color": "#000000",
   "display": "standalone",
   "scope": "/",
   "start_url": "/",
-  "prefer_related_applications": "false",
+  "prefer_related_applications": false,
   "icons": [
     {
       "src": "favicon.ico",
