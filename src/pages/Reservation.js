@@ -236,7 +236,7 @@ const Reservation = () => {
       <Link
         to={{
           pathname: "/resume-reservation",
-          placesSelectionnees: {placesSelectionnees} // your data array of objects
+          placesSelectionnees: {placesSelectionnees}, // your data array of objects
         }}
       >
         <div className="sub_button2">Passer la commande</div>
