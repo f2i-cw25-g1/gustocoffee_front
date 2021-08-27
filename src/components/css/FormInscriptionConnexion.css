@@ -1,7 +1,9 @@
 .flexform {
   display: flex;
+  flex-direction: column;
   flex-wrap: wrap;
-  justify-content: space-between;
+  justify-content: center;
+  align-items: center;
 }
 
 .flexform label {
@@ -40,17 +42,19 @@
   color: #ff6060;
   max-width: 320px;
   margin-bottom: 10px;
+  font-size: 14px;
+}
+
+.title_margin {
+  margin: 10px;
 }
 
 .button_inscription_connexion {
   font-family: Cabin-Medium;
   font-size: 16px;
-  color: #fff;
-  background-color: #986946;
-  border: 2px solid #986946;
-  width: 260px;
-  height: 35px;
-  padding: 5px 0px;
+  color: #320909;
+  background-color: #ffffff;
+  border: 2px solid #ffffff;
   margin-top: 10px;
   transition: all 0.2s ease;
   cursor: pointer;

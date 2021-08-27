@@ -1,135 +1,205 @@
-import './css/FormInscription.css';
+import { useForm } from "react-hook-form";
+import { useState } from 'react';
 import axios from "axios";
-/*import {useState} from "react";*/
-
-function FormInscription(){
-    /*    
-        const [emailValue,setEmailValue] = useState();
-    
-        const handleChange = (event) =>{
-            console.log(event.target.value);
-            setEmailValue(event.target.value);
-        }
-    */    
-        // 
+import MyVerticallyCenteredModal from "./Modal";
+import './css/FormInscriptionConnexion.css';
 
 
-    const showErrorMessage = (errorMessage, containerId) =>{
+const FormInscription = () => {
+    const [modalShow, setModalShow] = useState(false);
+    const { clearErrors, register, handleSubmit, setError, watch, formState: { errors } } = useForm({ criteriaMode: "all" });
+    const emailPattern = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
-        var div = document.createElement('div');
-        div.textContent = errorMessage;
-        div.className = "erreurInscription";
-        document.getElementById(containerId).append(div);
-    }
-    
+    //gestion des erreurs récupérée par le back-office
     const erreurType = (erreurMessage) => {
-        if(erreurMessage.startsWith("email: ")){
-            erreurMessage = erreurMessage.split("email: ")[1];
-            showErrorMessage(erreurMessage, "containerInscriptionMail");
-        }else if(erreurMessage.startsWith("password: ")){
-            erreurMessage = erreurMessage.split("password: ")[1];
-            showErrorMessage(erreurMessage, "containerInscriptionMotDePasse");
-        }else if(erreurMessage.startsWith("username: ")){
-            erreurMessage = erreurMessage.split("username: ")[1];
-            showErrorMessage(erreurMessage, "containerInscriptionNomUtilisateur");            
-        }else if(erreurMessage.startsWith("nom: ")){
-            erreurMessage = erreurMessage.split("nom: ")[1];
-            showErrorMessage(erreurMessage, "containerInscriptionNom"); 
-        }else if(erreurMessage.startsWith("prenom: ")){
-            erreurMessage = erreurMessage.split("prenom: ")[1];
-            showErrorMessage(erreurMessage, "containerInscriptionPrenom"); 
-        }/*else if(erreurMessage.startsWith("An exception occurred while executing 'INSERT INTO utilisateur")) {
-            showErrorMessage("Une erreur est survenue", "formRegister"); 
-        }*/else if(erreurMessage.startsWith("SQLSTATE[23000]")) {
-            showErrorMessage("L'adresse email est déjà utilisée", "containerInscriptionMail"); 
+        if (erreurMessage.startsWith("SQLSTATE[23000]")) {
+            setError("mailUtilise", {
+                type: "manual",
+                message: "L'adresse email est déjà utilisée"
+            });
         }
-        else{
-            console.log('else');
-            //console.log(erreurMessage);
+        if (erreurMessage.startsWith("email: ")) {
+            setError("mail", { type: "manual", message: erreurMessage.replace("email: ", "") });
         }
-        //showErrorMessage(erreurMessage);
+
+        if (erreurMessage.startsWith("password: ")) {
+            setError("mdp", {
+                type: "manual",
+                message: erreurMessage.split("password: ")[1]
+            });
+        }
+        if (erreurMessage.startsWith("username: ")) {
+            setError("nomUtilisateur", {
+                type: "manual",
+                message: erreurMessage.split("username: ")[1]
+            });
+        }
+        if (erreurMessage.startsWith("nom: ")) {
+            setError("nom", {
+                type: "manual",
+                message: erreurMessage.split("nom: ")[1]
+            });
+        }
+        if (erreurMessage.startsWith("prenom: ")) {
+            setError("prenom", {
+                type: "manual",
+                message: erreurMessage.split("prenom: ")[1]
+            });
+        }
+        if (erreurMessage) {
+            setError("all", {
+                type: "manual",
+                message: "l'erreur suivant s'est produite : " + erreurMessage
+            });
+            console.log('erreur:', erreurMessage);
+        }
     }
 
-    const registerUser = async (event)=>{
-        event.preventDefault();
-        //console.log(event.target[0].value);
 
-        const elements = document.getElementsByClassName("erreurInscription");
-        while(elements.length > 0){
-            elements[0].parentNode.removeChild(elements[0]);
-        }
 
-        var emailValue          = document.getElementById("inscriptionMail").value;
-        var nomValue            = document.getElementById("inscriptionNom").value;
-        var prenomValue         = document.getElementById("inscriptionPrenom").value;
-        var nomUtilisateurValue = document.getElementById("inscriptionNomUtilisateur").value;
-        var motDePasseValue     = document.getElementById("inscriptionMotDePasse").value;
-        
+    const onSubmit = async (data) => {
+        clearErrors()
         await axios({
             method: 'post',
             url: '/api/utilisateurs',
             data: {
-                "email": emailValue,
+                "email": data.mail,
                 "roles": [
                     "user"
                 ],
-                "password": motDePasseValue,
+                "password": data.mdp,
                 "factures": [],
-                "username": nomUtilisateurValue,
-                "nom": nomValue,
-                "prenom": prenomValue,
+                "username": data.nomUtilisateur,
+                "nom": data.nom,
+                "prenom": data.prenom,
                 "adresse": "",
                 "codePostalAdresse": null,
                 "adresseFacturation": "",
                 "codePostalFacturation": null,
                 "paysFacturation": ""
-                }
-            }).then((response) => {
-                console.log(response);
-            }, (error) => {
-                //console.log(error.response.data["hydra:description"]);
+            }
+        }).then((response) => {
+            console.log('response', response);
+            setModalShow(true);
+
+        }).catch((error) => {
+
+            if (error.response.data['hydra:description']) {
+                //erreur identifiable
                 let tableauMessagesErreur = error.response.data["hydra:description"].split("\n");
-                tableauMessagesErreur.forEach((item)=>{
+                tableauMessagesErreur.forEach((item) => {
                     erreurType(item);
                 });
-            });
+            } else {
+                //erreur non identifiée
+                erreurType(error.response.data)
+            }
 
 
+        })
     }
 
-    
-
-    return(
+    return (
         <div>
-            <p className="subsection_title">Inscription</p>
+            <MyVerticallyCenteredModal
+                onExited={console.log('EXIT MAN')}
+                body={`Votre compte a bien été crée vous allez recevoir un mail de confirmation`}
+                logo={`✔️`}
+                show={modalShow}
+                onHide={() => setModalShow(false)} />
+
             <div id="formRegister">
-                <form onSubmit={registerUser}>
+                <form onSubmit={handleSubmit(onSubmit)}>
                     <div id="containerInscriptionNom">
                         <label htmlFor="inscriptionNom">Nom</label>
-                        <input type="text" id="inscriptionNom" name="inscriptionNom" />
-                    </div>    
+                        <input type="text" id="inscriptionNom" name="inscriptionNom" {...register("nom", {
+                            required: "Le nom est obligatoire",
+                            minLength: {
+                                value: 2,
+                                message: "Veuillez saisir un nom d'au moins 2 caractères"
+                            },
+                            maxLength: {
+                                value: 20,
+                                message: "Veuillez saisir un nom de 20 caractères maximum"
+                            }
+                        })} />
+                        {errors.nom && <p className="erreurInscription">{errors.nom?.message}</p>}
+                    </div>
                     <div id="containerInscriptionPrenom">
                         <label htmlFor="inscriptionPrenom">Prénom</label>
-                        <input type="text" id="inscriptionPrenom" name="inscriptionPrenom" />
+                        <input type="text" id="inscriptionPrenom" name="inscriptionPrenom" {...register("prenom", {
+                            required: "Le prenom est obligatoire",
+                            minLength: {
+                                value: 2,
+                                message: "Veuillez saisir un prenom d'au moins 2 caractères"
+                            },
+                            maxLength: {
+                                value: 20,
+                                message: "Veuillez saisir un prenom de 20 caractères maximum"
+                            }
+                        })} />
+                        {errors.prenom && <p className="erreurInscription">{errors.prenom?.message}</p>}
                     </div>
                     <div id="containerInscriptionNomUtilisateur">
                         <label htmlFor="inscriptionNomUtilisateur">Nom d'utilisateur</label>
-                        <input type="text" id="inscriptionNomUtilisateur" name="nomUtilisateur" />
+                        <input type="text" id="inscriptionNomUtilisateur" name="nomUtilisateur" {...register("nomUtilisateur", {
+                            required: "Le nom d'utilisateur est obligatoire",
+                            minLength: {
+                                value: 4,
+                                message: "Veuillez saisir un nom d'au moins 4 caractères"
+                            },
+                            maxLength: {
+                                value: 10,
+                                message: "Veuillez saisir un prenom de 10 caractères maximum"
+                            }
+                        })} />
+                        {errors.nomUtilisateur && <p className="erreurInscription">{errors.nomUtilisateur?.message}</p>}
                     </div>
                     <div id="containerInscriptionMail">
                         <label htmlFor="inscriptionMail">Adresse Email</label>
-                        <input type="mail" id="inscriptionMail" name="inscriptionMail" /*onChange={handleChange}*//>
+                        <input type="mail" id="inscriptionMail" name="inscriptionMail"{...register("mail", {
+                            required: "L'adresse mail est obligatoire",
+                            pattern: {
+                                value: emailPattern,
+                                message: "L'adresse mail n'est pas valide"
+                            }
+                        })
+                        } onBlur={() => {
+                            //nettoie le champ erreur si l'email est déja utilisé
+                            clearErrors("mailUtilise")
+                            clearErrors("mail")
+                        }
+                        } />
+                        {errors.mail && <p className="erreurInscription">{errors.mail?.message}</p>}
+                        {errors.mailUtilise && <p className="erreurInscription">{errors.mailUtilise?.message}</p>}
                     </div>
                     <div id="containerInscriptionMotDePasse">
                         <label htmlFor="inscriptionMotDePasse">Mot de passe</label>
-                        <input type="password" id="inscriptionMotDePasse" name="inscriptionMotDePasse" />
+                        <input type="password" id="inscriptionMotDePasse" name="inscriptionMotDePasse" {...register("mdp", {
+                            required: "Le mot de passe est obligatoire",
+                            maxLength: {
+                                value: 20,
+                                message: "Veuillez saisir un mot de passe de 20 caractères maximum"
+                            },
+                            minLength: {
+                                value: 8,
+                                message: "Veuillez saisir un mot de passe d'au moins 8 caractères"
+                            },
+                        })} />
+                        {errors.mdp && <p className="erreurInscription">{errors.mdp?.message}</p>}
                     </div>
                     <div id="containerInscriptionConfirmationMotDePasse">
                         <label htmlFor="inscriptionConfirmationMotDePasse">Confirmer le mot de passe</label>
-                        <input type="password" id="inscriptionConfirmationMotDePasse" name="inscriptionConfirmationMotDePasse" />
+                        <input type="password" id="inscriptionConfirmationMotDePasse" name="inscriptionConfirmationMotDePasse" {...register("mdpConfirmation", {
+                            validate: (value) => value === watch("mdp") || "Les mots de passe ne correspondent pas"
+                        })} />
+                        {errors.mdpConfirmation && <p className="erreurInscription">{errors.mdpConfirmation?.message}</p>}
+
                     </div>
+                    {/* {errors.all && <p className="erreurInscription">{errors.all?.message}</p>} */}
                     <button type="submit">S'inscrire</button>
                 </form>
+                <button type="button" onClick={() => setModalShow(true)}>Show modal</button>
 
             </div>
         </div>
@@ -137,3 +207,6 @@ function FormInscription(){
 }
 
 export default FormInscription;
+
+
+

@@ -1,0 +1,9 @@
+.modal-footer-gusto {
+    align-items: center !important;
+    justify-content: center !important;
+}
+
+.btn-primary-gusto {
+    background-color: #664d03 !important;
+    border-color: #986946 !important;
+}
