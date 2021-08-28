@@ -207,8 +207,9 @@ const Reservation = () => {
 
   return (
     <main>
+      <div className="container">
       <p className="subsection_title">Réservation</p>
-      <p>Bénéficiez d'une heure offerte en réservant 3 heures ou plus comprenant les créneaux 7h-10h ou 19h-22h. Pour la journée complète (de 7h à 22h), Cela vous fait 2 heures gratuites !</p>
+      <p className="reservation_description">Bénéficiez d'une heure offerte en réservant 3 heures ou plus comprenant les créneaux 7h-10h ou 19h-22h. Pour la journée complète (de 7h à 22h), Cela vous fait 2 heures gratuites !</p>
       <div className="flexform">
         <div id="formResearch">
           <div className="load" style={{ display: 'none' }}></div>
@@ -268,7 +269,7 @@ const Reservation = () => {
 
       {(placesSelectionnees.length)>=1 && 
       <>
-      <p className="section_title2">résumé places des places sélectionnées</p>
+      <p className="section_title2">Résumé des places sélectionnées</p>
       <div className="table_overflow">
           <table>
               <thead>
@@ -299,8 +300,9 @@ const Reservation = () => {
           placesSelectionnees: {placesSelectionnees}, // your data array of objects
         }}
       >
-        <div className="sub_button2">Passer la commande</div>
+        <div className="commande_button">Passer la commande</div>
       </Link>
+      </div>
     </main>
   );
 };
