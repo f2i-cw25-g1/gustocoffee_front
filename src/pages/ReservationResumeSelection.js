@@ -67,11 +67,18 @@ function ReservationResumeSelection(props) {
         setPrixOptionRestaurationHT({prix:7.5});
     }, [])
 
-    const calculPrixReservationHT = (heureDebut, heureFin, prixHoraireHT) => {//normalement : calcul prix ht
+    const calculPrixReservationHT = (heureDebut, heureFin, prixHoraireHT) => {
+        let minutesOffertesHeureCreuses = 0;
         let minutesFin = parseInt(heureFin.split(':')[0])*60+parseInt(heureFin.split(':')[1]);
         let minutesDebut = parseInt(heureDebut.split(':')[0])*60+parseInt(heureDebut.split(':')[1]);
         let tempsMinutesReservees = minutesFin - minutesDebut;
-        return prixHoraireHT.prix/60*tempsMinutesReservees//5.203 = 5.20, 5.208 = 5.21;
+        if(parseInt(heureDebut.split(':')[0]) == 7 && parseInt(heureDebut.split(':')[1]) == 0 && tempsMinutesReservees >=180){
+            minutesOffertesHeureCreuses += 60;
+        }
+        if(parseInt(heureFin.split(':')[0]) == 22 && parseInt(heureFin.split(':')[1]) == 0 && tempsMinutesReservees >=180){
+            minutesOffertesHeureCreuses += 60;
+        }
+        return prixHoraireHT.prix/60*(tempsMinutesReservees - minutesOffertesHeureCreuses)//5.203 = 5.20, 5.208 = 5.21;
     }
 
     useEffect(() => {
@@ -146,7 +153,7 @@ function ReservationResumeSelection(props) {
             setOptionBureautique({
                 nom:'Option Bureautique',
                 checked:checkboxOptionBureautique.current.checked,
-                prixUnitaireHT:prixOptionBureautiqueHT.prix,
+                prixUnitaireHT:prixOptionBureautiqueHT.prix.toFixed(2),
                 nombreReservations:placesSelectionnees.length + salonsSelectionnes.length,
                 prixTotalHT:parseFloat(prixOptionBureautiqueHT.prix*(placesSelectionnees.length + salonsSelectionnes.length)).toFixed(2),
                 prixTotalTVA:parseFloat(prixOptionBureautiqueHT.prix*(placesSelectionnees.length + salonsSelectionnes.length)*tvaOption.montant).toFixed(2),
@@ -158,7 +165,7 @@ function ReservationResumeSelection(props) {
             setOptionRestauration({
                 nom:'Option Restauration',
                 checked:checkboxOptionRestauration.current.checked,
-                prixUnitaireHT:prixOptionRestaurationHT.prix,
+                prixUnitaireHT:prixOptionRestaurationHT.prix.toFixed(2),
                 nombreReservations:placesSelectionnees.length + salonsSelectionnes.length,
                 prixTotalHT:parseFloat(prixOptionRestaurationHT.prix*(placesSelectionnees.length + salonsSelectionnes.length)).toFixed(2),
                 prixTotalTVA:parseFloat(prixOptionRestaurationHT.prix*(placesSelectionnees.length + salonsSelectionnes.length)*tvaOption.montant).toFixed(2),
@@ -203,6 +210,9 @@ function ReservationResumeSelection(props) {
                         <label htmlFor="checkboxOptionBureautique">Option bureautique
                         <br></br><br/>
                             <div>Accédez à notre espace bureautique comprenant des scanner à disposition, des imprimantes (jusqu'à 100 impressions). De plus, l'option bureautique vous permet d'accéder à une réduction sur l'achat de produits "bureautique" tel que les clés usb, souris, casques audio, etc.</div>
+                            <div>
+                                Prix journalier par réservation : {(prixOptionBureautiqueHT.prix*(1+tvaOption.montant)).toFixed(2)}€ TTC
+                            </div>
                         </label>
                     </div>
                     <div ref={divOptionRestauration}>
@@ -211,6 +221,9 @@ function ReservationResumeSelection(props) {
                         <label htmlFor="checkboxOptionRestauration">Option restauration
                         <br></br><br/>
                             <div>L'option restauration vous permet d'accéder à l'espace "Restauration" avec les privilèges suivants : cafés, thés et diverses boissons fraiches mais aussi croissants, pains au chocolat et pains au raison à volonté. L'option restauration vous permet également d'avoir des réductions sur les autres produits de notre gamme "Restauration"  </div>
+                            <div>
+                                Prix journalier par réservation : {(prixOptionRestaurationHT.prix*(1+tvaOption.montant)).toFixed(2)}€ TTC
+                            </div>
                         </label>
                     </div>
                 </div>
@@ -260,9 +273,9 @@ function ReservationResumeSelection(props) {
                             <td></td>
                             <td></td>
                             <td></td>
-                            <td id="totalPlacesSalonsHT">{parseFloat('500').toFixed(2)}</td>
-                            <td>{parseFloat('0').toFixed(2)}(calcul tva)</td>
-                            <td>{parseFloat('5000').toFixed(2)} €</td>
+                            <td>{totalPrixPlaces.totalHT} €</td>
+                            <td>{totalPrixPlaces.totalTVA} €</td>
+                            <td>{totalPrixPlaces.prixTotalTTC} €</td>
                         </tr>
                     </tfoot>
                 </table>
@@ -287,23 +300,24 @@ function ReservationResumeSelection(props) {
                         {optionBureautique.checked && 
                         <tr>
                             <td>{optionBureautique.nom}</td>
-                            <td>{parseFloat(optionBureautique.prixUnitaireHT).toFixed(2)}</td>
+                            <td>{optionBureautique.prixUnitaireHT}</td>
                             <td>{optionBureautique.nombreReservations}</td>
                             <td>{optionBureautique.prixTotalHT}</td>
-                            <td>{parseFloat((optionBureautique.prixUnitaireHT*optionBureautique.nombreReservations)*tvaOption.montant).toFixed(2)}</td>
-                            <td>{parseFloat((optionBureautique.prixUnitaireHT*optionBureautique.nombreReservations)*(1+tvaOption.montant)).toFixed(2)} €</td>
+                            <td>{optionBureautique.prixTotalTVA}</td>
+                            <td>{optionBureautique.prixTotalTTC} €</td>
                         </tr>
                         }
                         {optionRestauration.checked && 
                         <tr>
                             <td>{optionRestauration.nom}</td>
-                            <td>{parseFloat(optionRestauration.prixUnitaireHT).toFixed(2)}</td>
+                            <td>{optionRestauration.prixUnitaireHT}</td>
                             <td>{optionRestauration.nombreReservations}</td>
-                            <td>{parseFloat((optionRestauration.prixUnitaireHT*optionRestauration.nombreReservations)).toFixed(2)}</td>
-                            <td>{parseFloat((optionRestauration.prixUnitaireHT*optionRestauration.nombreReservations)*tvaOption.montant).toFixed(2)}</td>
-                            <td>{parseFloat((optionRestauration.prixUnitaireHT*optionRestauration.nombreReservations)*(1+tvaOption.montant)).toFixed(2)} €</td>
+                            <td>{optionRestauration.prixTotalHT}</td>
+                            <td>{optionRestauration.prixTotalTVA}</td>
+                            <td>{optionRestauration.prixTotalTTC} €</td>
                         </tr>
                         }
+
                     </tbody>
                     <tfoot>
                         <tr>

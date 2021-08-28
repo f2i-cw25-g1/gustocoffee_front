@@ -58,6 +58,32 @@ const Reservation = () => {
     for (var i = 0; i < toutesLesPlaces.length; i++) {
       toutesLesPlaces[i].setAttribute('fill', couleurPlaceDisponible);
     }
+    placesSelectionnees.forEach((placeSelectionnee ) => {
+      if(placeSelectionnee.date == formDataRef.current['rechercheDate'].value){
+        if(
+          (placeSelectionnee.heureDebut <= formData['heureDebut'] && placeSelectionnee.heureFin >= formData['heureDebut']) ||
+          (placeSelectionnee.heureDebut <= formData['heureFin'] && placeSelectionnee.heureFin >= formData['heureFin']) ||
+          (placeSelectionnee.heureDebut >= formData['heureDebut'] && placeSelectionnee.heureFin <= formData['heureFin'])
+        ){
+          let placeAmodifier = carteRef.current.getElementById(placeSelectionnee.id);
+          placeAmodifier.setAttribute('fill', couleurPlaceSelectionnee);
+        }
+      }
+      
+      /*
+      let placeNom = places.find((e) => e.id === placeSelectionnee.id);
+        let placeAmodifier = carteRef.current.getElementById(
+          'Place' + placeNom.nom
+        );
+        placeAmodifier.setAttribute('fill', couleurPlaceSelectionnee);
+      */
+
+      /*
+      date: formDataRef.current['rechercheDate'].value,
+      heureDebut: formDataRef.current['rechercheHeureDebut'].value,
+      heureFin: formDataRef.current['rechercheHeureFin'].value,
+      */
+    });
   }, [formData]);
 
 
@@ -182,7 +208,7 @@ const Reservation = () => {
   return (
     <main>
       <p className="subsection_title">Réservation</p>
-
+      <p>Bénéficiez d'une heure offerte en réservant 3 heures ou plus comprenant les créneaux 7h-10h ou 19h-22h. Pour la journée complète (de 7h à 22h), Cela vous fait 2 heures gratuites !</p>
       <div className="flexform">
         <div id="formResearch">
           <div className="load" style={{ display: 'none' }}></div>
@@ -200,6 +226,9 @@ const Reservation = () => {
                 type="time"
                 id="rechercheHeureDebut"
                 name="rechercheHeureDebut"
+                min="07:00" 
+                max="21:45"
+                step="900"
               />
             </div>
             <div id="heureFin">
@@ -208,20 +237,25 @@ const Reservation = () => {
                 type="time"
                 id="rechercheHeureFin"
                 name="rechercheHeureFin"
+                min="07:15" 
+                max="22:00"
+                step="900"
               />
             </div>
             <button id="submitDateButton" type="submit">
               Rechercher
             </button>
           </form>
-          <p className="resume_places_selectionnees">Résumé places selectionnées :</p>
+
+          {/* <p className="resume_places_selectionnees">Résumé places selectionnées :</p>
           <div className="places_selectionnees">
             {placesSelectionnees &&
               placesSelectionnees.map((a) => {
                 return <ul key={a.key}>{a.nom}, date = {moment(a.date, 'YYYY-MM-DD').format('DD/MM/YYYY')}</ul>;
               })}
-          </div>
+          </div> */}
         </div>
+
         <div className="table_overflow">
           <CarteSvg className="carte_svg" ref={carteRef} />
         </div>
@@ -232,7 +266,33 @@ const Reservation = () => {
         <p className="couleur_places_occupees">place(s) occupée(s)</p>
       </div>
 
-      
+      {(placesSelectionnees.length)>=1 && 
+      <>
+      <p className="section_title2">résumé places des places sélectionnées</p>
+      <div className="table_overflow">
+          <table>
+              <thead>
+                  <tr>
+                      <th>place</th>
+                      <th>date</th>
+                      <th>heure début</th>
+                      <th>heure fin</th>
+                  </tr>
+              </thead>
+              <tbody>
+                  {placesSelectionnees.map((a) => {
+                  return  <tr key={a.key}>
+                              <td>{a.nom}</td>
+                              <td>{moment(a.date, 'YYYY-MM-DD').format('DD/MM/YYYY')}</td>
+                              <td>{a.heureDebut}</td>
+                              <td>{a.heureFin}</td>
+                          </tr>;
+                  })}
+              </tbody>
+          </table>
+      </div>
+      </>
+      }   
       <Link
         to={{
           pathname: "/resume-reservation",
