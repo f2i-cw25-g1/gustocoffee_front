@@ -16,6 +16,10 @@
   flex-wrap: wrap;
 }
 
+.contact_infos {
+  margin: 20px 0 20px 0;
+}
+
 @media (max-width: 56.25em) {
   .flexform form textarea {
     width: 240px;
@@ -29,5 +33,8 @@
 @media (max-width: 37.5em) {
   .flexform form textarea {
     width: 260px;
+  }
+  .contact_infos {
+    margin: 20px 0 20px 40px;
   }
 }
