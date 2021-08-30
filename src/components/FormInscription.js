@@ -55,8 +55,7 @@ const FormInscription = () => {
         }
     }
 
-
-
+    //envoi du formulaire sur le serveur
     const onSubmit = async (data) => {
         clearErrors()
         await axios({
@@ -81,9 +80,7 @@ const FormInscription = () => {
         }).then((response) => {
             console.log('response', response);
             setModalShow(true);
-
         }).catch((error) => {
-
             if (error.response.data['hydra:description']) {
                 //erreur identifiable
                 let tableauMessagesErreur = error.response.data["hydra:description"].split("\n");
@@ -94,8 +91,6 @@ const FormInscription = () => {
                 //erreur non identifiée
                 erreurType(error.response.data)
             }
-
-
         })
     }
 
@@ -165,7 +160,7 @@ const FormInscription = () => {
                             }
                         })
                         } onBlur={() => {
-                            //nettoie le champ erreur si l'email est déja utilisé
+                            //nettoie le champ mail quand on quitte le focus de l'input
                             clearErrors("mailUtilise")
                             clearErrors("mail")
                         }
