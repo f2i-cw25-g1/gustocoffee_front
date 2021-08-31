@@ -291,6 +291,7 @@ useEffect(() => {
       <p className="reservation_description">Bénéficiez d'une heure offerte en réservant 3 heures ou plus comprenant les créneaux 7h-10h ou 19h-22h. Pour la journée complète (de 7h à 22h), Cela vous fait 2 heures gratuites !</p>
       <div className="flexform">
         <div id="formResearch">
+          <p className="section_title2">Date et Heure</p>
           <div className="load" style={{ display: 'none' }}></div>
           <form onSubmit={handleRerchercherDate} ref={formDataRef}>
             <div id="containerDate">
@@ -327,11 +328,14 @@ useEffect(() => {
             </button>
           </form>
         </div>
-
         <div className="table_overflow">
-          <CarteSvg className="carte_svg" ref={carteRef} />
-          <CarteSalonsSvg className="carte_svg" ref={carteSalonsRef} />
+        <p className="section_title2">Places</p>
+        <CarteSvg className="carte_place_svg" ref={carteRef} />
         </div>
+      </div>
+      <div className="table_overflow">
+        <p className="section_title2">Salons</p>
+        <CarteSalonsSvg className="carte_salon_svg" ref={carteSalonsRef} />
       </div>
       <div className="legende_couleur_place">
         <p className="couleur_places_disponibles">place(s) disponible(s)</p>

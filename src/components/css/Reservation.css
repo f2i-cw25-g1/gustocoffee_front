@@ -54,15 +54,6 @@ path {
   background-color: #ff6060;
 }
 
-@media (max-width: 56.25em) {
-  .carte_svg {
-    width: 380px;
-  }
-  .options_text {
-    margin: 10px 0;
-  }
-}
-
 .flex_checkbox {
   display: flex;
   flex-wrap: wrap;
@@ -142,17 +133,45 @@ td:nth-child(1) {
   color: #986946;
 }
 
+.place:hover,
+.salon:hover {
+  cursor: pointer;
+}
+
+.carte_place_svg {
+  width: 100%;
+  height: 85%;
+}
+
+.carte_salon_svg {
+  width: 60%;
+  height: 100%;
+}
+
 @media (max-width: 56.25em) {
   .flex_checkbox div {
     flex: 100%;
   }
+  .options_text {
+    margin: 10px 0;
+  }
+  .carte_salon_svg {
+    width: 100%;
+    height: 100%;
+  }
 }
 
 @media (max-width: 37.5em) {
-  .carte_svg {
+  .carte_place_svg {
     width: 150%;
+    height: 98%;
+  }
+  .carte_salon_svg {
+    width: 150%;
+    height: 98%;
   }
   .table_overflow {
     overflow-x: scroll;
+    height: 100%;
   }
 }
