@@ -1,6 +1,7 @@
 import axios from 'axios';
 import React, { useState, useEffect, useRef, useLayoutEffect } from 'react';
 import { ReactComponent as CarteSvg } from '../img/Carte_Gusto_Coffee.svg';
+import { ReactComponent as CarteSalonsSvg } from '../img/Carte_Salons_Gusto_Coffee.svg';
 import '../App.css';
 import '../components/css/Reservation.css';
 import {Link} from 'react-router-dom';
@@ -16,14 +17,23 @@ const Reservation = () => {
   const couleurPlaceSelectionnee = '#94D36E';
   const couleurPlaceReservee = '#FF6060';
 
-  const carteRef = useRef(null);
   const firstUpdate = useRef(true);
-  const formDataRef = useRef({});
 
+  //date heure
+  const formDataRef = useRef({});
   const [formData, setFormData] = useState({})
+  
+  //places
+  const carteRef = useRef(null);
   const [places, setPlaces] = useState([]);
   const [reservationsPlaces, setReservationsPlaces] = useState([]);
   const [placesSelectionnees, setPlacesSelectionnees] = useState([]);
+
+  //salons
+  const carteSalonsRef = useRef(null);
+  const [salons, setSalons] = useState([]);
+  const [reservationsSalons, setReservationsSalons] = useState([]);
+  const [salonsSelectionnes, setSalonsSelectionnes] = useState([]);
 
   //executer du code synchrone, il va attendre qu'on ai récupéré les données
   useLayoutEffect(() => {
@@ -69,23 +79,8 @@ const Reservation = () => {
           placeAmodifier.setAttribute('fill', couleurPlaceSelectionnee);
         }
       }
-      
-      /*
-      let placeNom = places.find((e) => e.id === placeSelectionnee.id);
-        let placeAmodifier = carteRef.current.getElementById(
-          'Place' + placeNom.nom
-        );
-        placeAmodifier.setAttribute('fill', couleurPlaceSelectionnee);
-      */
-
-      /*
-      date: formDataRef.current['rechercheDate'].value,
-      heureDebut: formDataRef.current['rechercheHeureDebut'].value,
-      heureFin: formDataRef.current['rechercheHeureFin'].value,
-      */
     });
   }, [formData]);
-
 
   useEffect(() => {
     const placesInSvg = carteRef.current.getElementsByClassName('place');
@@ -94,9 +89,8 @@ const Reservation = () => {
     }
   }, []);
 
-
   useEffect(() => {
-    const ourRequest = axios.CancelToken.source()
+    const ourRequest = axios.CancelToken.source();
 
     const fetchReservation = async (date) => {
       try {
@@ -118,7 +112,6 @@ const Reservation = () => {
       ourRequest.cancel('component demonté')
     }
   }, [formData])
-
 
   const handleRerchercherDate = (e) => {
     e.preventDefault();
@@ -153,12 +146,10 @@ const Reservation = () => {
       heureDebut: formDataRef.current['rechercheHeureDebut'].value,
       heureFin: formDataRef.current['rechercheHeureFin'].value,
     };
-
     if (target.getAttribute('fill') === couleurPlaceReservee) {
       alert('place reservée !');
       return;
     }
-
     if (target.getAttribute('fill') === couleurPlaceDisponible) {
       target.setAttribute('fill', couleurPlaceSelectionnee);
       setPlacesSelectionnees((prev) => {
@@ -168,7 +159,6 @@ const Reservation = () => {
       });
       return;
     }
-
     if (target.getAttribute('fill') === couleurPlaceSelectionnee) {
       target.setAttribute('fill', couleurPlaceDisponible);
       setPlacesSelectionnees((prev) => {
@@ -185,8 +175,6 @@ const Reservation = () => {
     for (const placeReservee of placesReservees) {
       let heureDebutPlaceReservee = placeReservee.heureDebut.substr(11, 5);
       let heureFinPlaceReservee = placeReservee.heureFin.substr(11, 5);
-
-
       if ( //si on est dans l'un des cas suivants, la reservation actuelle est bien occupee sur la plage horaire selectionnee, donc colorier
         (heureDebutPlaceReservee <= formData['heureDebut'] && heureFinPlaceReservee >= formData['heureDebut']) ||
         (heureDebutPlaceReservee <= formData['heureFin'] && heureFinPlaceReservee >= formData['heureFin']) ||
@@ -204,6 +192,18 @@ const Reservation = () => {
   useEffect(() => {
     console.log(placesSelectionnees)
   }, [placesSelectionnees])
+
+//SALONS
+useEffect(() => {
+  console.log(salonsSelectionnes)
+}, [salonsSelectionnes])
+
+
+
+
+
+
+
 
   return (
     <main>
@@ -247,18 +247,11 @@ const Reservation = () => {
               Rechercher
             </button>
           </form>
-
-          {/* <p className="resume_places_selectionnees">Résumé places selectionnées :</p>
-          <div className="places_selectionnees">
-            {placesSelectionnees &&
-              placesSelectionnees.map((a) => {
-                return <ul key={a.key}>{a.nom}, date = {moment(a.date, 'YYYY-MM-DD').format('DD/MM/YYYY')}</ul>;
-              })}
-          </div> */}
         </div>
 
         <div className="table_overflow">
           <CarteSvg className="carte_svg" ref={carteRef} />
+          <CarteSalonsSvg className="carte_svg" ref={carteSalonsRef} />
         </div>
       </div>
       <div className="legende_couleur_place">
