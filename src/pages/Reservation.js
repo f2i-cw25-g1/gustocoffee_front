@@ -69,7 +69,7 @@ const Reservation = () => {
       toutesLesPlaces[i].setAttribute('fill', couleurPlaceDisponible);
     }
     placesSelectionnees.forEach((placeSelectionnee ) => {
-      if(placeSelectionnee.date == formDataRef.current['rechercheDate'].value){
+      if(placeSelectionnee.date === formDataRef.current['rechercheDate'].value){
         if(
           (placeSelectionnee.heureDebut <= formData['heureDebut'] && placeSelectionnee.heureFin >= formData['heureDebut']) ||
           (placeSelectionnee.heureDebut <= formData['heureFin'] && placeSelectionnee.heureFin >= formData['heureFin']) ||
@@ -80,27 +80,54 @@ const Reservation = () => {
         }
       }
     });
-  }, [formData]);
 
+    let tousLesSalons = carteSalonsRef.current.getElementsByClassName('salon');
+    for (let a = 0; a < tousLesSalons.length; a++) {
+      tousLesSalons[a].setAttribute('fill', couleurPlaceDisponible);
+    }
+    salonsSelectionnes.forEach((salonSelectionne ) => {
+      if(salonSelectionne.date === formDataRef.current['rechercheDate'].value){
+        if(
+          (salonSelectionne.heureDebut <= formData['heureDebut'] && salonSelectionne.heureFin >= formData['heureDebut']) ||
+          (salonSelectionne.heureDebut <= formData['heureFin'] && salonSelectionne.heureFin >= formData['heureFin']) ||
+          (salonSelectionne.heureDebut >= formData['heureDebut'] && salonSelectionne.heureFin <= formData['heureFin'])
+        ){
+          let salonAmodifier = carteSalonsRef.current.getElementById(salonSelectionne.id);
+          salonAmodifier.setAttribute('fill', couleurPlaceSelectionnee);
+        }
+      }
+    });
+  }, [formData,placesSelectionnees,salonsSelectionnes]);
+
+  //places ajout listener
   useEffect(() => {
     const placesInSvg = carteRef.current.getElementsByClassName('place');
     for (let i = 0; i < placesInSvg.length; i++) {
       placesInSvg[i].addEventListener('click', (e) => addPlace(e.target));
     }
+    const salonsInSvg = carteSalonsRef.current.getElementsByClassName('salon');
+    for (let i = 0; i < salonsInSvg.length; i++) {
+      salonsInSvg[i].addEventListener('click', (e) => addSalon(e.target));
+    }
   }, []);
 
+  //récupération des données
   useEffect(() => {
     const ourRequest = axios.CancelToken.source();
 
     const fetchReservation = async (date) => {
       try {
-        const [request1, request2] = await Promise.all([
+        const [request1, request2, request3, request4] = await Promise.all([
           axios.get(`/api/place_grande_salles`, { cancelToken: ourRequest.token }),
-          axios.get(`/api/reservation_places?date_reservation=${date}`, { cancelToken: ourRequest.token })
+          axios.get(`/api/reservation_places?date_reservation=${date}`, { cancelToken: ourRequest.token }),
+          axios.get(`/api/salons`, { cancelToken: ourRequest.token }),
+          axios.get(`/api/reservation_salons?date_reservation=${date}`, { cancelToken: ourRequest.token })
         ]);
 
         await setPlaces(await request1.data['hydra:member']);
         await setReservationsPlaces(await request2.data['hydra:member']);
+        await setSalons(await request3.data['hydra:member']);
+        await setReservationsSalons(await request4.data['hydra:member']);
 
       } catch (error) {
         console.log('Il ya eu un problème, ou la requete a été interrompue')
@@ -126,6 +153,7 @@ const Reservation = () => {
     })
   };
 
+  //places et salons réservées mise à jour carte 
   useEffect(() => {
     if (firstUpdate.current) {
       firstUpdate.current = false;
@@ -133,7 +161,10 @@ const Reservation = () => {
     }
     console.log('PLACE RESERVEES:', reservationsPlaces)
     miseAJourCartePlacesReservees(reservationsPlaces);
-  }, [reservationsPlaces]);
+    
+    console.log('SALONS RESERVEES:', reservationsSalons)
+    miseAJourCarteSalonsReserves(reservationsSalons);
+  }, [reservationsPlaces, reservationsSalons]);
 
   //ajout d'une place
   const addPlace = async (target) => {
@@ -168,9 +199,41 @@ const Reservation = () => {
       return;
     }
   };
+  //ajout d'un salon, quasi identique à fonction ci-dessus, à modifier pour n'avoir qu'une fonction (pas le temps)
+  const addSalon = async (target) => {
+    console.log(formDataRef.current['rechercheDate'].value)
+    let salonAjouteASelection = {
+      id: target.id,
+      key: `${target.id} ${formDataRef.current['rechercheDate'].value} ${formDataRef.current['rechercheHeureDebut'].value} ${formDataRef.current['rechercheHeureFin'].value}`,
+      nom: target.id,
+      date: formDataRef.current['rechercheDate'].value,
+      heureDebut: formDataRef.current['rechercheHeureDebut'].value,
+      heureFin: formDataRef.current['rechercheHeureFin'].value,
+    };
+    if (target.getAttribute('fill') === couleurPlaceReservee) {
+      alert('salon reservé !');
+      return;
+    }
+    if (target.getAttribute('fill') === couleurPlaceDisponible) {
+      target.setAttribute('fill', couleurPlaceSelectionnee);
+      setSalonsSelectionnes((prev) => {
+        const update = [...prev];
+        update.push(salonAjouteASelection);
+        return update;
+      });
+      return;
+    }
+    if (target.getAttribute('fill') === couleurPlaceSelectionnee) {
+      target.setAttribute('fill', couleurPlaceDisponible);
+      setSalonsSelectionnes((prev) => {
+        const update = prev.filter((el) => el.id !== target.id);
+        return update;
+      });
+      return;
+    }
+  };
 
-  //récupération des places reservée
-  //coloration du svg
+  //places réservées coloration du svg
   const miseAJourCartePlacesReservees = (placesReservees) => {
     for (const placeReservee of placesReservees) {
       let heureDebutPlaceReservee = placeReservee.heureDebut.substr(11, 5);
@@ -188,6 +251,23 @@ const Reservation = () => {
       }
     }
   };
+  //salons réservés coloration du svg, quasi identique à fonction ci-dessus, à modifier pour n'avoir qu'une fonction (pas le temps)
+  const miseAJourCarteSalonsReserves = (salonsReserves) => {
+    for (const salonReserve of salonsReserves) {
+      let heureDebutSalonReserve = salonReserve.heureDebut.substr(11, 5);
+      let heureFinSalonReserve = salonReserve.heureFin.substr(11, 5);
+      if ( //si on est dans l'un des cas suivants, la reservation actuelle est bien occupee sur la plage horaire selectionnee, donc colorier
+        (heureDebutSalonReserve <= formData['heureDebut'] && heureFinSalonReserve >= formData['heureDebut']) ||
+        (heureDebutSalonReserve <= formData['heureFin'] && heureFinSalonReserve >= formData['heureFin']) ||
+        (heureDebutSalonReserve >= formData['heureDebut'] && heureFinSalonReserve <= formData['heureFin'])
+      ) {
+        let salonNom = salons.find((e) => e.id === salonReserve.id);
+        let salonAmodifier = carteSalonsRef.current.getElementById(salonNom.nom);
+        console.log(salonAmodifier);
+        salonAmodifier.setAttribute('fill', couleurPlaceReservee);
+      }
+    }
+  };
 
   useEffect(() => {
     console.log(placesSelectionnees)
@@ -197,7 +277,6 @@ const Reservation = () => {
 useEffect(() => {
   console.log(salonsSelectionnes)
 }, [salonsSelectionnes])
-
 
 
 
@@ -260,14 +339,14 @@ useEffect(() => {
         <p className="couleur_places_occupees">place(s) occupée(s)</p>
       </div>
 
-      {(placesSelectionnees.length)>=1 && 
+      {((placesSelectionnees.length)>=1 || (salonsSelectionnes.length)>=1) && 
       <>
-      <p className="section_title2">Résumé des places sélectionnées</p>
+      <p className="section_title2">Résumé des places et salons sélectionnés</p>
       <div className="table_overflow">
           <table>
               <thead>
                   <tr>
-                      <th>place</th>
+                      <th></th>
                       <th>date</th>
                       <th>heure début</th>
                       <th>heure fin</th>
@@ -276,7 +355,15 @@ useEffect(() => {
               <tbody>
                   {placesSelectionnees.map((a) => {
                   return  <tr key={a.key}>
-                              <td>{a.nom}</td>
+                              <td>place {a.nom}</td>
+                              <td>{moment(a.date, 'YYYY-MM-DD').format('DD/MM/YYYY')}</td>
+                              <td>{a.heureDebut}</td>
+                              <td>{a.heureFin}</td>
+                          </tr>;
+                  })}
+                  {salonsSelectionnes.map((a) => {
+                  return  <tr key={a.key}>
+                              <td>salon {a.nom}</td>
                               <td>{moment(a.date, 'YYYY-MM-DD').format('DD/MM/YYYY')}</td>
                               <td>{a.heureDebut}</td>
                               <td>{a.heureFin}</td>
@@ -291,6 +378,7 @@ useEffect(() => {
         to={{
           pathname: "/resume-reservation",
           placesSelectionnees: {placesSelectionnees}, // your data array of objects
+          salonsSelectionnes: {salonsSelectionnes}, // your data array of objects
         }}
       >
         <div className="commande_button">Passer la commande</div>

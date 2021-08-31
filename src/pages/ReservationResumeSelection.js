@@ -1,51 +1,9 @@
 import '../components/css/Reservation.css'
-import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import moment from 'moment';
 
 import {useRefresh} from 'react-tidy'
 function ReservationResumeSelection(props) {
-    let tableauSalonsSelectionnes = 
-    [   {   id: "1",
-            key: "1 2021-08-15 15:30 17:30",
-            nom: "Salon Expresso",
-            date: "2021-08-15",
-            heureDebut: "15:30",
-            heureFin: "17:45",
-        },{ id: "2",
-            key: "1 2021-08-15 16:00 18:00",
-            nom: "Salon Dulcetto",
-            date: "2021-08-15",
-            heureDebut: "16:00",
-            heureFin: "18:30",
-        },{ id: "3",
-            key: "1 2021-08-15 19:00 21:00",
-            nom: "Salon Ambello",
-            date: "2021-08-15",
-            heureDebut: "19:00",
-            heureFin: "21:45",
-        }
-    ];
-    /*
-    let prixOption1 = 10;
-    let prixOption2 = 15;
-    let tableauOptions = 
-    [   {   id: "1",
-            key: "1 Option1",
-            nom: "Option 1",
-            prixUnitaireHT: prixOption1,
-            nombreReservations : 6,
-            totalHT : prixOption1 * 6
-        },{ id: "2",
-            key: "2 Option2",
-            nom: "Option 2",
-            prixUnitaireHT: prixOption2,
-            nombreReservations : 6,
-            totalHT : prixOption2 * 6
-        }
-    ];
-    */
-//-------------------------------------
-//-------------------------------------
     const refresh = useRefresh();
     const [tvaReservation, setTvaReservation] = useState([]);
     const [tvaOption, setTvaOption] = useState([]);
@@ -56,7 +14,7 @@ function ReservationResumeSelection(props) {
     const [prixOptionRestaurationHT, setPrixOptionRestaurationHT] = useState([]);
 
     const [placesSelectionnees, setPlacesSelectionnees] = useState([]);
-    const [salonsSelectionnes, setSalonsSelectionnees] = useState([]);
+    const [salonsSelectionnes, setSalonsSelectionnes] = useState([]);
 
     useEffect(() => {
         setPrixHoraireReservationPlaceHT({prix:2.5});
@@ -72,10 +30,10 @@ function ReservationResumeSelection(props) {
         let minutesFin = parseInt(heureFin.split(':')[0])*60+parseInt(heureFin.split(':')[1]);
         let minutesDebut = parseInt(heureDebut.split(':')[0])*60+parseInt(heureDebut.split(':')[1]);
         let tempsMinutesReservees = minutesFin - minutesDebut;
-        if(parseInt(heureDebut.split(':')[0]) == 7 && parseInt(heureDebut.split(':')[1]) == 0 && tempsMinutesReservees >=180){
+        if(parseInt(heureDebut.split(':')[0]) === 7 && parseInt(heureDebut.split(':')[1]) === 0 && tempsMinutesReservees >=180){
             minutesOffertesHeureCreuses += 60;
         }
-        if(parseInt(heureFin.split(':')[0]) == 22 && parseInt(heureFin.split(':')[1]) == 0 && tempsMinutesReservees >=180){
+        if(parseInt(heureFin.split(':')[0]) === 22 && parseInt(heureFin.split(':')[1]) === 0 && tempsMinutesReservees >=180){
             minutesOffertesHeureCreuses += 60;
         }
         return prixHoraireHT.prix/60*(tempsMinutesReservees - minutesOffertesHeureCreuses)//5.203 = 5.20, 5.208 = 5.21;
@@ -94,9 +52,21 @@ function ReservationResumeSelection(props) {
         refresh();
     }, [placesSelectionnees,prixHoraireReservationPlaceHT,tvaReservation])
 
+    useEffect(() => {
+        if(props.location.salonsSelectionnes){
+            let provisoire = props.location.salonsSelectionnes.salonsSelectionnes;
+            provisoire.forEach((salonSelectionne ) => {
+                salonSelectionne.prixHT = calculPrixReservationHT(salonSelectionne.heureDebut, salonSelectionne.heureFin,prixHoraireReservationSalonHT).toFixed(2);
+                salonSelectionne.montantTVA = (calculPrixReservationHT(salonSelectionne.heureDebut, salonSelectionne.heureFin,prixHoraireReservationSalonHT)*tvaReservation.montant).toFixed(2);
+                salonSelectionne.prixTTC = (calculPrixReservationHT(salonSelectionne.heureDebut, salonSelectionne.heureFin,prixHoraireReservationSalonHT)*(1+tvaReservation.montant)).toFixed(2);
+            });
+            setSalonsSelectionnes(props.location.salonsSelectionnes.salonsSelectionnes);
+        }
+        refresh();
+    }, [salonsSelectionnes,prixHoraireReservationSalonHT, tvaReservation])
+
     const [totalPrixPlaces, setTotalPrixPlaces] = useState([]);
     const [totalPrixSalons, setTotalPrixSalons] = useState([]);
-    const [total, setPrixTotal] = useState([]);
     useEffect(() => {
         let totalHT = 0;
         let totalTVA = 0;
@@ -111,18 +81,20 @@ function ReservationResumeSelection(props) {
             totalTVA : totalTVA.toFixed(2),
             prixTotalTTC : prixTotalTTC.toFixed(2)
         })
-    }, [placesSelectionnees])
-
-
-    useEffect(() => {
-        if(props.location.salonsSelectionnees){
-            setSalonsSelectionnees(props.location.salonsSelectionnees.salonsSelectionnees);
-        }else{//a supprimer quand la gestion des salons sera faite
-            setSalonsSelectionnees(tableauSalonsSelectionnes);
-        }
-    }, [setSalonsSelectionnees])
-
-
+        totalHT = 0;
+        totalTVA = 0;
+        prixTotalTTC = 0;
+        salonsSelectionnes.forEach((salonSelectionne) => {
+            totalHT += parseFloat(salonSelectionne.prixHT);
+            totalTVA += parseFloat(salonSelectionne.montantTVA);
+            prixTotalTTC += parseFloat(salonSelectionne.prixTTC);
+        });
+        setTotalPrixSalons({
+            totalHT : totalHT.toFixed(2),
+            totalTVA : totalTVA.toFixed(2),
+            prixTotalTTC : prixTotalTTC.toFixed(2)
+        })
+    }, [placesSelectionnees, salonsSelectionnes])
 
 //options
     const [optionBureautique, setOptionBureautique] = useState([]);
@@ -261,9 +233,9 @@ function ReservationResumeSelection(props) {
                                     <td>{moment(a.date, 'YYYY-MM-DD').format('DD/MM/YYYY')}</td>
                                     <td>{a.heureDebut}</td>
                                     <td>{a.heureFin}</td>
-                                    <td>333</td>
-                                    <td>333</td>
-                                    <td>333 €</td>
+                                    <td>{a.prixHT}</td>
+                                    <td>{a.montantTVA}</td>
+                                    <td>{a.prixTTC}</td>
                                 </tr>;
                         })}
                     </tbody>
@@ -273,9 +245,9 @@ function ReservationResumeSelection(props) {
                             <td></td>
                             <td></td>
                             <td></td>
-                            <td>{totalPrixPlaces.totalHT} €</td>
-                            <td>{totalPrixPlaces.totalTVA} €</td>
-                            <td>{totalPrixPlaces.prixTotalTTC} €</td>
+                            <td>{(parseFloat(totalPrixPlaces.totalHT) + parseFloat(totalPrixSalons.totalHT)).toFixed(2)} €</td>
+                            <td>{(parseFloat(totalPrixPlaces.totalTVA) + parseFloat(totalPrixSalons.totalTVA)).toFixed(2)} €</td>
+                            <td>{(parseFloat(totalPrixPlaces.prixTotalTTC) + parseFloat(totalPrixSalons.prixTotalTTC)).toFixed(2)} €</td>
                         </tr>
                     </tfoot>
                 </table>
@@ -347,9 +319,9 @@ function ReservationResumeSelection(props) {
                     <tbody>
                         <tr>
                             <td>Total places et salons</td>
-                            <td>{totalPrixPlaces.totalHT} €</td>
-                            <td>{totalPrixPlaces.totalTVA} €</td>
-                            <td>{totalPrixPlaces.prixTotalTTC} €</td>
+                            <td>{(parseFloat(totalPrixPlaces.totalHT) + parseFloat(totalPrixSalons.totalHT)).toFixed(2)} €</td>
+                            <td>{(parseFloat(totalPrixPlaces.totalTVA) + parseFloat(totalPrixSalons.totalTVA)).toFixed(2)} €</td>
+                            <td>{(parseFloat(totalPrixPlaces.prixTotalTTC) + parseFloat(totalPrixSalons.prixTotalTTC)).toFixed(2)} €</td>
                         </tr>
                         {(optionBureautique.checked || optionRestauration.checked) && 
                         <>
@@ -365,9 +337,9 @@ function ReservationResumeSelection(props) {
                     <tfoot>
                         <tr>
                             <td>Total à payer</td>
-                            <td>{(parseFloat(totalPrixPlaces.totalHT)+parseFloat(totalOptions.prixTotalHT)).toFixed(2)} €</td>
-                            <td>{(parseFloat(totalPrixPlaces.totalTVA)+parseFloat(totalOptions.prixTotalTVA)).toFixed(2)} €</td>
-                            <td>{(parseFloat(totalPrixPlaces.prixTotalTTC)+parseFloat(totalOptions.prixTotalTTC)).toFixed(2)} €</td>
+                            <td>{(parseFloat(totalPrixPlaces.totalHT)+ parseFloat(totalPrixSalons.totalHT)+parseFloat(totalOptions.prixTotalHT)).toFixed(2)} €</td>
+                            <td>{(parseFloat(totalPrixPlaces.totalTVA)+ parseFloat(totalPrixSalons.totalTVA)+parseFloat(totalOptions.prixTotalTVA)).toFixed(2)} €</td>
+                            <td>{(parseFloat(totalPrixPlaces.prixTotalTTC)+ parseFloat(totalPrixSalons.prixTotalTTC)+parseFloat(totalOptions.prixTotalTTC)).toFixed(2)} €</td>
                         </tr>
                     </tfoot>
                 </table>
