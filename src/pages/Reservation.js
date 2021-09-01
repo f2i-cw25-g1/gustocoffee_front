@@ -5,12 +5,10 @@ import { ReactComponent as CarteSalonsSvg } from '../img/Carte_Salons_Gusto_Coff
 import '../App.css';
 import '../components/css/Reservation.css';
 import {Link} from 'react-router-dom';
+import moment from 'moment';
 
 // 06 07 2021 08:00 18:00
 // 15 08 2021 10:00 12:30
-
-import moment from 'moment';
-
 
 const Reservation = () => {
   const couleurPlaceDisponible = '#D3D36E';
@@ -37,9 +35,24 @@ const Reservation = () => {
 
   //executer du code synchrone, il va attendre qu'on ai récupéré les données
   useLayoutEffect(() => {
-    let date = moment().local('fr').format('DD/MM/YYYY');
-    let heureDebut = moment().local('fr').format('HH:mm');
-    let heureFin = moment().local('fr').add(1, 'hour').format('HH:mm');
+    //let date = moment().local('fr').format('DD/MM/YYYY');
+    //let heureDebut = moment().local('fr').format('HH:mm');
+    //let heureFin = moment().local('fr').add(1, 'hour').format('HH:mm');
+    
+    //exemple pour aller aller sur la prochaine quinzaine de minutes
+    //const start = moment('2018-12-08 09:42');
+    //const remainder = 30 - (start.minute() % 30);
+    //const dateTime = moment(start).add(remainder, "minutes").format("DD.MM.YYYY, h:mm:ss a");
+    //console.log(dateTime);
+        
+    
+    let start = moment().format('mm');
+    const remainder = 15 - (start % 15);
+
+    let date = moment().local('fr').add(remainder, "minutes").format('DD/MM/YYYY');
+    let heureDebut = moment().local('fr').add(remainder, "minutes").format('HH:mm');
+    let heureFin = moment().local('fr').add(remainder, "minutes");
+    heureFin = heureFin.add(1, 'hour').format('HH:mm');
 
     if (heureDebut >= '21:00') {
       date = moment().add(1, 'days').format('DD/MM/YYYY');
@@ -334,9 +347,9 @@ useEffect(() => {
         </div>
       </div>
       <div className="legende_couleur_place">
-        <p className="couleur_places_disponibles">place(s) disponible(s)</p>
-        <p className="couleur_places_selectionnees">place(s) selectionnée(s)</p>
-        <p className="couleur_places_occupees">place(s) occupée(s)</p>
+        <p className="couleur_places_disponibles">emplacement disponible</p>
+        <p className="couleur_places_selectionnees">emplacement sélectionné</p>
+        <p className="couleur_places_occupees">emplacement occupée</p>
       </div>
 
       {((placesSelectionnees.length)>=1 || (salonsSelectionnes.length)>=1) && 
