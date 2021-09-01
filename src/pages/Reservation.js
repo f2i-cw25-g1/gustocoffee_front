@@ -110,7 +110,7 @@ const Reservation = () => {
         }
       }
     });
-  }, [formData,placesSelectionnees,salonsSelectionnes]);
+  }, [formData]);
 
   //places ajout listener
   useEffect(() => {
