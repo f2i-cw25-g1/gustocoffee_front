@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 
 import './css/Product.css';
 
@@ -11,7 +11,7 @@ function SingleProduit(props) {
             <div className="produitinfos">
                 <h1 className="produittitle">{props.nom}</h1>
                 <p>{props.description}</p>
-                <p>{props.prix}€</p>
+                <p>{parseFloat(props.prix).toFixed(2)}€</p>
             </div>
         </div>
       );

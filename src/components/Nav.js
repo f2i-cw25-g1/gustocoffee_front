@@ -4,6 +4,7 @@ import menu from '../img/menu.svg';
 import profil from "../img/profil.svg";
 import {Link} from 'react-router-dom';
 import React, { useEffect } from 'react';
+import CookieConsent from "react-cookie-consent";
 
 function Nav() {
   useEffect(() => {//au chargement de la page
@@ -58,6 +59,20 @@ function Nav() {
         </ul>
       </nav>
     </nav>
+    <CookieConsent
+      location="bottom"
+      buttonText="Accepter"
+      cookieName="CookieConsentBar"
+      style={{ color: "#000", background: "rgba(255, 255, 255, 0.8)" }}
+      buttonStyle={{ background: "#d3d36e", color: "#000", fontSize: "13px" }}
+      expires={150}
+
+      enableDeclineButton
+      declineButtonText="Refuser"
+      declineButtonStyle={{ background: "#ff6060", color: "#000", fontSize: "13px" }}
+    >
+    Ce site utilise des cookies pour améliorer l'expérience utilisateur.
+    </CookieConsent>
     </div>
   );
 }
