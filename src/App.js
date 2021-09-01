@@ -4,6 +4,7 @@ import './App.css';
 // Composants
 import Nav from './components/Nav';
 import Footer from './components/Footer';
+import Recaptcha from './components/Recaptcha';
 //import SingleProduit from './components/SingleProduit';
 
 // Pages
@@ -44,6 +45,7 @@ function App() {
           <Route component={Error} />
         </Switch>
       <Footer />
+      <Recaptcha />
     </Router>
     
   );
