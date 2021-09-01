@@ -31,8 +31,9 @@ function Products(props) {
   return (
     <div className="items">
       <div className="load"></div>
+      {console.log(props.idProduitActuel)}
       {products.map((product) => {
-        if(props.idProduitActuel !== product.id){//ne pas afficher le produit actuel dans le cas où nous sommes sur une page présentant un produit unique
+        if(props.idProduitActuel != product.id){//ne pas afficher le produit actuel dans le cas où nous sommes sur une page présentant un produit unique
           return (
             <Product
               key={product.id}
