@@ -71,7 +71,7 @@ function Nav() {
       declineButtonText="Refuser"
       declineButtonStyle={{ background: "#ff6060", color: "#000", fontSize: "13px" }}
     >
-    Ce site utilise des cookies pour améliorer l'expèrience utilisateur.
+    Ce site utilise des cookies pour améliorer l'expérience utilisateur.
     </CookieConsent>
     </div>
   );
