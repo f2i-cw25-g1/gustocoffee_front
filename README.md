@@ -1,7 +1,7 @@
-# Gusto Coffe
+# Gusto Coffee
 
 Alexis RÉAU, Cédric BAUSSERON, ERIC CICCOTTI
-Ce projet à été réaliser avec ReactJS, https://create-react-app.dev/
+Ce projet à été réalisé avec ReactJS, https://create-react-app.dev/
 
 # URL
 
@@ -15,8 +15,8 @@ Aller dans le dossier gustocoffe_front, et lancer :
 
 ### `npm start`
 
-l'application va se lancer sur le port http://localhost:3000
+L'application va se lancer sur le port http://localhost:3000
 
-### PWA
+## PWA
 
 Aller sur le site https://www.f2i-dev14-gq-gd-fh.fr/ sur un smartphone android via un navigateur Chrome puis cliquer sur `Ajouter Gusto Coffee à l'écran d'accueil` et installer l'application.
