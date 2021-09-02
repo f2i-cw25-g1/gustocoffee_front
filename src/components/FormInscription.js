@@ -1,5 +1,5 @@
 import { useForm } from "react-hook-form";
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import axios from "axios";
 import MyVerticallyCenteredModal from "./Modal";
 import './css/FormInscriptionConnexion.css';
@@ -9,6 +9,7 @@ const FormInscription = () => {
     const [modalShow, setModalShow] = useState(false);
     const { clearErrors, register, handleSubmit, setError, watch, formState: { errors } } = useForm({ criteriaMode: "all" });
     const emailPattern = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    const checkBoxCGU = useRef(null);
 
     //gestion des erreurs récupérée par le back-office
     const erreurType = (erreurMessage) => {
@@ -53,31 +54,36 @@ const FormInscription = () => {
     //envoi du formulaire sur le serveur
     const onSubmit = async (data) => {
         clearErrors()
-        await axios({
-            method: 'post',
-            url: 'http://localhost:8000/users',
-            data: {
-                "email": data.mail,
-                "password": data.mdp,
-                "nom": data.nom,
-                "prenom": data.prenom
+        if(checkBoxCGU.current.checked){
+            await axios({
+                method: 'post',
+                url: 'http://localhost:8000/users',
+                data: {
+                    "email": data.mail,
+                    "password": data.mdp,
+                    "nom": data.nom,
+                    "prenom": data.prenom
+    
+                }
+            }).then((response) => {
+                console.log('response', response);
+                setModalShow(true);
+            }).catch((error) => {
+                if (error.response.data['hydra:description']) {
+                    //erreur identifiable
+                    let tableauMessagesErreur = error.response.data["hydra:description"].split("\n");
+                    tableauMessagesErreur.forEach((item) => {
+                        erreurType(item);
+                    });
+                } else {
+                    //erreur non identifiée
+                    erreurType(error.response.data)
+                }
+            })
 
-            }
-        }).then((response) => {
-            console.log('response', response);
-            setModalShow(true);
-        }).catch((error) => {
-            if (error.response.data['hydra:description']) {
-                //erreur identifiable
-                let tableauMessagesErreur = error.response.data["hydra:description"].split("\n");
-                tableauMessagesErreur.forEach((item) => {
-                    erreurType(item);
-                });
-            } else {
-                //erreur non identifiée
-                erreurType(error.response.data)
-            }
-        })
+        }else{
+            alert("merci d'accepter les CGU")
+        }
     }
 
     return (
@@ -163,6 +169,8 @@ const FormInscription = () => {
 
                     </div>
                     {/* {errors.all && <p className="erreurInscription">{errors.all?.message}</p>} */}
+                    <input type="checkbox" id="checkBoxCGU" name="checkBoxCGU" ref={checkBoxCGU} />
+                    <label htmlFor="checkBoxCGU">Option bureautique</label>
                     <button type="submit">S'inscrire</button>
                 </form>
                 <button type="button" onClick={() => setModalShow(true)}>Show modal</button>
