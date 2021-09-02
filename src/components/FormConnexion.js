@@ -1,4 +1,4 @@
-
+//appelé par component forminscriptionconnexion, non fonctionnel, en cours mais innachevé par manque de temps
 function FormConnexion(){
     const loginUser = async (event)=>{
 

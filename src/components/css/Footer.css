@@ -47,6 +47,7 @@ footer button:hover {
   margin-bottom: 20px;
 }
 
+/*Style pour différentes tailles d'écran*/
 @media (max-width: 56.25em) {
   footer {
     margin: 0 30px;

@@ -6,8 +6,11 @@ import {Link} from 'react-router-dom';
 import React, { useEffect } from 'react';
 import CookieConsent from "react-cookie-consent";
 
+//Barre de navigation
 function Nav() {
-  useEffect(() => {//au chargement de la page
+  //au chargement de la page, UseEffect est appelé
+  //Fonction permettant de fermer le menu burger au changement d'une page
+  useEffect(() => {
     let elementsNavMobile = document.getElementsByClassName("nav_bar_mobile_item");
     for (var i = 0; i < elementsNavMobile.length; i++) {
       elementsNavMobile[i].addEventListener('click', function(){
@@ -18,6 +21,7 @@ function Nav() {
 
   return (
     <div>
+      {/* Navbar format ordinateur */}
     <nav className="nav_bar">
       <Link className="nav_bar_link hover_effect" to='/reservation'>Réservation</Link>
       <Link className="nav_bar_link hover_effect" to='/boutique'>Boutique</Link>
@@ -34,6 +38,7 @@ function Nav() {
       <img className="brand-logo-img" src={logo} alt="Logo Gusto Coffee"></img>
     </Link>
 
+    {/* navBar format mobile */}
     <nav className="nav_bar_mobile">
       <input type="checkbox" className="nav_bar_mobile_checkbox" id="navi-toggle"></input>
       <label htmlFor="navi-toggle" className="nav_bar_mobile_button">
@@ -59,6 +64,7 @@ function Nav() {
         </ul>
       </nav>
     </nav>
+    {/* Affiche la barre de consentement des cookies */}
     <CookieConsent
       location="bottom"
       buttonText="Accepter"

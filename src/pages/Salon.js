@@ -5,6 +5,7 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 import urlApi from '../urlApi';
 
+//Page affichant un salon sélectionné
 function Salon() {
   const { id } = useParams();
   const [salon, setSalon] = useState();
@@ -13,6 +14,7 @@ function Salon() {
     getSalon();
   }, []);
 
+  //récupération du salon sélectionné
   const getSalon = async () => {
     let { data } = await axios.get(urlApi+`/api/salons/${id}`);
     setSalon(data);

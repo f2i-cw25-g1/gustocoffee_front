@@ -1,3 +1,6 @@
+/*Barre de navigation*/
+
+/*nav_bar correspond à la version ordinateur, nav_bar_mobile correspond à la version mobile*/
 .nav_bar {
   height: 10vh;
   display: -webkit-box;

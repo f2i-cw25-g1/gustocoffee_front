@@ -1,3 +1,4 @@
+/*Style pour afficher dans la page produits les produits d'une même catégorie sur une même ligne avec une scrollBar*/
 .items {
     display: -webkit-box;
     display: -ms-flexbox;

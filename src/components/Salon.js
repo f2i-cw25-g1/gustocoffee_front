@@ -1,6 +1,7 @@
 import "./css/Salon.css";
 import {Link} from 'react-router-dom';
 
+//Composant appelé par le composant AllSalons, Affiche salon par salon
 function Salon(props) {
   return (
     <Link to={`/salon/${props.id}`} className="salon" key="props.key">

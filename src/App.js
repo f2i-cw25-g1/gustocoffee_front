@@ -5,7 +5,6 @@ import './App.css';
 import Nav from './components/Nav';
 import Footer from './components/Footer';
 import Recaptcha from './components/Recaptcha';
-//import SingleProduit from './components/SingleProduit';
 
 // Pages
 import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
@@ -24,6 +23,7 @@ import CGU from './pages/CGU';
 import CGV from './pages/CGV';
 import Error from './pages/Error';
 
+//routeur
 function App() {
   return (
     <Router>

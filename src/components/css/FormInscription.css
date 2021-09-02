@@ -1,3 +1,4 @@
+/*Flexform permet d'afficher des éléments à gauche et a droite en laissant un espace entre. Si la largeur est trop petite, les éléments se placeront les uns en dessous des autres*/
 .flexform {
   display: flex;
   flex-wrap: wrap;
@@ -42,6 +43,7 @@
   margin-bottom: 10px;
 }
 
+/*Style pour différentes tailles d'écran*/
 @media (max-width: 56.25em) {
   .flexform form input {
     width: 240px;

@@ -1,5 +1,6 @@
 import AllSalons from "../components/AllSalons";
 
+//Page affichant la liste des salons
 function Salons() {
   return (
     <main>

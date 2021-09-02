@@ -1,7 +1,9 @@
 import React, { useEffect } from 'react';
 import './css/Recaptcha.css';
 
+//Captcha appelé sur chaque page (présent dans App.js)
 function Recaptcha() {
+    //ajoute la clé de site
     const handleLoaded = _ => {
         window.grecaptcha.ready(_ => {
             window.grecaptcha
@@ -12,8 +14,8 @@ function Recaptcha() {
         })
     }
     
+    //ajoute le captcha
     useEffect(() => {
-    // Add reCaptcha
         const script = document.createElement("script")
         script.src = "https://www.google.com/recaptcha/api.js?render=6LdLsTocAAAAAE2z_0XiXOSFXkVIX6mTvx_h2Cfv"
         script.addEventListener("load", handleLoaded)

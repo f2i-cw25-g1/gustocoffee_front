@@ -21,6 +21,7 @@
   font-family: Cabin-Medium;
 }
 
+/*loader, apparait avant la récupération des données comme les produits affichés*/
 .load {
   background-image: url("img/load.gif");
   background-size: 100px;

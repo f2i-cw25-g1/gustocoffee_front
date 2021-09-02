@@ -1,6 +1,6 @@
 import './css/Landing.css';
 import {Link} from 'react-router-dom';
-
+//appelé par la page home (page accueil) affiche l'image et texte "votre espace de coworking" sur la page avant de scroll
 function Landing() {
   return (
     <div className="landing">

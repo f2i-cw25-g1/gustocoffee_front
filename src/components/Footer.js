@@ -4,6 +4,7 @@ import instagram from '../img/instagram.svg';
 import linkedin from '../img/linkedin.svg';
 import {Link} from 'react-router-dom';
 
+//Footer, menu en fin de chaque page
 function Footer() {
   return (
     <div>

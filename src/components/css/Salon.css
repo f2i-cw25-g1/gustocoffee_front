@@ -56,6 +56,7 @@
   padding: 5px 20px;
 }
 
+/*Style pour différentes tailles d'écran*/
 @media (max-width: 37.5em) {
   .salon {
     padding: 0 20px;

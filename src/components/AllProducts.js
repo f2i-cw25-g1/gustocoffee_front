@@ -4,6 +4,7 @@ import axios from "axios";
 import Product from "./../components/Product";
 import urlApi from '../urlApi';
 
+//appelé dans page Boutique
 const AllProducts = () => {
     const [categories, setCategories] = useState([]);
     const documentRef = useRef(null);
@@ -14,7 +15,7 @@ const AllProducts = () => {
     useEffect(() => {
         const ourRequest = axios.CancelToken.source();
         let doc = document.getElementById("loadAllProducts");
-
+        //récupération des produits et catégories
         const getAllProducts = async () => {
             try {
                 const [requestProducts, requestCategory] = await Promise.all([
@@ -36,7 +37,7 @@ const AllProducts = () => {
             }
         }
         getAllProducts();
-        return () => {
+        return () => {//en cas de changement de page, annuler la récupération des items
             console.log('composant démonté')
             ourRequest.cancel('component demonté')
         }
@@ -44,8 +45,10 @@ const AllProducts = () => {
 
     return (
         <div>
+            {/* affiche un loader tant que les données ne sont pas récupérées */}
             <div className="load" id="loadAllProducts"></div>
             {categories.map((categorie) => {
+                //afficher chaque catégorie
                 return (
                     <div className="categorie" key={categorie.nom}>
                         <div className="subsection_title">
@@ -53,6 +56,7 @@ const AllProducts = () => {
                         </div>
                         <div className="items">
                             {categorie.produits.map((produit) => {
+                                //afficher chaque produit de la catégorie actuelle
                                 return (
                                     <Product
                                         key={produit.id}

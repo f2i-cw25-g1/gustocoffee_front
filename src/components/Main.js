@@ -5,6 +5,7 @@ import image2 from "../img/image2.jpg";
 import image3 from "../img/image3.jpg";
 import { Link } from "react-router-dom";
 
+//appelé par home (page acuceil)
 function Main() {
   return (
     <main>
@@ -50,6 +51,7 @@ function Main() {
           <p className="section_text">
             Véritable havre de paix à quelques pas de la gare du Nord, Gusto Coffee dispose d'espaces conçus pour répondre à vos besoins : coworking, révisions, réunions... Tout est à votre disposition.
           </p>
+          {/* lien renvoyant à une page listant les salons */}
           <Link className="sub_button" to="/salons">
             Découvrez nos salons
           </Link>
@@ -57,7 +59,7 @@ function Main() {
       </section>
 
       <p className="subsection_title">Nos Cafés</p>
-
+      {/* affiche les produits de la catégorie produits cafés */}
       <Products
         categorie="/api/categories/1"
       />
@@ -69,7 +71,7 @@ function Main() {
       </div>
 
       <p className="subsection_title">Nos Produits dérivés</p>
-
+      {/* affiche les produits de la catégorie produits dérivés */}
       <Products
         categorie="/api/categories/6"
       />

@@ -6,6 +6,7 @@ import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import urlApi from '../urlApi';
 
+//page affichant un produit unique
 function Produit() {
   const { id } = useParams();
   const [product, setProduct] = useState();
@@ -14,6 +15,7 @@ function Produit() {
     getProduct();
   }, [id]);
 
+  //récupère le produit sélectionné
   const getProduct = async () => {
     await axios.get(urlApi+`/api/produits/${id}`).then((response) => {
       let { data } = response;
@@ -30,6 +32,7 @@ function Produit() {
           console.log(product);
           return (
             <div>
+              {/* composant affichant les caractéristiques du produit */}
               <SingleProduit
                 image={product.image}
                 nom={product.nom}
@@ -37,6 +40,7 @@ function Produit() {
                 prix={product.prix}
               />
               <p className="subsection_title">D'autres ont aussi consulté</p>
+              {/* composant affichant les produits de cette catégorie */}
               <Products categorie={product.categorie} idProduitActuel={id} />
             </div>
           );
@@ -46,16 +50,6 @@ function Produit() {
       })()}
     </main>
   );
-}
-
-{
-  /* <div className="produitimage">
-<img src={product.image} alt=""></img>
-</div>
-<div className="produitinfos">
-<h1 className="produittitle">{product.nom}</h1>
-<p>{product.description}</p>
-<p>{product.prix}€</p> */
 }
 
 export default Produit;

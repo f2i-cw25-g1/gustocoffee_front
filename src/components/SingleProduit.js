@@ -2,6 +2,7 @@ import React from "react";
 
 import './css/Product.css';
 
+//appelé par la page produit, affiche les caractéristiques du produit
 function SingleProduit(props) {
     return (
         <div className="flexproduit">

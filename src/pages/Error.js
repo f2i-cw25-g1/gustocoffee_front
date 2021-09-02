@@ -1,5 +1,6 @@
 import {Link} from 'react-router-dom';
 
+//page appelée lorsqu'on veut atteindre une page qui n'existe pas
 function Error() {
   return (
     <main>

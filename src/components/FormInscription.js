@@ -1,19 +1,11 @@
 import './css/FormInscription.css';
 import axios from "axios";
-/*import {useState} from "react";*/
+import urlApi from '../urlApi';
 
+
+//appelé par component forminscriptionconnexion
 function FormInscription(){
-    /*    
-        const [emailValue,setEmailValue] = useState();
-    
-        const handleChange = (event) =>{
-            console.log(event.target.value);
-            setEmailValue(event.target.value);
-        }
-    */    
-        // 
-
-
+    //afficher le message d'erreur au bon endorit (exemple : email incorrect, message d'erreur en dessous du champ)
     const showErrorMessage = (errorMessage, containerId) =>{
 
         var div = document.createElement('div');
@@ -22,6 +14,7 @@ function FormInscription(){
         document.getElementById(containerId).append(div);
     }
     
+    //préparer un message d'erreur en fonction de l'erreur envoyée par le serveur
     const erreurType = (erreurMessage) => {
         if(erreurMessage.startsWith("email: ")){
             erreurMessage = erreurMessage.split("email: ")[1];
@@ -44,15 +37,13 @@ function FormInscription(){
             showErrorMessage("L'adresse email est déjà utilisée", "containerInscriptionMail"); 
         }
         else{
-            console.log('else');
             //console.log(erreurMessage);
         }
-        //showErrorMessage(erreurMessage);
     }
 
+    //envoi des données saisies à l'API
     const registerUser = async (event)=>{
         event.preventDefault();
-        //console.log(event.target[0].value);
 
         const elements = document.getElementsByClassName("erreurInscription");
         while(elements.length > 0){
@@ -67,7 +58,7 @@ function FormInscription(){
         
         await axios({
             method: 'post',
-            url: '/api/utilisateurs',
+            url: urlApi+'/api/utilisateurs',
             data: {
                 "email": emailValue,
                 "roles": [
@@ -87,17 +78,12 @@ function FormInscription(){
             }).then((response) => {
                 console.log(response);
             }, (error) => {
-                //console.log(error.response.data["hydra:description"]);
                 let tableauMessagesErreur = error.response.data["hydra:description"].split("\n");
                 tableauMessagesErreur.forEach((item)=>{
                     erreurType(item);
                 });
             });
-
-
     }
-
-    
 
     return(
         <div>

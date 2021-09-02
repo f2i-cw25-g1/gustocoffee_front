@@ -5,10 +5,12 @@ import Product from "./Product";
 import axios from "axios";
 import urlApi from '../urlApi';
 
+//appelé par la page produit, affiche tous les produit de la même catégorie que le produit sélectionné sauf le produit actuel
+//exemple : en affichant "croissants", ce composant affihera "d'autres ont aussi consulté Pain au Chocolat, Pain au raisin, ..." (avec lien pour ces produits)
 function Products(props) {
 
   const [products, setProducts] = useState([]);
-
+//récupération des produits de la catégorie, et les ajoute dans la variable correspondante
   const getData = async (categorie) => {
     const { data } = await axios.get(categorie);
     console.log(data["hydra:member"])
@@ -22,11 +24,6 @@ function Products(props) {
         val.style.display = "none";
     }
     });
-    // if(props.categorie){
-    //   getData("/api/produits?page=1&categorie="+props.categorie.split("/api/categories/")[1]);
-    // }else{
-    //   getData("/api/produits?page=1&categorie=6");
-    // }
   }, []);
 
   return (
