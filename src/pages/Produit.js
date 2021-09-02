@@ -5,7 +5,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 
-function Produit() {
+const Produit = () => {
   const { id } = useParams();
   const [product, setProduct] = useState();
 
@@ -14,7 +14,7 @@ function Produit() {
   }, [id]);
 
   const getProduct = async () => {
-    await axios.get(`/api/produits/${id}`).then((response) => {
+    await axios.get(`http://localhost:8000/produits/${id}`).then((response) => {
       let { data } = response;
       setProduct(data);
       document.getElementById('loadProduit').style.display = 'none';

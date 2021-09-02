@@ -1,7 +1,7 @@
 import './css/Landing.css';
-import {Link} from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
-function Landing() {
+const Landing = () => {
   return (
     <div className="landing">
       <div className="catch_phrase">

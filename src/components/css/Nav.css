@@ -29,6 +29,11 @@
   transition: all 0.3s;
 }
 
+
+.a_cursor{
+  cursor:pointer;
+}
+
 .hover_effect {
   display: inline-block;
   padding-top: 10px;

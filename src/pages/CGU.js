@@ -1,5 +1,6 @@
-function CGU() {
-    return (
+const CGU = () => {
+  return (
+    <>
       <main>
         <div className="container">
           <p className="subsection_title">CGU</p>
@@ -96,7 +97,8 @@ function CGU() {
           <i>Ces CGU sont mises à disposition par Aboutinnovation et Privacy Tech selon les termes de la Licence Creative Commons Attribution - Partage dans les Mêmes Conditions 4.0 International.</i>
         </div>
       </main>
-    );
+    </>
+  );
 }
-  
+
 export default CGU;

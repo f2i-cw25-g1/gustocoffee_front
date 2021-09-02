@@ -1,5 +1,6 @@
-function CGV() {
-    return (
+const CGV = () => {
+  return (
+    <>
       <main>
         <div className="container">
           <p className="subsection_title">CGV</p>
@@ -8,7 +9,7 @@ function CGV() {
 
           <p className="section_title2">Article 1 : Objet</p>
           <p>Les présentes Conditions Générales de Vente déterminent les droits et obligations des parties dans le cadre de la vente en ligne de Produits ou Services proposés par le Vendeur.</p>
- 
+
           <p className="section_title2">Article 2 : Dispositions générales</p>
           <p>Les présentes Conditions Générales de Vente (CGV) régissent les ventes de Produits ou de Services, effectuées au travers des sites Internet de la Société, et sont partie intégrante du Contrat entre l’Acheteur et le Vendeur. Elles sont pleinement opposables à l’acheteur qui les a acceptées avant de passer commande. Le Vendeur se réserve la possibilité de modifier les présentes, à tout moment par la publication d’une nouvelle version sur son site Internet. Les CGV applicables alors sont celles étant en vigueur à la date du paiement (ou du premier paiement en cas de paiements multiples) de la commande. Ces CGV sont consultables sur le site Internet de la Société à l’adresse suivante : www.gusto-coffee.fr.</p>
           <p>La Société s’assure également que leur acceptation soit claire et sans réserve en mettant en place une case à cocher et un clic de validation. Le Client déclare avoir pris connaissance de l’ensemble des présentes Conditions Générales de Vente, et le cas échéant des Conditions Particulières de Vente liées à un produit ou à un service, et les accepter sans restriction ni réserve.</p>
@@ -81,7 +82,8 @@ function CGV() {
           <p>Le partage des CGV sur votre site web est de votre responsabilité, c’est à vous d’adapter les points particuliers selon votre domaine.</p>
         </div>
       </main>
-    );
+    </>
+  );
 }
-  
-export default CGV;  
+
+export default CGV;
