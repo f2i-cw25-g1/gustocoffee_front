@@ -1,12 +1,14 @@
 import "./css/Product.css";
-import {Link} from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
-function Product(props) {
+const Product = (props) => {
   return (
-    <Link to={`/produit/${props.id}`} className="item" key="props.key">
-      <img src={props.image} alt={props.nom}></img>
-      <p>{props.nom}</p>
-    </Link>
+    <>
+      <Link to={`/produit/${props.id}`} className="item" key="props.key">
+        <img src={props.image} alt={props.nom}></img>
+        <p>{props.nom}</p>
+      </Link>
+    </>
   );
 }
 

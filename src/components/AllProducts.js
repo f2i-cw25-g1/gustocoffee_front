@@ -17,8 +17,8 @@ const AllProducts = () => {
         const getAllProducts = async () => {
             try {
                 const [requestProducts, requestCategory] = await Promise.all([
-                    axios.get(`/api/produits`, { cancelToken: ourRequest.token }),
-                    axios.get(`/api/categories`, { cancelToken: ourRequest.token })
+                    axios.get(`http://localhost:8000/produits`, { cancelToken: ourRequest.token }),
+                    axios.get(`http://localhost:8000/categories`, { cancelToken: ourRequest.token })
                 ]);
                 productsRef.current = await requestProducts.data["hydra:member"];
                 let responseCategories = await requestCategory.data["hydra:member"];
@@ -42,30 +42,32 @@ const AllProducts = () => {
     }, [])
 
     return (
-        <div>
-            <div className="load" id="loadAllProducts"></div>
-            {categories.map((categorie) => {
-                return (
-                    <div className="categorie" key={categorie.nom}>
-                        <div className="subsection_title">
-                            {categorie.nom}
+        <>
+            <div>
+                <div className="load" id="loadAllProducts"></div>
+                {categories.map((categorie) => {
+                    return (
+                        <div className="categorie" key={categorie.nom}>
+                            <div className="subsection_title">
+                                {categorie.nom}
+                            </div>
+                            <div className="items">
+                                {categorie.produits.map((produit) => {
+                                    return (
+                                        <Product
+                                            key={produit.id}
+                                            id={produit.id}
+                                            nom={produit.nom}
+                                            image={produit.image}
+                                        />
+                                    );
+                                })}
+                            </div>
                         </div>
-                        <div className="items">
-                            {categorie.produits.map((produit) => {
-                                return (
-                                    <Product
-                                        key={produit.id}
-                                        id={produit.id}
-                                        nom={produit.nom}
-                                        image={produit.image}
-                                    />
-                                );
-                            })}
-                        </div>
-                    </div>
-                );
-            })}
-        </div>
+                    );
+                })}
+            </div>
+        </>
     );
 }
 

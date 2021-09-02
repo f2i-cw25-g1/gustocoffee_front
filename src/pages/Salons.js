@@ -1,11 +1,13 @@
 import AllSalons from "../components/AllSalons";
 
-function Salons() {
+const Salons = () => {
   return (
-    <main>
-      <p className="subsection_title">Tous nos salons</p>
-      <AllSalons/>
-    </main>
+    <>
+      <main>
+        <p className="subsection_title">Tous nos salons</p>
+        <AllSalons />
+      </main>
+    </>
   );
 }
 

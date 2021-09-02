@@ -2,18 +2,20 @@ import FormInscriptionConnexion from "../components/FormInscriptionConnexion"
 import { useState } from 'react';
 
 const InscriptionConnexion = () => {
-  const [isLogin, setIsLogin] = useState(true);
+
+  const [isSelectLogin, setIsSelectLogin] = useState(true);
 
   const switchAuthMode = () => {
-    setIsLogin((prevState) => !prevState);
+    setIsSelectLogin((prevState) => !prevState);
   };
 
-
   return (
-    <main>
-      <p className="subsection_title">{isLogin ? "Connexion" : "Inscription"}</p>
-      <FormInscriptionConnexion switchAuthMode={switchAuthMode} isLogin={isLogin} />
-    </main>
+    <>
+      <main>
+        <p className="subsection_title">{isSelectLogin ? "Connexion" : "Inscription"}</p>
+        <FormInscriptionConnexion switchAuthMode={switchAuthMode} isSelectLogin={isSelectLogin} />
+      </main>
+    </>
   );
 }
 

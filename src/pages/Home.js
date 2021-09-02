@@ -1,12 +1,14 @@
 import Landing from '../components/Landing';
 import Main from '../components/Main';
 
-function Home() {
+const Home = () => {
   return (
-    <div>
-      <Landing />
-      <Main />
-    </div>
+    <>
+      <div>
+        <Landing />
+        <Main />
+      </div>
+    </>
   );
 }
 

@@ -4,7 +4,7 @@ import { ReactComponent as CarteSvg } from '../img/Carte_Gusto_Coffee.svg';
 import { ReactComponent as CarteSalonsSvg } from '../img/Carte_Salons_Gusto_Coffee.svg';
 import '../App.css';
 import '../components/css/Reservation.css';
-import {Link} from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import moment from 'moment';
 
 // 06 07 2021 08:00 18:00
@@ -20,7 +20,7 @@ const Reservation = () => {
   //date heure
   const formDataRef = useRef({});
   const [formData, setFormData] = useState({})
-  
+
   //places
   const carteRef = useRef(null);
   const [places, setPlaces] = useState([]);
@@ -38,14 +38,14 @@ const Reservation = () => {
     //let date = moment().local('fr').format('DD/MM/YYYY');
     //let heureDebut = moment().local('fr').format('HH:mm');
     //let heureFin = moment().local('fr').add(1, 'hour').format('HH:mm');
-    
+
     //exemple pour aller aller sur la prochaine quinzaine de minutes
     //const start = moment('2018-12-08 09:42');
     //const remainder = 30 - (start.minute() % 30);
     //const dateTime = moment(start).add(remainder, "minutes").format("DD.MM.YYYY, h:mm:ss a");
     //console.log(dateTime);
-        
-    
+
+
     let start = moment().format('mm');
     const remainder = 15 - (start % 15);
 
@@ -81,13 +81,13 @@ const Reservation = () => {
     for (var i = 0; i < toutesLesPlaces.length; i++) {
       toutesLesPlaces[i].setAttribute('fill', couleurPlaceDisponible);
     }
-    placesSelectionnees.forEach((placeSelectionnee ) => {
-      if(placeSelectionnee.date === formDataRef.current['rechercheDate'].value){
-        if(
+    placesSelectionnees.forEach((placeSelectionnee) => {
+      if (placeSelectionnee.date === formDataRef.current['rechercheDate'].value) {
+        if (
           (placeSelectionnee.heureDebut <= formData['heureDebut'] && placeSelectionnee.heureFin >= formData['heureDebut']) ||
           (placeSelectionnee.heureDebut <= formData['heureFin'] && placeSelectionnee.heureFin >= formData['heureFin']) ||
           (placeSelectionnee.heureDebut >= formData['heureDebut'] && placeSelectionnee.heureFin <= formData['heureFin'])
-        ){
+        ) {
           let placeAmodifier = carteRef.current.getElementById(placeSelectionnee.id);
           placeAmodifier.setAttribute('fill', couleurPlaceSelectionnee);
         }
@@ -98,13 +98,13 @@ const Reservation = () => {
     for (let a = 0; a < tousLesSalons.length; a++) {
       tousLesSalons[a].setAttribute('fill', couleurPlaceDisponible);
     }
-    salonsSelectionnes.forEach((salonSelectionne ) => {
-      if(salonSelectionne.date === formDataRef.current['rechercheDate'].value){
-        if(
+    salonsSelectionnes.forEach((salonSelectionne) => {
+      if (salonSelectionne.date === formDataRef.current['rechercheDate'].value) {
+        if (
           (salonSelectionne.heureDebut <= formData['heureDebut'] && salonSelectionne.heureFin >= formData['heureDebut']) ||
           (salonSelectionne.heureDebut <= formData['heureFin'] && salonSelectionne.heureFin >= formData['heureFin']) ||
           (salonSelectionne.heureDebut >= formData['heureDebut'] && salonSelectionne.heureFin <= formData['heureFin'])
-        ){
+        ) {
           let salonAmodifier = carteSalonsRef.current.getElementById(salonSelectionne.id);
           salonAmodifier.setAttribute('fill', couleurPlaceSelectionnee);
         }
@@ -131,10 +131,10 @@ const Reservation = () => {
     const fetchReservation = async (date) => {
       try {
         const [request1, request2, request3, request4] = await Promise.all([
-          axios.get(`/api/place_grande_salles`, { cancelToken: ourRequest.token }),
-          axios.get(`/api/reservation_places?date_reservation=${date}`, { cancelToken: ourRequest.token }),
-          axios.get(`/api/salons`, { cancelToken: ourRequest.token }),
-          axios.get(`/api/reservation_salons?date_reservation=${date}`, { cancelToken: ourRequest.token })
+          axios.get(`http://localhost:8000/place_grande_salles`, { cancelToken: ourRequest.token }),
+          axios.get(`http://localhost:8000/reservation_places?date_reservation=${date}`, { cancelToken: ourRequest.token }),
+          axios.get(`http://localhost:8000/salons`, { cancelToken: ourRequest.token }),
+          axios.get(`http://localhost:8000/reservation_salons?date_reservation=${date}`, { cancelToken: ourRequest.token })
         ]);
 
         await setPlaces(await request1.data['hydra:member']);
@@ -174,7 +174,7 @@ const Reservation = () => {
     }
     console.log('PLACE RESERVEES:', reservationsPlaces)
     miseAJourCartePlacesReservees(reservationsPlaces);
-    
+
     console.log('SALONS RESERVEES:', reservationsSalons)
     miseAJourCarteSalonsReserves(reservationsSalons);
   }, [reservationsPlaces, reservationsSalons]);
@@ -286,10 +286,10 @@ const Reservation = () => {
     console.log(placesSelectionnees)
   }, [placesSelectionnees])
 
-//SALONS
-useEffect(() => {
-  console.log(salonsSelectionnes)
-}, [salonsSelectionnes])
+  //SALONS
+  useEffect(() => {
+    console.log(salonsSelectionnes)
+  }, [salonsSelectionnes])
 
 
 
@@ -298,110 +298,112 @@ useEffect(() => {
 
 
   return (
-    <main>
-      <div className="container">
-      <p className="subsection_title">Réservation</p>
-      <p className="reservation_description">Bénéficiez d'une heure offerte en réservant 3 heures ou plus comprenant les créneaux 7h-10h ou 19h-22h. Pour la journée complète (de 7h à 22h), Cela vous fait 2 heures gratuites !</p>
-      <div className="flexform">
-        <div id="formResearch">
-          <p className="section_title2">Date et Heure</p>
-          <div className="load" style={{ display: 'none' }}></div>
-          <form onSubmit={handleRerchercherDate} ref={formDataRef}>
-            <div id="containerDate">
-              <label htmlFor="rechercheDate">Date</label>
-              <input type="date"
-                id="rechercheDate"
-                name="rechercheDate"
-              />
+    <>
+      <main>
+        <div className="container">
+          <p className="subsection_title">Réservation</p>
+          <p className="reservation_description">Bénéficiez d'une heure offerte en réservant 3 heures ou plus comprenant les créneaux 7h-10h ou 19h-22h. Pour la journée complète (de 7h à 22h), Cela vous fait 2 heures gratuites !</p>
+          <div className="flexform">
+            <div id="formResearch">
+              <p className="section_title2">Date et Heure</p>
+              <div className="load" style={{ display: 'none' }}></div>
+              <form onSubmit={handleRerchercherDate} ref={formDataRef}>
+                <div id="containerDate">
+                  <label htmlFor="rechercheDate">Date</label>
+                  <input type="date"
+                    id="rechercheDate"
+                    name="rechercheDate"
+                  />
+                </div>
+                <div id="heureDebut">
+                  <label htmlFor="rechercheHeureDebut">Heure de début</label>
+                  <input
+                    type="time"
+                    id="rechercheHeureDebut"
+                    name="rechercheHeureDebut"
+                    min="07:00"
+                    max="21:45"
+                    step="900"
+                  />
+                </div>
+                <div id="heureFin">
+                  <label htmlFor="rechercheHeureFin">Heure de fin</label>
+                  <input
+                    type="time"
+                    id="rechercheHeureFin"
+                    name="rechercheHeureFin"
+                    min="07:15"
+                    max="22:00"
+                    step="900"
+                  />
+                </div>
+                <button id="submitDateButton" type="submit">
+                  Rechercher
+                </button>
+              </form>
             </div>
-            <div id="heureDebut">
-              <label htmlFor="rechercheHeureDebut">Heure de début</label>
-              <input
-                type="time"
-                id="rechercheHeureDebut"
-                name="rechercheHeureDebut"
-                min="07:00" 
-                max="21:45"
-                step="900"
-              />
+            <div className="table_overflow">
+              <p className="section_title2">Places</p>
+              <CarteSvg className="carte_place_svg" ref={carteRef} />
             </div>
-            <div id="heureFin">
-              <label htmlFor="rechercheHeureFin">Heure de fin</label>
-              <input
-                type="time"
-                id="rechercheHeureFin"
-                name="rechercheHeureFin"
-                min="07:15" 
-                max="22:00"
-                step="900"
-              />
-            </div>
-            <button id="submitDateButton" type="submit">
-              Rechercher
-            </button>
-          </form>
-        </div>
-        <div className="table_overflow">
-        <p className="section_title2">Places</p>
-        <CarteSvg className="carte_place_svg" ref={carteRef} />
-        </div>
-      </div>
-      <div className="table_overflow">
-        <p className="section_title2">Salons</p>
-        <CarteSalonsSvg className="carte_salon_svg" ref={carteSalonsRef} />
-      </div>
-      <div className="legende_couleur_place">
-        <p className="couleur_places_disponibles">emplacement disponible</p>
-        <p className="couleur_places_selectionnees">emplacement sélectionné</p>
-        <p className="couleur_places_occupees">emplacement occupée</p>
-      </div>
+          </div>
+          <div className="table_overflow">
+            <p className="section_title2">Salons</p>
+            <CarteSalonsSvg className="carte_salon_svg" ref={carteSalonsRef} />
+          </div>
+          <div className="legende_couleur_place">
+            <p className="couleur_places_disponibles">emplacement disponible</p>
+            <p className="couleur_places_selectionnees">emplacement sélectionné</p>
+            <p className="couleur_places_occupees">emplacement occupée</p>
+          </div>
 
-      {((placesSelectionnees.length)>=1 || (salonsSelectionnes.length)>=1) && 
-      <>
-      <p className="section_title2">Résumé des places et salons sélectionnés</p>
-      <div className="table_overflow">
-          <table>
-              <thead>
-                  <tr>
+          {((placesSelectionnees.length) >= 1 || (salonsSelectionnes.length) >= 1) &&
+            <>
+              <p className="section_title2">Résumé des places et salons sélectionnés</p>
+              <div className="table_overflow">
+                <table>
+                  <thead>
+                    <tr>
                       <th></th>
                       <th>date</th>
                       <th>heure début</th>
                       <th>heure fin</th>
-                  </tr>
-              </thead>
-              <tbody>
-                  {placesSelectionnees.map((a) => {
-                  return  <tr key={a.key}>
-                              <td>place {a.nom}</td>
-                              <td>{moment(a.date, 'YYYY-MM-DD').format('DD/MM/YYYY')}</td>
-                              <td>{a.heureDebut}</td>
-                              <td>{a.heureFin}</td>
-                          </tr>;
-                  })}
-                  {salonsSelectionnes.map((a) => {
-                  return  <tr key={a.key}>
-                              <td>salon {a.nom}</td>
-                              <td>{moment(a.date, 'YYYY-MM-DD').format('DD/MM/YYYY')}</td>
-                              <td>{a.heureDebut}</td>
-                              <td>{a.heureFin}</td>
-                          </tr>;
-                  })}
-              </tbody>
-          </table>
-      </div>
-      </>
-      }   
-      <Link
-        to={{
-          pathname: "/resume-reservation",
-          placesSelectionnees: {placesSelectionnees}, // your data array of objects
-          salonsSelectionnes: {salonsSelectionnes}, // your data array of objects
-        }}
-      >
-        <div className="commande_button">Passer la commande</div>
-      </Link>
-      </div>
-    </main>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {placesSelectionnees.map((a) => {
+                      return <tr key={a.key}>
+                        <td>place {a.nom}</td>
+                        <td>{moment(a.date, 'YYYY-MM-DD').format('DD/MM/YYYY')}</td>
+                        <td>{a.heureDebut}</td>
+                        <td>{a.heureFin}</td>
+                      </tr>;
+                    })}
+                    {salonsSelectionnes.map((a) => {
+                      return <tr key={a.key}>
+                        <td>salon {a.nom}</td>
+                        <td>{moment(a.date, 'YYYY-MM-DD').format('DD/MM/YYYY')}</td>
+                        <td>{a.heureDebut}</td>
+                        <td>{a.heureFin}</td>
+                      </tr>;
+                    })}
+                  </tbody>
+                </table>
+              </div>
+            </>
+          }
+          <Link
+            to={{
+              pathname: "/resume-reservation",
+              placesSelectionnees: { placesSelectionnees }, // your data array of objects
+              salonsSelectionnes: { salonsSelectionnes }, // your data array of objects
+            }}
+          >
+            <div className="commande_button">Passer la commande</div>
+          </Link>
+        </div>
+      </main>
+    </>
   );
 };
 

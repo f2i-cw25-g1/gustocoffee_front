@@ -5,37 +5,39 @@ import ReactDOM from 'react-dom';
 
 import Salon from "./Salon";
 
-function AllSalons() {
+const AllSalons = () => {
 
     const [salons, setSalons] = useState([]);
-    let responseSalons=[];
+    let responseSalons = [];
 
     const getSalons = async () => {
-        const { data } = await axios.get(`/api/salons`);
+        const { data } = await axios.get(`http://localhost:8000/salons`);
         responseSalons = data["hydra:member"];
         setSalons(data["hydra:member"]);
     };
 
     useEffect(() => {
-    getSalons();
+        getSalons();
     }, []);
 
 
     return (
-        <div>
-            {salons.map((salon) =>{
-                return(
-                    <Salon
-                        key={salon.id}
-                        id={salon.id}
-                        image={salon.image}
-                        nom={salon.nom}
-                        description={salon.description}
-                        capacite={salon.nombrePlace}
-                    />
-                );
-            })}
-        </div>
+        <>
+            <div>
+                {salons.map((salon) => {
+                    return (
+                        <Salon
+                            key={salon.id}
+                            id={salon.id}
+                            image={salon.image}
+                            nom={salon.nom}
+                            description={salon.description}
+                            capacite={salon.nombrePlace}
+                        />
+                    );
+                })}
+            </div>
+        </>
     );
 }
 

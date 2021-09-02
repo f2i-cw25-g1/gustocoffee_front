@@ -1,7 +1,7 @@
 import { useForm } from "react-hook-form";
 import { useState, useRef } from 'react';
 import axios from "axios";
-import MyVerticallyCenteredModal from "./Modal";
+import MyVerticallyCenteredModal from "../services/ModalComponent/Modal";
 import './css/FormInscriptionConnexion.css';
 
 
@@ -12,44 +12,44 @@ const FormInscription = () => {
     const checkBoxCGU = useRef(null);
 
     //gestion des erreurs récupérée par le back-office
-    const erreurType = (erreurMessage) => {
-        if (erreurMessage.startsWith("SQLSTATE[23000]")) {
-            setError("mailUtilise", {
-                type: "manual",
-                message: "L'adresse email est déjà utilisée"
-            });
-        }
-        if (erreurMessage.startsWith("email: ")) {
-            setError("mail", { type: "manual", message: erreurMessage.replace("email: ", "") });
-        }
+    // const erreurType = (erreurMessage) => {
+    //     if (erreurMessage.startsWith("SQLSTATE[23000]")) {
+    //         setError("mailUtilise", {
+    //             type: "manual",
+    //             message: "L'adresse email est déjà utilisée"
+    //         });
+    //     }
+    //     if (erreurMessage.startsWith("email: ")) {
+    //         setError("mail", { type: "manual", message: erreurMessage.replace("email: ", "") });
+    //     }
 
-        if (erreurMessage.startsWith("password: ")) {
-            setError("mdp", {
-                type: "manual",
-                message: erreurMessage.split("password: ")[1]
-            });
-        }
+    //     if (erreurMessage.startsWith("password: ")) {
+    //         setError("mdp", {
+    //             type: "manual",
+    //             message: erreurMessage.split("password: ")[1]
+    //         });
+    //     }
 
-        if (erreurMessage.startsWith("nom: ")) {
-            setError("nom", {
-                type: "manual",
-                message: erreurMessage.split("nom: ")[1]
-            });
-        }
-        if (erreurMessage.startsWith("prenom: ")) {
-            setError("prenom", {
-                type: "manual",
-                message: erreurMessage.split("prenom: ")[1]
-            });
-        }
-        if (erreurMessage) {
-            setError("all", {
-                type: "manual",
-                message: "l'erreur suivant s'est produite : " + erreurMessage
-            });
-            console.log('erreur:', erreurMessage);
-        }
-    }
+    //     if (erreurMessage.startsWith("nom: ")) {
+    //         setError("nom", {
+    //             type: "manual",
+    //             message: erreurMessage.split("nom: ")[1]
+    //         });
+    //     }
+    //     if (erreurMessage.startsWith("prenom: ")) {
+    //         setError("prenom", {
+    //             type: "manual",
+    //             message: erreurMessage.split("prenom: ")[1]
+    //         });
+    //     }
+    //     if (erreurMessage) {
+    //         setError("all", {
+    //             type: "manual",
+    //             message: "l'erreur suivant s'est produite : " + erreurMessage
+    //         });
+    //         console.log('erreur:', erreurMessage);
+    //     }
+    // }
 
     //envoi du formulaire sur le serveur
     const onSubmit = async (data) => {

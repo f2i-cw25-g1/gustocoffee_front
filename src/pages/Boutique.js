@@ -1,11 +1,13 @@
 import AllProducts from "../components/AllProducts";
 
-function Boutique() {
+const Boutique = () => {
   return (
-    <main>
-      <p className="subsection_title">Boutique</p>
-      <AllProducts/>
-    </main>
+    <>
+      <main>
+        <p className="subsection_title">Boutique</p>
+        <AllProducts />
+      </main>
+    </>
   );
 }
 

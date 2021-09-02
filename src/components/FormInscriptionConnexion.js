@@ -3,15 +3,15 @@ import FormInscription from './FormInscription';
 
 import './css/FormInscriptionConnexion.css';
 
-const FormInscriptionConnexion = (props) => {
+const FormInscriptionConnexion = ({ isSelectLogin, switchAuthMode }) => {
     return (
         <div className="flexform">
-            {props.isLogin ? <FormConnexion /> : <FormInscription />}
+            {isSelectLogin ? <FormConnexion /> : <FormInscription />}
             <button
                 className="button_inscription_connexion"
                 type='button'
-                onClick={props.switchAuthMode}>
-                {props.isLogin ? "Créer un compte" : "Se connecter"}
+                onClick={switchAuthMode}>
+                {isSelectLogin ? "Créer un compte" : "Se connecter"}
             </button>
 
         </div>
