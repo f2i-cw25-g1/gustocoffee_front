@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import "./css/Carousel.css";
 import axios from "axios";
 import Product from "./../components/Product";
+import urlApi from '../urlApi';
 
 const AllProducts = () => {
     const [categories, setCategories] = useState([]);
@@ -17,8 +18,8 @@ const AllProducts = () => {
         const getAllProducts = async () => {
             try {
                 const [requestProducts, requestCategory] = await Promise.all([
-                    axios.get(`/api/produits`, { cancelToken: ourRequest.token }),
-                    axios.get(`/api/categories`, { cancelToken: ourRequest.token })
+                    axios.get(urlApi+`/api/produits`, { cancelToken: ourRequest.token }),
+                    axios.get(urlApi+`/api/categories`, { cancelToken: ourRequest.token })
                 ]);
                 productsRef.current = await requestProducts.data["hydra:member"];
                 let responseCategories = await requestCategory.data["hydra:member"];

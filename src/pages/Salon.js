@@ -3,6 +3,7 @@ import SingleSalon from '../components/SingleSalon';
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
+import urlApi from '../urlApi';
 
 function Salon() {
   const { id } = useParams();
@@ -13,7 +14,7 @@ function Salon() {
   }, []);
 
   const getSalon = async () => {
-    let { data } = await axios.get(`/api/salons/${id}`);
+    let { data } = await axios.get(urlApi+`/api/salons/${id}`);
     setSalon(data);
   };
 

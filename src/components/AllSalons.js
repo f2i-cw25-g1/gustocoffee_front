@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 
 import axios from "axios";
 import ReactDOM from 'react-dom';
+import urlApi from '../urlApi';
 
 import Salon from "./Salon";
 
@@ -11,7 +12,7 @@ function AllSalons() {
     let responseSalons=[];
 
     const getSalons = async () => {
-        const { data } = await axios.get(`/api/salons`);
+        const { data } = await axios.get(urlApi+`/api/salons`);
         responseSalons = data["hydra:member"];
         setSalons(data["hydra:member"]);
     };

@@ -6,6 +6,7 @@ import '../App.css';
 import '../components/css/Reservation.css';
 import {Link} from 'react-router-dom';
 import moment from 'moment';
+import urlApi from '../urlApi';
 
 // 06 07 2021 08:00 18:00
 // 15 08 2021 10:00 12:30
@@ -131,10 +132,10 @@ const Reservation = () => {
     const fetchReservation = async (date) => {
       try {
         const [request1, request2, request3, request4] = await Promise.all([
-          axios.get(`/api/place_grande_salles`, { cancelToken: ourRequest.token }),
-          axios.get(`/api/reservation_places?date_reservation=${date}`, { cancelToken: ourRequest.token }),
-          axios.get(`/api/salons`, { cancelToken: ourRequest.token }),
-          axios.get(`/api/reservation_salons?date_reservation=${date}`, { cancelToken: ourRequest.token })
+          axios.get(urlApi+`/api/place_grande_salles`, { cancelToken: ourRequest.token }),
+          axios.get(urlApi+`/api/reservation_places?date_reservation=${date}`, { cancelToken: ourRequest.token }),
+          axios.get(urlApi+`/api/salons`, { cancelToken: ourRequest.token }),
+          axios.get(urlApi+`/api/reservation_salons?date_reservation=${date}`, { cancelToken: ourRequest.token })
         ]);
 
         await setPlaces(await request1.data['hydra:member']);

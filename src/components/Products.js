@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import "./css/Carousel.css";
 import Product from "./Product";
 import axios from "axios";
+import urlApi from '../urlApi';
 
 function Products(props) {
 
@@ -15,7 +16,7 @@ function Products(props) {
   };
 
   useEffect(() => {
-    getData("/api/produits?page=1&categorie="+props.categorie.split("/api/categories/")[1])
+    getData(urlApi+"/api/produits?page=1&categorie="+props.categorie.split("/api/categories/")[1])
     .then((response) => {
       for (const val of document.getElementsByClassName("load")) {
         val.style.display = "none";
