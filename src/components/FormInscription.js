@@ -28,12 +28,7 @@ const FormInscription = () => {
                 message: erreurMessage.split("password: ")[1]
             });
         }
-        if (erreurMessage.startsWith("username: ")) {
-            setError("nomUtilisateur", {
-                type: "manual",
-                message: erreurMessage.split("username: ")[1]
-            });
-        }
+
         if (erreurMessage.startsWith("nom: ")) {
             setError("nom", {
                 type: "manual",
@@ -60,22 +55,13 @@ const FormInscription = () => {
         clearErrors()
         await axios({
             method: 'post',
-            url: '/api/utilisateurs',
+            url: 'http://localhost:8000/users',
             data: {
                 "email": data.mail,
-                "roles": [
-                    "user"
-                ],
                 "password": data.mdp,
-                "factures": [],
-                "username": data.nomUtilisateur,
                 "nom": data.nom,
-                "prenom": data.prenom,
-                "adresse": "",
-                "codePostalAdresse": null,
-                "adresseFacturation": "",
-                "codePostalFacturation": null,
-                "paysFacturation": ""
+                "prenom": data.prenom
+
             }
         }).then((response) => {
             console.log('response', response);
@@ -134,21 +120,6 @@ const FormInscription = () => {
                             }
                         })} />
                         {errors.prenom && <p className="erreurInscription">{errors.prenom?.message}</p>}
-                    </div>
-                    <div id="containerInscriptionNomUtilisateur">
-                        <label htmlFor="inscriptionNomUtilisateur">Nom d'utilisateur</label>
-                        <input type="text" id="inscriptionNomUtilisateur" name="nomUtilisateur" {...register("nomUtilisateur", {
-                            required: "Le nom d'utilisateur est obligatoire",
-                            minLength: {
-                                value: 4,
-                                message: "Veuillez saisir un nom d'au moins 4 caractères"
-                            },
-                            maxLength: {
-                                value: 10,
-                                message: "Veuillez saisir un prenom de 10 caractères maximum"
-                            }
-                        })} />
-                        {errors.nomUtilisateur && <p className="erreurInscription">{errors.nomUtilisateur?.message}</p>}
                     </div>
                     <div id="containerInscriptionMail">
                         <label htmlFor="inscriptionMail">Adresse Email</label>

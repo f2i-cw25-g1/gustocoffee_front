@@ -1,16 +1,16 @@
 import { useForm } from "react-hook-form";
+import { useState } from 'react';
+import axios from "axios";
 import { ErrorMessage } from '@hookform/error-message';
-
+import MyVerticallyCenteredModal from "./Modal";
 import './css/FormInscriptionConnexion.css';
 
 
 
 const FormConnexion = () => {
-
-    const { register, handleSubmit, formState: { errors } } = useForm({ criteriaMode: "all" });
+    const [modalShow, setModalShow] = useState(false);
+    const { clearErrors, register, handleSubmit, setError, watch, formState: { errors } } = useForm({ criteriaMode: "all" });
     const emailPattern = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    const onSubmit = data => console.log(data);
-
 
     //gestion des erreurs récupérée par le back-office
     const erreurType = (erreurMessage) => {
@@ -38,22 +38,10 @@ const FormConnexion = () => {
         clearErrors()
         await axios({
             method: 'post',
-            url: '/api/utilisateurs',
+            url: 'http://localhost:8000/api/login_check',
             data: {
                 "email": data.mail,
-                "roles": [
-                    "user"
-                ],
                 "password": data.mdp,
-                "factures": [],
-                "username": data.nomUtilisateur,
-                "nom": data.nom,
-                "prenom": data.prenom,
-                "adresse": "",
-                "codePostalAdresse": null,
-                "adresseFacturation": "",
-                "codePostalFacturation": null,
-                "paysFacturation": ""
             }
         }).then((response) => {
             console.log('response', response);
@@ -77,6 +65,12 @@ const FormConnexion = () => {
 
     return (
         <div>
+            <MyVerticallyCenteredModal
+                onExited={console.log('EXIT MAN')}
+                body={`Vous êtes connecté !`}
+                logo={`✔️`}
+                show={modalShow}
+                onHide={() => setModalShow(false)} />
             <div className="flexform">
                 <form onSubmit={handleSubmit(onSubmit)}>
 
