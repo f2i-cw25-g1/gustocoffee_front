@@ -23,10 +23,10 @@ function Footer() {
           <a href="https://www.linkedin.com/in/gusto-coffee-5684a6208/" target="_blank"><img src={linkedin} alt="LinkedIn"></img></a>
         </div>
         <div className="footer_form">
-          <form action="">
+          {/* <form action="">
             <input placeholder="Votre Mail" type="email"></input>
             <button type="submit">S'inscrire</button>
-          </form>
+          </form> */}
           <Link to='/mentionslegales'><p>mentions légales</p></Link>
           <Link to='/CGU'><p>CGU</p></Link>
           <Link to='/CGV'><p>CGV</p></Link>

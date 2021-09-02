@@ -1,4 +1,9 @@
 .grecaptcha-badge {
   bottom: 65px !important;
-  box-shadow: none;
+}
+
+@media (max-width: 56.25em) {
+  .grecaptcha-badge {
+    bottom: 30px !important;
+  }
 }
