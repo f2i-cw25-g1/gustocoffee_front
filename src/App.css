@@ -29,3 +29,23 @@
   height: 100px;
   margin: 0 auto;
 }
+
+
+/* width */
+::-webkit-scrollbar {
+  width: 15px;
+  height:15px;
+  background: #eaeaea;  
+  border-radius: 10px;
+}
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #986946; 
+  border-radius: 10px;
+}
+/*
+::-webkit-scrollbar-thumb:hover {
+  background: #986946; 
+  border-radius: 10px;
+}
+*/

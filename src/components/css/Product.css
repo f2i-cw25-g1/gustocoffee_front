@@ -92,3 +92,51 @@
     margin: 0 0 20px 20px;
   }
 }
+
+/*----------*/
+
+.testPrix{
+  z-index: 9999;
+  position: -webkit-sticky;
+  position: sticky;
+  top:500px;
+  left:2200px;
+  background-color: #ffffff;
+  border : 3px solid #986946;
+  border-radius:10px;
+  padding: 20px;
+  font-size: 20px;
+  width:200px;
+}
+
+.textTestPrix{
+  text-align: center;
+}
+.testPrix:hover{
+  -webkit-touch-callout: none; /* iOS Safari */
+  -webkit-user-select: none; /* Safari */
+   -khtml-user-select: none; /* Konqueror HTML */
+     -moz-user-select: none; /* Old versions of Firefox */
+      -ms-user-select: none; /* Internet Explorer/Edge */
+          user-select: none; /* Non-prefixed version, currently
+                                supported by Chrome, Edge, Opera and Firefox */
+}
+
+
+button {
+  font-family: Cabin-Medium;
+  font-size: 16px;
+  color: #fff;
+  background-color: #986946;
+  border: 2px solid #986946;
+  width: 100%;
+  padding: 5px 0px;
+  margin-top: 10px;
+  transition: all 0.2s ease;
+}
+
+button:hover {
+  color: #986946;
+  background-color: #fff;
+  cursor: pointer;
+}

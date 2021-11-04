@@ -1,7 +1,7 @@
 import SingleProduit from '../components/SingleProduit';
 import Products from '../components/Products';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import urlApi from '../urlApi';
@@ -10,10 +10,19 @@ import urlApi from '../urlApi';
 function Produit() {
   const { id } = useParams();
   const [product, setProduct] = useState();
+  const [result, setResult] = useState();
 
   useEffect(() => {
     getProduct();
   }, [id]);
+
+  const resultat = useRef({});
+  function calcul(event){
+    console.log(event.target.value);
+    setResult((event.target.value*product.prix).toFixed(2));
+  }
+
+  
 
   //récupère le produit sélectionné
   const getProduct = async () => {
@@ -32,6 +41,25 @@ function Produit() {
           console.log(product);
           return (
             <div>
+
+
+
+              <div className="testPrix">
+                <div className="textTestPrix">
+                  <div>
+                    {product.nom}
+                  </div>
+                  <div>
+                    nombre <input onChange={calcul} type="number" autoComplete="off" name="nombreArticle" min="0" max="999"></input>
+                  </div>
+                  <div>
+                  prix : <span>{result || 0}</span>€
+                  </div>
+                </div>
+                <button id="submitDateButton">Acheter</button>
+              </div>
+
+
               {/* composant affichant les caractéristiques du produit */}
               <SingleProduit
                 image={product.image}
