@@ -95,12 +95,11 @@
 
 /*----------*/
 
-.testPrix{
+.cadrePanier{
   z-index: 9999;
-  position: -webkit-sticky;
-  position: sticky;
-  top:500px;
-  left:2200px;
+  position: fixed;
+  bottom:100px;
+  right:100px;
   background-color: #ffffff;
   border : 3px solid #986946;
   border-radius:10px;
@@ -109,10 +108,7 @@
   width:200px;
 }
 
-.textTestPrix{
-  text-align: center;
-}
-.testPrix:hover{
+.cadrePanier:hover{
   -webkit-touch-callout: none; /* iOS Safari */
   -webkit-user-select: none; /* Safari */
    -khtml-user-select: none; /* Konqueror HTML */

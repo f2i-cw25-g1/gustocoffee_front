@@ -44,19 +44,16 @@ function Produit() {
 
 
 
-              <div className="testPrix">
-                <div className="textTestPrix">
-                  <div>
-                    {product.nom}
-                  </div>
-                  <div>
-                    nombre <input onChange={calcul} type="number" autoComplete="off" name="nombreArticle" min="0" max="999"></input>
-                  </div>
-                  <div>
-                  prix : <span>{result || 0}</span>€
-                  </div>
+              <div className="cadrePanier">
+                <div style={{marginBottom: '20px',textAlign:'center'}} >
+                  {product.nom}
                 </div>
-                <button id="submitDateButton">Acheter</button>
+                <div>
+                  Quantité <input onChange={calcul} type="number" autoComplete="off" name="nombreArticle" min="0" max="999"></input>
+                </div>
+                <div>{result || 0} € TTC
+                </div>
+                <button id="submitDateButton">Ajouter au panier</button>
               </div>
 
 

@@ -37,6 +37,10 @@ function Nav() {
     <Link className="brand-logo" to='/'>
       <img className="brand-logo-img" src={logo} alt="Logo Gusto Coffee"></img>
     </Link>
+    
+    <Link className="nav_bar_mobile_profile" to='/inscriptionConnexion'>
+      <img src={profil} alt="Logo profil"></img>
+    </Link>
 
     {/* navBar format mobile */}
     <nav className="nav_bar_mobile">
