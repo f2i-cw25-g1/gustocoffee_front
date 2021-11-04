@@ -16,7 +16,6 @@ function Produit() {
     getProduct();
   }, [id]);
 
-  const resultat = useRef({});
   function calcul(event){
     console.log(event.target.value);
     setResult((event.target.value*product.prix).toFixed(2));

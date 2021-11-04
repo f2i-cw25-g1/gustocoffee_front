@@ -136,3 +136,8 @@ button:hover {
   background-color: #fff;
   cursor: pointer;
 }
+.categorySelected {
+  color: #986946;
+  background-color: #fff;
+  cursor: pointer;
+}

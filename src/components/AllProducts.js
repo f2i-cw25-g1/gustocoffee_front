@@ -43,14 +43,45 @@ const AllProducts = () => {
         }
     }, [])
 
+
+    function showOneCategory(event){
+        let categories = document.getElementsByClassName("categorie");
+        if(document.getElementById('button'+event.target.textContent).classList.contains("categorySelected")){
+            for (var i = 0; i < categories.length; i++) {
+                categories[i].hidden=false;
+            }
+            document.getElementById('button'+event.target.textContent).classList.remove("categorySelected");
+        }else{
+            for (var i = 0; i < categories.length; i++) {
+                categories[i].hidden=true;
+            }
+            document.getElementById(event.target.textContent).hidden=false;
+            let boutonsCategorie = document.getElementsByClassName("boutonCategorie");
+            for (var i = 0; i < boutonsCategorie.length; i++) {
+                boutonsCategorie[i].classList.remove("categorySelected");
+            }
+            document.getElementById('button'+event.target.textContent).classList.add("categorySelected");
+        }
+    }
+
+
     return (
         <div>
             {/* affiche un loader tant que les données ne sont pas récupérées */}
             <div className="load" id="loadAllProducts"></div>
+            <div className="items">
+            {categories.map((categorie) => {
+                return(
+                    <button className="boutonCategorie" id={"button"+categorie.nom} key={categorie.nom} onClick={showOneCategory}>
+                        {categorie.nom}
+                    </button>
+                );
+            })}
+            </div>
             {categories.map((categorie) => {
                 //afficher chaque catégorie
                 return (
-                    <div className="categorie" key={categorie.nom}>
+                    <div className="categorie" key={categorie.nom} id={categorie.nom}>
                         <div className="subsection_title">
                             {categorie.nom}
                         </div>
